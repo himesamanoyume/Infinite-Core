@@ -6,10 +6,9 @@ public class CharManager : MonoBehaviour
 {
     //public List<GameObject> playerGameObjectList;
 
-    public List<CharBase> playerInfoList;
+    public GameObject[] playerCameraList = new GameObject[10];
 
-    int redCount = 0;
-    int blueCount = 0;
+    
 
     public static CharManager instance;
 
@@ -18,28 +17,7 @@ public class CharManager : MonoBehaviour
         instance = this;
     }
 
-    /// <summary>
-    /// 生成一个新玩家时将玩家加入到列表中
-    /// </summary>
-    /// <param name="playerTeam"></param>
-    /// <param name="player"></param>
-    public CharBase AddPlayerToList(TeamEnum.playerTeam playerTeam, CharBase charBase)
-    {
-        switch (playerTeam)
-        {
-            case TeamEnum.playerTeam.Red:
-                Log("Red");
-                charBase.RunId = redCount;
-                return charBase;
-                //playerGameObjectList.Add(player);
-            case TeamEnum.playerTeam.Blue:
-                Log("Blue");
-                charBase.RunId = blueCount + 5;
-                return charBase;
-                //playerGameObjectList.Add(player);
-        }
-        return null;
-    }
+
 
     public void GetPlayerNameById(int runId)
     {
@@ -61,8 +39,9 @@ public class CharManager : MonoBehaviour
         {
             charBase.Level += 1;
             charBase.Attack += 100;
-            charBase.Health += 1000;
             charBase.MaxHealth += 1000;
+            charBase.Health += 1000;
+            
             if (charBase.Exp >= charBase.MaxExp)
             {
                 charBase.Exp -= charBase.MaxExp;
@@ -107,7 +86,7 @@ public class CharManager : MonoBehaviour
             }
         }
 
-        GetAllPlayer();
+        //GetAllPlayer();
         PlayerRespawnCountDown(charBase.RunId, charBase.RespawnTime);
         charBase.State = CharEnum.StateEnum.复活中;
         
@@ -177,85 +156,87 @@ public class CharManager : MonoBehaviour
     /// <returns></returns>
     public CharBase FindPlayerById(int runId)
     {
-        if (runId >= 10)
+        if (runId >= 10 || runId < 0)
         {
             Debug.Log("runId只能为0~9");
             return null;
         }
 
-        for (int i = 0; i < playerInfoList.Count; i++)
-        {
-            if (playerInfoList[i].GetComponent<CharBase>().RunId == runId)
-            {
-                return playerInfoList[i].GetComponent<CharBase>();
-            }
-        }
-        Log("未找到该id的玩家");
-        return null;
+        return playerCameraList[runId].GetComponent<CharBase>();
+
+        //for (int i = 0; i < playerInfoList.Count; i++)
+        //{
+        //    if (playerInfoList[i].RunId == runId)
+        //    {
+        //        return playerInfoList[i];
+        //    }
+        //}
+        //Log("未找到该id的玩家");
+        //return null;
     }
 
     /// <summary>
     /// 获取所有玩家的全部信息
     /// </summary>
     /// <returns></returns>
-    public List<CharBase> GetAllPlayer()
-    {
-        CharBase charBaseComponent = new CharBase();
-        playerInfoList.Clear();
+    //public List<CharBase> GetAllPlayer()
+    //{
+    //    CharBase charBaseComponent = new CharBase();
+    //    playerInfoList.Clear();
 
-        foreach (var item in playerInfoList)
-        {
-            charBaseComponent = item.GetComponent<CharBase>();
-            playerInfoList.Add(charBaseComponent);
-        }
+    //    foreach (var item in playerInfoList)
+    //    {
+    //        charBaseComponent = item.GetComponent<CharBase>();
+    //        playerInfoList.Add(charBaseComponent);
+    //    }
 
-        return playerInfoList;
-    }
+    //    return playerInfoList;
+    //}
 
     /// <summary>
     /// 根据CharBase组件获取所有信息
     /// </summary>
-    /// <param name="charBase"></param>
-    /// <param name="component"></param>
+    /// <param name="needTarget"></param>
+    /// <param name="provider"></param>
     /// <returns></returns>
-    public void GetPlayerInfo(CharBase charBase,CharBase component)
+    public void GetPlayerInfo(CharBase needTarget,CharBase provider)
     {
         //charBase = component;
 
-        //charBase.RunId = component.RunId;
-        //charBase.PlayerName = component.PlayerName;
-        //charBase.Kill = component.Kill;
-        //charBase.Death = component.Death;
-        //charBase.Money = component.Money;
-        //charBase.Exp = component.Exp;
-        //charBase.MaxExp = component.MaxExp;
-        //charBase.State = component.State;
-        //charBase.Buff = component.Buff;
-        //charBase.Pro = component.Pro;
-        //charBase.Level = component.Level;
-        //charBase.Attack = component.Attack;
-        //charBase.MaxHealth = component.MaxHealth;
-        //charBase.Health = component.Health;
-        //charBase.CriticalHit = component.CriticalHit;
-        //charBase.CriticalHitRate = component.CriticalHitRate;
-        //charBase.Defence = component.Defence;
-        //charBase.AttackSpeed = component.AttackSpeed;
-        //charBase.Restore = component.Restore;
-        //charBase.SkillQ = component.SkillQ;
-        //charBase.SkillE = component.SkillE;
-        //charBase.SkillR = component.SkillR;
-        //charBase.SkillBurst = component.SkillBurst;
-        //charBase.HeadID = component.HeadID;
-        //charBase.ArmorID = component.ArmorID;
-        //charBase.HeadID = component.HeadID;
-        //charBase.KneeID = component.KneeID;
-        //charBase.TrousersID = component.TrousersID;
-        //charBase.ShoesID = component.ShoesID;
-        //charBase.MoveSpeed = component.MoveSpeed;
-        //charBase.AttackRange = component.AttackRange;
-        //charBase.RespawnTime = component.RespawnTime;
-        //charBase.RespawnCountDown = component.RespawnCountDown;
-        //charBase.IsRespawn = component.IsRespawn;
+        needTarget.RunId = provider.RunId;
+        needTarget.PlayerName = provider.PlayerName;
+        needTarget.Kill = provider.Kill;
+        needTarget.Death = provider.Death;
+        needTarget.Money = provider.Money;
+        needTarget.Exp = provider.Exp;
+        needTarget.MaxExp = provider.MaxExp;
+        needTarget.State = provider.State;
+        needTarget.Buff = provider.Buff;
+        needTarget.Pro = provider.Pro;
+        needTarget.Level = provider.Level;
+        needTarget.Attack = provider.Attack;
+        needTarget.MaxHealth = provider.MaxHealth;
+        needTarget.Health = provider.Health;
+        needTarget.CriticalHit = provider.CriticalHit;
+        needTarget.CriticalHitRate = provider.CriticalHitRate;
+        needTarget.Defence = provider.Defence;
+        needTarget.AttackSpeed = provider.AttackSpeed;
+        needTarget.Restore = provider.Restore;
+        needTarget.SkillQ = provider.SkillQ;
+        needTarget.SkillE = provider.SkillE;
+        needTarget.SkillR = provider.SkillR;
+        needTarget.SkillBurst = provider.SkillBurst;
+        needTarget.HeadID = provider.HeadID;
+        needTarget.ArmorID = provider.ArmorID;
+        needTarget.HeadID = provider.HeadID;
+        needTarget.KneeID = provider.KneeID;
+        needTarget.TrousersID = provider.TrousersID;
+        needTarget.ShoesID = provider.ShoesID;
+        needTarget.MoveSpeed = provider.MoveSpeed;
+        needTarget.AttackRange = provider.AttackRange;
+        needTarget.RespawnTime = provider.RespawnTime;
+        needTarget.RespawnCountDown = provider.RespawnCountDown;
+        needTarget.IsRespawn = provider.IsRespawn;
 
         return;
     }

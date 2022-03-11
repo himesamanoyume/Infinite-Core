@@ -70,7 +70,7 @@ public class DebugConsole : MonoBehaviour
             Debug.Log("Hello World");
         });
 
-        SPAWN_PLAYER = new DebugCommand<int>("SpawnPlayer", "生成一个名为'test1',近战,瞬移爆发的玩家,阵营为team=(0,1),0为红,1为蓝", "SpawnPlayer <team>", (team) =>
+        SPAWN_PLAYER = new DebugCommand<int>("SpawnPlayer", "生成一个名为'test1',近战,超速爆发的玩家,阵营为team=(0,1),0为红,1为蓝", "SpawnPlayer <team>", (team) =>
         {
             if (team != 0 && team != 1)
             {
@@ -79,11 +79,13 @@ public class DebugConsole : MonoBehaviour
             }
             if (team == 0)//red
             {
-                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Red,CharEnum.PlayerEnum.RedPlayer1);
+                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Red);
+
             }
             else//blue
             {
-                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Blue, CharEnum.PlayerEnum.BluePlayer1);
+                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Blue);
+
             }
         });
 
@@ -99,7 +101,7 @@ public class DebugConsole : MonoBehaviour
 
         GET_ALL_PLAYER_INFO = new DebugCommand("GetAllPlayerInfo", "获取所有已生成的玩家的信息", "GetAllPlayerInfo", () =>
         {
-            CharManager.instance.GetAllPlayer();
+            //CharManager.instance.GetAllPlayer();
         });
 
         SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById","通过id修改玩家当前血量","SetPlayerHpById <id> <health>",(id,health)=> 
@@ -115,7 +117,7 @@ public class DebugConsole : MonoBehaviour
             SPAWN_PLAYER,
             GET_PLAYERNAME_BY_ID,
             PLAYER_LEVEL_UP_BY_ID,
-            GET_ALL_PLAYER_INFO,
+            //GET_ALL_PLAYER_INFO,
             SET_PLAYER_HP_BY_ID
         };
     }

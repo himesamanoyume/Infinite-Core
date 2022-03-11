@@ -38,173 +38,226 @@ public class CharSpawnController : MonoBehaviour
     public Camera bluePlayer4Camera;
     public Camera bluePlayer5Camera;
 
+    int redCount = 0;
+    int blueCount = 0;
+
     private void Awake()
     {
         instance = this;
     }
 
-    public void SpawnPlayer(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam,CharEnum.PlayerEnum playerEnum)
+    public void SpawnPlayer(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam)
     {
-        
         CharBase charBase = new CharBase(runId,playerName,pro,skillQ,skillE,skillR,skillBurst,playerTeam);
 
-
-        GameObject playerObject;
         //第一次生成
         if (runId==-1)
         {
-            charBase = CharManager.instance.AddPlayerToList(playerTeam, charBase);
+            SetPlayerRunId(charBase);
         }
         else//复活
         {
-
+            SelectPos(charBase);
         }
-        Debug.Log(charBase.RunId);
-        switch (pro)
+        
+    }
+
+    /// <summary>
+    /// 给玩家选择生成位置和挂载的摄像机
+    /// </summary>
+    /// <param name="charBase"></param>
+    public void SelectPos(CharBase charBase)
+    {
+        GameObject playerObject;
+        switch (charBase.Pro)
         {
             case CharEnum.ProEnum.近战:
                 playerObject = Instantiate(solider);
-                switch (playerEnum)
+                switch (charBase.RunId)
                 {
-                    case CharEnum.PlayerEnum.RedPlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos1, redPlayer1Camera);
+                    case 0:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1, redPlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos2, redPlayer2Camera);
+                    case 1:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2, redPlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos3, redPlayer3Camera);
+                    case 2:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3, redPlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos4, redPlayer4Camera);
+                    case 3:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4, redPlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos5, redPlayer5Camera);
+                    case 4:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5, redPlayer5Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos1, bluePlayer1Camera);
+                    case 5:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1, bluePlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos2, bluePlayer2Camera);
+                    case 6:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2, bluePlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos3, bluePlayer3Camera);
+                    case 7:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3, bluePlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos4, bluePlayer4Camera);
+                    case 8:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4, bluePlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos5, bluePlayer5Camera);
+                    case 9:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5, bluePlayer5Camera);
                         break;
                 }
                 break;
             case CharEnum.ProEnum.远程:
                 playerObject = Instantiate(archer);
-                switch (playerEnum)
+                switch (charBase.RunId)
                 {
-                    case CharEnum.PlayerEnum.RedPlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos1, redPlayer1Camera);
+                    case 0:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1, redPlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos2, redPlayer2Camera);
+                    case 1:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2, redPlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos3, redPlayer3Camera);
+                    case 2:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3, redPlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos4, redPlayer4Camera);
+                    case 3:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4, redPlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos5, redPlayer5Camera);
+                    case 4:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5, redPlayer5Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos1, bluePlayer1Camera);
+                    case 5:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1, bluePlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos2, bluePlayer2Camera);
+                    case 6:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2, bluePlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos3, bluePlayer3Camera);
+                    case 7:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3, bluePlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos4, bluePlayer4Camera);
+                    case 8:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4, bluePlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos5, bluePlayer5Camera);
+                    case 9:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5, bluePlayer5Camera);
                         break;
                 }
                 break;
             case CharEnum.ProEnum.辅助:
                 playerObject = Instantiate(doctor);
-                switch (playerEnum)
+                switch (charBase.RunId)
                 {
-                    case CharEnum.PlayerEnum.RedPlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos1, redPlayer1Camera);
+                    case 0:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1, redPlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos2, redPlayer2Camera);
+                    case 1:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2, redPlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos3, redPlayer3Camera);
+                    case 2:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3, redPlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos4, redPlayer4Camera);
+                    case 3:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4, redPlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos5, redPlayer5Camera);
+                    case 4:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5, redPlayer5Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos1, bluePlayer1Camera);
+                    case 5:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1, bluePlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos2, bluePlayer2Camera);
+                    case 6:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2, bluePlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos3, bluePlayer3Camera);
+                    case 7:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3, bluePlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos4, bluePlayer4Camera);
+                    case 8:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4, bluePlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos5, bluePlayer5Camera);
+                    case 9:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5, bluePlayer5Camera);
                         break;
                 }
                 break;
             case CharEnum.ProEnum.坦克:
                 playerObject = Instantiate(tanker);
-                switch (playerEnum)
+                switch (charBase.RunId)
                 {
-                    case CharEnum.PlayerEnum.RedPlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos1, redPlayer1Camera);
+                    case 0:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1, redPlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos2, redPlayer2Camera);
+                    case 1:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2, redPlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos3, redPlayer3Camera);
+                    case 2:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3, redPlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos4, redPlayer4Camera);
+                    case 3:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4, redPlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.RedPlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnRedPos5, redPlayer5Camera);
+                    case 4:
+                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5, redPlayer5Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer1:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos1, bluePlayer1Camera);
+                    case 5:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1, bluePlayer1Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer2:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos2, bluePlayer2Camera);
+                    case 6:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2, bluePlayer2Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer3:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos3, bluePlayer3Camera);
+                    case 7:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3, bluePlayer3Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer4:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos4, bluePlayer4Camera);
+                    case 8:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4, bluePlayer4Camera);
                         break;
-                    case CharEnum.PlayerEnum.BluePlayer5:
-                        SpawnPlayerForPos(playerObject, playerEnum, charBase, spawnBluePos5, bluePlayer5Camera);
+                    case 9:
+                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5, bluePlayer5Camera);
                         break;
                 }
+                break;
+        }
+    }
+
+
+    /// <summary>
+    /// 生成一个新玩家时给玩家赋予一个runId
+    /// </summary>
+    /// <param name="playerTeam"></param>
+    /// <param name="player"></param>
+    public void SetPlayerRunId(CharBase charBase)
+    {
+        switch (charBase.PlayerTeam)
+        {
+            case TeamEnum.playerTeam.Red:
+                if (redCount > 4)
+                {
+                    Debug.Log("红方人数已达最大");
+                    return;
+                }
+                break;
+            case TeamEnum.playerTeam.Blue:
+                if (blueCount > 4)
+                {
+                    Debug.Log("蓝方人数已达最大");
+                    return;
+                }
+                break;
+        }
+        
+        switch (charBase.PlayerTeam)
+        {
+            case TeamEnum.playerTeam.Red:
+                CharManager.instance.Log("Red");
+                charBase.RunId = redCount;
+                redCount++;
+                SelectPos(charBase);
+                break;
+
+            case TeamEnum.playerTeam.Blue:
+                CharManager.instance.Log("Blue");
+                charBase.RunId = blueCount + 5;
+                blueCount++;
+                SelectPos(charBase);
                 break;
         }
     }
@@ -217,7 +270,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="charBase"></param>
     /// <param name="spawnPos"></param>
     /// <param name="playerCamera"></param>
-    public void SpawnPlayerForPos(GameObject playerObject,CharEnum.PlayerEnum playerEnum,CharBase charBase,GameObject spawnPos,Camera playerCamera)
+    public void SpawnPlayerForPos(GameObject playerObject,CharBase charBase,GameObject spawnPos,Camera playerCamera)
     {
         CharBase component;
 
@@ -227,10 +280,9 @@ public class CharSpawnController : MonoBehaviour
         component = playerCamera.GetComponent<CharBase>();
 
 
-        //需要方便快速赋值
 
-        //component.RunId = charBase.RunId;
-        //component.PlayerName = charBase.PlayerName;
+        //需要方便快速赋值
+        CharManager.instance.GetPlayerInfo(component, charBase);
 
 
 

@@ -347,7 +347,7 @@ public class CharBase : MonoBehaviour
             }
             else
             {
-                maxHealth = value;
+                criticalHit = value;
             }
         }
     }
