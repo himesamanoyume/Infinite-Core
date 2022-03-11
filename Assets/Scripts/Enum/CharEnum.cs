@@ -24,6 +24,7 @@ public class CharEnum : MonoBehaviour
 
     public enum StateEnum
     {
+        尚未生成,
         存活,
         彻底死亡,
         复活中

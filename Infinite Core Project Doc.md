@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-13 02:44:30
- * @LastEditTime: 2022-03-11 01:07:58
+ * @LastEditTime: 2022-03-11 16:48:39
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \undefinedc:\Users\PrincessDreamland\Desktop\Infinite Core Project Doc.md
@@ -258,8 +258,8 @@ AOE伤害为3000，间隔8秒，单体攻击一次伤害为500，2秒间隔，�
 
 #### 装备主词条类型
 
-类型|普通|神器|史诗or奇特|最大值
--|-|-|-|-|-
+类型|普通|神器|史诗&奇特|最大值
+-|-|-|-|-
 攻击|500|750|1000|2000
 生命|5000|6500|8000|15000
 暴击|5%|10%|15%|45%

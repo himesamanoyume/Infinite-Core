@@ -77,42 +77,47 @@ public class CharManager : MonoBehaviour
         if (charBase == null) { return; }
 
         charBase.Health = 0;
-        for (int i = 0; i < charBase.Buff.Count; i++)
+        //------------------------
+        //或为联机代码改动部分
+        GameObject charCamera = FindPlayerCameraById(runId);
+        FindChildObjWithTag("PlayerModel", charCamera).SetActive(false);
+
+        //------------------------
+        if (charBase.Buff == null)
         {
-            if (charBase.Buff[i].Equals(CharEnum.BuffEnum.无核))
+
+        }
+        else
+        {
+            for (int i = 0; i < charBase.Buff.Count; i++)
             {
-                charBase.State = CharEnum.StateEnum.彻底死亡;
-                break;
+                if (charBase.Buff[i].Equals(CharEnum.BuffEnum.无核))
+                {
+                    charBase.State = CharEnum.StateEnum.彻底死亡;
+                    break;
+                }
             }
         }
 
-        //GetAllPlayer();
-        PlayerRespawnCountDown(charBase.RunId, charBase.RespawnTime);
+        PlayerRespawnCountDown(charBase.RunId);
         charBase.State = CharEnum.StateEnum.复活中;
         
         Log(runId, "被击杀");
     }
 
-    public void PlayerRespawnCountDown(int runId,float time)
-    {
-        CharBase charBase = FindPlayerById(runId);
-        if (charBase == null) { return; }
-
-        charBase.IsRespawn = true;
-        Log(runId, "开始重生倒计时");
-    }
-
     /// <summary>
-    /// 不同于DebugConsole的SpawnPlayer函数只为测试,本函数为正常生成玩家的方式
+    /// 玩家重生倒计时
     /// </summary>
-    public void RespawnPlayer(int runId,string playerName)
+    /// <param name="runId"></param>
+    /// <param name="time"></param>
+    public void PlayerRespawnCountDown(int runId)
     {
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        //CharSpawnController.instance.SpawnPlayer();
-        charBase.IsRespawn = false;
-
+        charBase.State = CharEnum.StateEnum.复活中;
+        charBase.RespawnCountDown = charBase.RespawnTime;
+        Log(runId, "开始重生倒计时");
     }
 
     /// <summary>
@@ -163,35 +168,29 @@ public class CharManager : MonoBehaviour
         }
 
         return playerCameraList[runId].GetComponent<CharBase>();
-
-        //for (int i = 0; i < playerInfoList.Count; i++)
-        //{
-        //    if (playerInfoList[i].RunId == runId)
-        //    {
-        //        return playerInfoList[i];
-        //    }
-        //}
-        //Log("未找到该id的玩家");
-        //return null;
     }
 
-    /// <summary>
-    /// 获取所有玩家的全部信息
-    /// </summary>
-    /// <returns></returns>
-    //public List<CharBase> GetAllPlayer()
-    //{
-    //    CharBase charBaseComponent = new CharBase();
-    //    playerInfoList.Clear();
+    public GameObject FindPlayerCameraById(int runId)
+    {
+        if (runId >= 10 || runId < 0)
+        {
+            Debug.Log("runId只能为0~9");
+            return null;
+        }
+        return playerCameraList[runId];
+    }
 
-    //    foreach (var item in playerInfoList)
-    //    {
-    //        charBaseComponent = item.GetComponent<CharBase>();
-    //        playerInfoList.Add(charBaseComponent);
-    //    }
-
-    //    return playerInfoList;
-    //}
+    public GameObject FindChildObjWithTag(string tag,GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            if (child.CompareTag(tag))
+            {
+                return child.gameObject;
+            }
+        }
+        return null;
+    }
 
     /// <summary>
     /// 根据CharBase组件获取所有信息
@@ -236,7 +235,6 @@ public class CharManager : MonoBehaviour
         needTarget.AttackRange = provider.AttackRange;
         needTarget.RespawnTime = provider.RespawnTime;
         needTarget.RespawnCountDown = provider.RespawnCountDown;
-        needTarget.IsRespawn = provider.IsRespawn;
 
         return;
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharStateController : MonoBehaviour
 {
     CharBase charBase;
+
     private void Start()
     {
         charBase = gameObject.GetComponent<CharBase>();
@@ -20,17 +21,32 @@ public class CharStateController : MonoBehaviour
         }
 
         //死亡
-        if (charBase.Health<=0)
+        if (charBase.State == CharEnum.StateEnum.存活)
         {
-            CharManager.instance.PlayerKilled(charBase.RunId);
+            if (charBase.Health <= 0)
+            {
+                CharManager.instance.PlayerKilled(charBase.RunId);
+            }
         }
+        
 
-        if (charBase.IsRespawn)
+        if (charBase.State == CharEnum.StateEnum.复活中)
         {
             charBase.RespawnCountDown -= Time.deltaTime;
-            if (charBase.RespawnCountDown<=0)
+            if (charBase.RespawnCountDown<0)
             {
-                //CharManager.instance.PlayerSpawn(charBase.RunId);
+                charBase.RespawnCountDown = 0;
+                charBase.State = CharEnum.StateEnum.存活;
+                charBase.Health = charBase.MaxHealth;
+                CharSpawnController.instance.SpawnPlayer(charBase);
+            }
+        }
+
+        if (charBase.State == CharEnum.StateEnum.存活)
+        {
+            if (charBase.Health > 0 && charBase.Health < charBase.MaxHealth)
+            {
+                charBase.Health += charBase.Restore * Time.deltaTime;
             }
         }
     }

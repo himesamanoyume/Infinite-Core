@@ -13,7 +13,6 @@ public class CharSpawnController : MonoBehaviour
     public GameObject solider;
     public GameObject tanker;
 
-
     public GameObject spawnRedPos1;
     public GameObject spawnRedPos2;
     public GameObject spawnRedPos3;
@@ -46,6 +45,17 @@ public class CharSpawnController : MonoBehaviour
         instance = this;
     }
 
+    /// <summary>
+    /// 用于第一次生成玩家
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="playerName"></param>
+    /// <param name="pro"></param>
+    /// <param name="skillQ"></param>
+    /// <param name="skillE"></param>
+    /// <param name="skillR"></param>
+    /// <param name="skillBurst"></param>
+    /// <param name="playerTeam"></param>
     public void SpawnPlayer(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam)
     {
         CharBase charBase = new CharBase(runId,playerName,pro,skillQ,skillE,skillR,skillBurst,playerTeam);
@@ -55,11 +65,24 @@ public class CharSpawnController : MonoBehaviour
         {
             SetPlayerRunId(charBase);
         }
-        else//复活
+        else
         {
-            SelectPos(charBase);
+            Debug.Log("SpawnPlayer非常状态发生了");
         }
         
+    }
+
+    /// <summary>
+    /// 生成玩家的复活分支
+    /// </summary>
+    /// <param name="charBase"></param>
+    public void SpawnPlayer(CharBase charBase)
+    {
+        charBase.State = CharEnum.StateEnum.存活;
+        charBase.RespawnTime += 10f;
+        GameObject playerModel = CharManager.instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
+        playerModel.SetActive(true);
+
     }
 
     /// <summary>
@@ -216,8 +239,60 @@ public class CharSpawnController : MonoBehaviour
                 }
                 break;
         }
+        
     }
 
+    public void RespawnSelectPos(GameObject playerObject, CharBase charBase)
+    {
+        //此处playerObject为playerModel
+        switch (charBase.RunId)
+        {
+            case 0:
+                SpawnPlayerForPos(playerObject, charBase, spawnRedPos1, redPlayer1Camera);
+                break;
+            case 1:
+                SpawnPlayerForPos(playerObject, charBase, spawnRedPos2, redPlayer2Camera);
+                break;
+            case 2:
+                SpawnPlayerForPos(playerObject, charBase, spawnRedPos3, redPlayer3Camera);
+                break;
+            case 3:
+                SpawnPlayerForPos(playerObject, charBase, spawnRedPos4, redPlayer4Camera);
+                break;
+            case 4:
+                SpawnPlayerForPos(playerObject, charBase, spawnRedPos5, redPlayer5Camera);
+                break;
+            case 5:
+                SpawnPlayerForPos(playerObject, charBase, spawnBluePos1, bluePlayer1Camera);
+                break;
+            case 6:
+                SpawnPlayerForPos(playerObject, charBase, spawnBluePos2, bluePlayer2Camera);
+                break;
+            case 7:
+                SpawnPlayerForPos(playerObject, charBase, spawnBluePos3, bluePlayer3Camera);
+                break;
+            case 8:
+                SpawnPlayerForPos(playerObject, charBase, spawnBluePos4, bluePlayer4Camera);
+                break;
+            case 9:
+                SpawnPlayerForPos(playerObject, charBase, spawnBluePos5, bluePlayer5Camera);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 复活玩家
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="playerName"></param>
+    public void RespawnPlayer(int runId, string playerName)
+    {
+        CharBase charBase = CharManager.instance.FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        SpawnPlayer(charBase);
+
+    }
 
     /// <summary>
     /// 生成一个新玩家时给玩家赋予一个runId
@@ -263,10 +338,9 @@ public class CharSpawnController : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据模型,玩家位号,CharBase信息,生成地点,玩家对应的摄像机将值赋给玩家并使模型成为其玩家摄像机的子物体
+    /// 根据模型,CharBase信息,生成地点,玩家对应的摄像机将值赋给玩家并使模型成为其玩家摄像机的子物体
     /// </summary>
     /// <param name="playerObject"></param>
-    /// <param name="playerEnum"></param>
     /// <param name="charBase"></param>
     /// <param name="spawnPos"></param>
     /// <param name="playerCamera"></param>
@@ -278,13 +352,9 @@ public class CharSpawnController : MonoBehaviour
         playerObject.transform.parent = playerCamera.transform;
 
         component = playerCamera.GetComponent<CharBase>();
-
-
-
+        charBase.State = CharEnum.StateEnum.存活;
         //需要方便快速赋值
         CharManager.instance.GetPlayerInfo(component, charBase);
-
-
-
     }
+
 }

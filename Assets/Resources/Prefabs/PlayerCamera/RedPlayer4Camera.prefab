@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3243820765244561788}
   - component: {fileID: 3243820765244561789}
   - component: {fileID: 3243820765244561786}
+  - component: {fileID: -1458172281665492823}
   m_Layer: 0
   m_Name: RedPlayer4Camera
   m_TagString: Untagged
@@ -131,3 +132,15 @@ MonoBehaviour:
   respawnTime: 0
   respawnCountDown: 0
   isRespawn: 0
+--- !u!114 &-1458172281665492823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3243820765244561787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

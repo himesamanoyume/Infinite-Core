@@ -41,17 +41,17 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 当前经验
     /// </summary>
-    private float exp = 0;
+    private float exp = 0f;
     [SerializeField]
     /// <summary>
     /// 所需经验
     /// </summary>
-    private float maxExp = 500;
+    private float maxExp = 500f;
     [SerializeField]
     /// <summary>
     /// 角色状态
     /// </summary>
-    private CharEnum.StateEnum state;
+    private CharEnum.StateEnum state = CharEnum.StateEnum.尚未生成;
     [SerializeField]
     /// <summary>
     /// 当前角色身上所带的buff
@@ -71,17 +71,17 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 攻击
     /// </summary>
-    private float attack = 100;
+    private float attack = 100f;
     [SerializeField]
     /// <summary>
     /// 最大生命
     /// </summary>
-    private float maxHealth = 1000;
+    private float maxHealth = 1000f;
     [SerializeField]
     /// <summary>
     /// 当前生命
     /// </summary>
-    private float health = 1000;
+    private float health = 1000f;
     [SerializeField]
     /// <summary>
     /// 爆伤
@@ -96,7 +96,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 防御
     /// </summary>
-    private float defence = 1000;
+    private float defence = 1000f;
     [SerializeField]
     /// <summary>
     /// 攻速
@@ -161,27 +161,22 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 移动速度
     /// </summary>
-    private float moveSpeed;
+    private float moveSpeed = 10f;
     [SerializeField]
     /// <summary>
     /// 攻击范围
     /// </summary>
-    private float attackRange;
+    private float attackRange = 10f;
     [SerializeField]
     /// <summary>
-    /// 重生时间
+    /// 重生所需时间
     /// </summary>
-    private float respawnTime;
+    private float respawnTime = 10f;
     [SerializeField]
     /// <summary>
     /// 重生倒计时
     /// </summary>
-    private float respawnCountDown;
-    [SerializeField]
-    /// <summary>
-    /// 是否正在重生倒计时
-    /// </summary>
-    private bool isRespawn;
+    private float respawnCountDown = 10f;
 
     public CharBase(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam)
     {
@@ -302,6 +297,26 @@ public class CharBase : MonoBehaviour
             }
         }
     }
+    public float Health
+    {
+        get => health;
+        set
+        {
+            if (value < 0)
+            {
+                CharManager.instance.Log(runId, "血量不合法");
+            }
+            else if (value >maxHealth)
+            {
+                health = maxHealth;
+                CharManager.instance.Log(runId, "血量不得超过最大血量");
+            }
+            else
+            {
+                health = value;
+            }
+        }
+    }
     public float MaxHealth
     {
         get => maxHealth;
@@ -314,25 +329,6 @@ public class CharBase : MonoBehaviour
             else
             {
                 maxHealth = value;
-            }
-        }
-    }
-    public float Health
-    {
-        get => health;
-        set
-        {
-            if (value < 0)
-            {
-                CharManager.instance.Log(runId, "血量不合法");
-            }
-            else if (value >maxHealth)
-            {
-                CharManager.instance.Log(runId, "血量不得超过最大血量");
-            }
-            else
-            {
-                health = value;
             }
         }
     }
@@ -466,7 +462,7 @@ public class CharBase : MonoBehaviour
             }
             else
             {
-                attackRange = value;
+                respawnTime = value;
             }
         }
     }
@@ -475,16 +471,15 @@ public class CharBase : MonoBehaviour
         get => respawnCountDown;
         set
         {
-            if (value < 0)
+            if (value < -2f)
             {
                 CharManager.instance.Log(runId, "重生倒计时不合法");
             }
             else
             {
-                attackRange = value;
+                respawnCountDown = value;
             }
         }
     }
-    public bool IsRespawn { get => isRespawn; set => isRespawn = value; }
     public TeamEnum.playerTeam PlayerTeam { get => playerTeam; set => playerTeam = value; }
 }
