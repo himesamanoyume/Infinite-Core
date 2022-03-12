@@ -19,6 +19,8 @@ public class DebugConsole : MonoBehaviour
     public static DebugCommand<int,int> PLAYER_LEVEL_UP_BY_ID;
     public static DebugCommand GET_ALL_PLAYER_INFO;
     public static DebugCommand<int, int> SET_PLAYER_HP_BY_ID;
+    public static DebugCommand<int, int, int> TO_GIVE_PLAYER_EXP;
+    public static DebugCommand<int, int, int> TO_GIVE_PLAYER_MONEY;
 
     public void OnToggleDebug(InputValue value)
     {
@@ -55,6 +57,10 @@ public class DebugConsole : MonoBehaviour
                 else if (commandList[i] as DebugCommand<int,int> != null)
                 {
                     (commandList[i] as DebugCommand<int,int>).Invoke(int.Parse(properties[1]),int.Parse(properties[2]));
+                }
+                else if (commandList[i] as DebugCommand<int, int, int> != null)
+                {
+                    (commandList[i] as DebugCommand<int, int, int>).Invoke(int.Parse(properties[1]), int.Parse(properties[2]), int.Parse(properties[3]));
                 }
             }
         }
@@ -104,9 +110,19 @@ public class DebugConsole : MonoBehaviour
             //CharManager.instance.GetAllPlayer();
         });
 
-        SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById","通过id修改玩家当前血量","SetPlayerHpById <id> <health>",(id,health)=> 
+        SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>
+           {
+               CharManager.instance.SetPlayerHealth(id, health);
+           });
+
+        TO_GIVE_PLAYER_EXP = new DebugCommand<int, int, int>("ToGivePlayerExp", "通过id给予玩家随机范围内的经验", "ToGivePlayerExp <id> <min> <max>", (id, min, max) =>
+          {
+              CharManager.instance.GetExp(id, min, max);
+          });
+
+        TO_GIVE_PLAYER_MONEY = new DebugCommand<int, int, int>("ToGivePlayerMoney", "通过id给予玩家随机范围内的经验", "ToGivePlayerMoney <id> <min> <max>", (id, min, max) =>
         {
-            CharManager.instance.SetPlayerHealth(id, health);
+            CharManager.instance.GetMoney(id, min, max);
         });
 
         //将命令放进列表 
@@ -118,7 +134,9 @@ public class DebugConsole : MonoBehaviour
             GET_PLAYERNAME_BY_ID,
             PLAYER_LEVEL_UP_BY_ID,
             //GET_ALL_PLAYER_INFO,
-            SET_PLAYER_HP_BY_ID
+            SET_PLAYER_HP_BY_ID,
+            TO_GIVE_PLAYER_EXP,
+            TO_GIVE_PLAYER_MONEY
         };
     }
 

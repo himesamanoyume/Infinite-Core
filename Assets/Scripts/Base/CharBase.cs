@@ -74,6 +74,11 @@ public class CharBase : MonoBehaviour
     private float attack = 100f;
     [SerializeField]
     /// <summary>
+    /// 护盾值
+    /// </summary>
+    private float shiled = 0f;
+    [SerializeField]
+    /// <summary>
     /// 最大生命
     /// </summary>
     private float maxHealth = 1000f;
@@ -106,7 +111,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 生命恢复
     /// </summary>
-    private float restore = 20f;
+    private float restore = 10f;
     [SerializeField]
     /// <summary>
     /// Q技能
@@ -297,6 +302,21 @@ public class CharBase : MonoBehaviour
             }
         }
     }
+    public float Shiled
+    {
+        get => shiled;
+        set
+        {
+            if (value < 0)
+            {
+                CharManager.instance.Log(runId, "护盾不合法");
+            }
+            else
+            {
+                shiled = value;
+            }
+        }
+    }
     public float Health
     {
         get => health;
@@ -460,6 +480,10 @@ public class CharBase : MonoBehaviour
             {
                 CharManager.instance.Log(runId, "重生时间不合法");
             }
+            else if (respawnTime+value>60f)
+            {
+                //respawnTime = 60f;
+            }
             else
             {
                 respawnTime = value;
@@ -471,7 +495,7 @@ public class CharBase : MonoBehaviour
         get => respawnCountDown;
         set
         {
-            if (value < -2f)
+            if (value < -1f)
             {
                 CharManager.instance.Log(runId, "重生倒计时不合法");
             }

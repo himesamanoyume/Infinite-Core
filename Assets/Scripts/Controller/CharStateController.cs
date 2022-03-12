@@ -29,7 +29,7 @@ public class CharStateController : MonoBehaviour
             }
         }
         
-
+        //复活
         if (charBase.State == CharEnum.StateEnum.复活中)
         {
             charBase.RespawnCountDown -= Time.deltaTime;
@@ -42,11 +42,18 @@ public class CharStateController : MonoBehaviour
             }
         }
 
+        
         if (charBase.State == CharEnum.StateEnum.存活)
         {
+            //回血
             if (charBase.Health > 0 && charBase.Health < charBase.MaxHealth)
             {
                 charBase.Health += charBase.Restore * Time.deltaTime;
+            }
+            //检测血量
+            if (charBase.Health > charBase.MaxHealth)
+            {
+                charBase.Health = charBase.MaxHealth;
             }
         }
     }

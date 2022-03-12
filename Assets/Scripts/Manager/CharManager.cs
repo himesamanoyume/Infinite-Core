@@ -48,7 +48,7 @@ public class CharManager : MonoBehaviour
             }
 
             charBase.MaxExp += charBase.Level * 500;
-            charBase.Restore += 20;
+            charBase.Restore += 10;
         }
         
         Log(runId, "level已经提升"+count+"级");
@@ -77,6 +77,7 @@ public class CharManager : MonoBehaviour
         if (charBase == null) { return; }
 
         charBase.Health = 0;
+        charBase.Death++;
         //------------------------
         //或为联机代码改动部分
         GameObject charCamera = FindPlayerCameraById(runId);
@@ -98,11 +99,11 @@ public class CharManager : MonoBehaviour
                 }
             }
         }
-
+        Log(runId, "被击杀");
         PlayerRespawnCountDown(charBase.RunId);
         charBase.State = CharEnum.StateEnum.复活中;
         
-        Log(runId, "被击杀");
+        
     }
 
     /// <summary>
@@ -143,6 +144,80 @@ public class CharManager : MonoBehaviour
         charBase.Health = health;
         Log(runId, "血量已修改");
     }
+
+    /// <summary>
+    /// 给玩家经验
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minExp"></param>
+    /// <param name="maxExp"></param>
+    public void GetExp(int runId,float minExp,float maxExp)
+    {
+        if (minExp< 0 || maxExp <0)
+        {
+            Log(runId, "的经验值变动不能为负数");
+            return;
+        }
+
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        float currentExp = ToGivePlayerSomething(runId, minExp, maxExp);
+        charBase.Exp += currentExp;
+
+        Log(runId, "获得了"+currentExp+"经验");
+    }
+
+    /// <summary>
+    /// 给予/扣除玩家金钱 最大值和最小值可为负数 即为扣钱
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minMoney"></param>
+    /// <param name="maxMoney"></param>
+    public void GetMoney(int runId, int minMoney, int maxMoney)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int currentMoney = ToGivePlayerSomething(runId, minMoney, maxMoney);
+        charBase.Money += currentMoney;
+
+        if (currentMoney>=0)
+        {
+            Log(runId, "获得了" + currentMoney + "金钱");
+        }
+        else
+        {
+            Log(runId, "扣除了" + currentMoney + "金钱");
+        }
+    }
+
+    // --------------------------------------
+
+    /// <summary>
+    /// 玩家获取经验,或通过装备随机词条数值获得加成时通用函数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="lowerLimit"></param>
+    /// <param name="upperLimit"></param>
+    /// <returns>返回值用于给装备显示词条数值</returns>
+    public float ToGivePlayerSomething(int runId,float lowerLimit,float upperLimit)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return 0; }
+
+        float value = Random.Range(lowerLimit, upperLimit);
+        return value;
+    }
+    public int ToGivePlayerSomething(int runId, int lowerLimit, int upperLimit)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return 0; }
+
+        int value = Random.Range(lowerLimit, upperLimit);
+        return value;
+    }
+    //----------------------------------
 
     public void Log(int id,string text)
     {

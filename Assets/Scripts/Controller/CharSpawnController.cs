@@ -79,7 +79,7 @@ public class CharSpawnController : MonoBehaviour
     public void SpawnPlayer(CharBase charBase)
     {
         charBase.State = CharEnum.StateEnum.´æ»î;
-        charBase.RespawnTime += 10f;
+        charBase.RespawnTime += 5f;
         GameObject playerModel = CharManager.instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
         playerModel.SetActive(true);
 
