@@ -18,7 +18,10 @@ public class CharManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// 通过id获取玩家名字
+    /// </summary>
+    /// <param name="runId"></param>
     public void GetPlayerNameById(int runId)
     {
         CharBase charBase = FindPlayerById(runId);
@@ -102,8 +105,19 @@ public class CharManager : MonoBehaviour
         Log(runId, "被击杀");
         PlayerRespawnCountDown(charBase.RunId);
         charBase.State = CharEnum.StateEnum.复活中;
-        
-        
+    }
+
+    /// <summary>
+    /// 玩家达成了击杀 根据击杀者id增加一次杀敌数
+    /// </summary>
+    /// <param name="runId"></param>
+    public void PlayerKill(int runId)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        charBase.Kill++;
+        Log(runId, "击杀了敌人");
     }
 
     /// <summary>
@@ -122,7 +136,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过id修改玩家当前生命值
+    /// 通过id直接修改玩家当前生命值
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="health"></param>
@@ -151,7 +165,7 @@ public class CharManager : MonoBehaviour
     /// <param name="runId"></param>
     /// <param name="minExp"></param>
     /// <param name="maxExp"></param>
-    public void GetExp(int runId,float minExp,float maxExp)
+    public void ExpChange(int runId,float minExp,float maxExp)
     {
         if (minExp< 0 || maxExp <0)
         {
@@ -162,10 +176,10 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        float currentExp = ToGivePlayerSomething(runId, minExp, maxExp);
-        charBase.Exp += currentExp;
+        float current = ToGivePlayerSomething(runId, minExp, maxExp);
+        charBase.Exp += current;
 
-        Log(runId, "获得了"+currentExp+"经验");
+        Log(runId, "获得了"+ current + "经验");
     }
 
     /// <summary>
@@ -174,28 +188,186 @@ public class CharManager : MonoBehaviour
     /// <param name="runId"></param>
     /// <param name="minMoney"></param>
     /// <param name="maxMoney"></param>
-    public void GetMoney(int runId, int minMoney, int maxMoney)
+    public void MoneyChange(int runId, int minMoney, int maxMoney)
     {
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        int currentMoney = ToGivePlayerSomething(runId, minMoney, maxMoney);
-        charBase.Money += currentMoney;
+        int current = ToGivePlayerSomething(runId, minMoney, maxMoney);
+        charBase.Money += current;
 
-        if (currentMoney>=0)
+        if (current>=0)
         {
-            Log(runId, "获得了" + currentMoney + "金钱");
+            Log(runId, "获得了" + current + "金钱");
         }
         else
         {
-            Log(runId, "扣除了" + currentMoney + "金钱");
+            Log(runId, "扣除了" + current + "金钱");
         }
     }
 
+    /// <summary>
+    /// 给与/扣除玩家血量 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="health"></param>
+    public void HealthChange(int runId,int health)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, health, health);
+        charBase.Health += current;
+        if (current >= 0)
+        {
+            Log(runId, "回复了" + current + "的血量");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的血量");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家最大血量 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minMaxHealth"></param>
+    /// <param name="maxMaxHealth"></param>
+    public void MaxHealthChange(int runId, int minMaxHealth, int maxMaxHealth)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, minMaxHealth, maxMaxHealth);
+        charBase.MaxHealth += current;
+        if (current >= 0)
+        {
+            Log(runId, "提高了" + current + "的最大生命值");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的最大生命值");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家护盾值 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="shield"></param>
+    public void ShieldChange(int runId,int shield)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, shield, shield);
+        charBase.Shield += current;
+        if (shield >= 0)
+        {
+            Log(runId, "回复了" + current + "的护盾值");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的护盾值");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家爆伤 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minCriticalHit"></param>
+    /// <param name="maxCriticalHit"></param>
+    public void CriticalHitChange(int runId, int minCriticalHit, int maxCriticalHit)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, minCriticalHit, maxCriticalHit);
+        charBase.CriticalHit += current;
+        if (current >= 0)
+        {
+            Log(runId, "回复了" + current + "的爆伤");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的爆伤");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家暴击率 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minCriticalHitRate"></param>
+    /// <param name="maxCriticalHitRate"></param>
+    public void CriticalHitRateChange(int runId, int minCriticalHitRate, int maxCriticalHitRate)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, minCriticalHitRate, maxCriticalHitRate);
+        charBase.CriticalHitRate += current;
+        if (current >= 0)
+        {
+            Log(runId, "回复了" + current + "的暴击率");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的暴击率");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家移速 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minMoveSpeedChange"></param>
+    /// <param name="maxMoveSpeedChange"></param>
+    public void MoveSpeedChange(int runId, int minMoveSpeed, int maxMoveSpeed)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, minMoveSpeed, maxMoveSpeed);
+        charBase.MoveSpeed += current;
+        if (current >= 0)
+        {
+            Log(runId, "回复了" + current + "的移速");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的移速");
+        }
+    }
+
+    /// <summary>
+    /// 给与/扣除玩家攻速 数值可为负数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="minAttackSpeed"></param>
+    /// <param name="maxAttackSpeed"></param>
+    public void AttackSpeedChange(int runId, int minAttackSpeed, int maxAttackSpeed)
+    {
+        CharBase charBase = FindPlayerById(runId);
+        if (charBase == null) { return; }
+
+        int current = ToGivePlayerSomething(runId, minAttackSpeed, maxAttackSpeed);
+        charBase.AttackSpeed += current;
+        if (current >= 0)
+        {
+            Log(runId, "回复了" + current + "的攻速");
+        }
+        else
+        {
+            Log(runId, "扣除了" + current + "的攻速");
+        }
+    }
     // --------------------------------------
 
     /// <summary>
-    /// 玩家获取经验,或通过装备随机词条数值获得加成时通用函数
+    /// 玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="lowerLimit"></param>
@@ -209,6 +381,13 @@ public class CharManager : MonoBehaviour
         float value = Random.Range(lowerLimit, upperLimit);
         return value;
     }
+    /// <summary>
+    /// 玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <param name="lowerLimit"></param>
+    /// <param name="upperLimit"></param>
+    /// <returns>返回值用于给装备显示词条数值</returns>
     public int ToGivePlayerSomething(int runId, int lowerLimit, int upperLimit)
     {
         CharBase charBase = FindPlayerById(runId);
@@ -245,6 +424,11 @@ public class CharManager : MonoBehaviour
         return playerCameraList[runId].GetComponent<CharBase>();
     }
 
+    /// <summary>
+    /// 通过id找某个摄像机
+    /// </summary>
+    /// <param name="runId"></param>
+    /// <returns></returns>
     public GameObject FindPlayerCameraById(int runId)
     {
         if (runId >= 10 || runId < 0)
@@ -255,6 +439,12 @@ public class CharManager : MonoBehaviour
         return playerCameraList[runId];
     }
 
+    /// <summary>
+    /// 通过tag找父物体的某个单个子物体
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
     public GameObject FindChildObjWithTag(string tag,GameObject parent)
     {
         foreach (Transform child in parent.transform)

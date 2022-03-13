@@ -76,7 +76,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 护盾值
     /// </summary>
-    private float shiled = 0f;
+    private float shield = 0f;
     [SerializeField]
     /// <summary>
     /// 最大生命
@@ -302,18 +302,19 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public float Shiled
+    public float Shield
     {
-        get => shiled;
+        get => shield;
         set
         {
             if (value < 0)
             {
-                CharManager.instance.Log(runId, "护盾不合法");
+                shield = 0;
+                CharManager.instance.Log(runId, "护盾不合法,已使护盾为0");
             }
             else
             {
-                shiled = value;
+                shield = value;
             }
         }
     }
@@ -324,7 +325,8 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.instance.Log(runId, "血量不合法");
+                health = 0;
+                CharManager.instance.Log(runId, "血量不合法,已使玩家死亡");
             }
             else if (value >maxHealth)
             {
@@ -342,9 +344,10 @@ public class CharBase : MonoBehaviour
         get => maxHealth;
         set
         {
-            if (value < 0)
+            if (value < 1)
             {
-                CharManager.instance.Log(runId, "最大血量不合法");
+                maxHealth = 1;
+                CharManager.instance.Log(runId, "最大血量不合法,已达到最低值");
             }
             else
             {
@@ -372,9 +375,9 @@ public class CharBase : MonoBehaviour
         get => criticalHitRate;
         set
         {
-            if (value < 0)
+            if (value < 0.05f)
             {
-                criticalHitRate = 0;
+                criticalHitRate = 0.05f;
             }
             else if (value>1)
             {
@@ -393,7 +396,8 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.instance.Log(runId, "防御不合法");
+                defence = 0;
+                CharManager.instance.Log(runId, "防御不合法,已为最低值");
             }
             else
             {
@@ -406,9 +410,10 @@ public class CharBase : MonoBehaviour
         get => attackSpeed;
         set
         {
-            if (value < 0)
+            if (value < 0.1f)
             {
-                CharManager.instance.Log(runId, "攻速不合法");
+                attackSpeed = 0.1f;
+                CharManager.instance.Log(runId, "攻速不合法,已为最低值");
             }
             else
             {
@@ -423,6 +428,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
+                restore = 0;
                 CharManager.instance.Log(runId, "回血速度不合法");
             }
             else

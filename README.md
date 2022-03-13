@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-11 00:39:53
- * @LastEditTime: 2022-03-12 23:31:58
+ * @LastEditTime: 2022-03-13 21:00:55
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \undefinedf:\_HomeWorks\Infinite Core\README.md
@@ -16,7 +16,15 @@
 
 ## To Do
 
-给予玩家health函数
+### 高优先级
+
+添加玩家控制
+
+摄像机控制
+
+**即将测试联机**
+
+总控制器添加开局计时器 复活时间改为受时长影响
 
 装备血量主词条只影响玩家最大生命值
 
@@ -24,15 +32,19 @@
 
 ### 优先级低
 
-摄像机控制
-
-玩家移动控制
-
 DebugConsole完善
 
 ---
 
 ## Done
+
+### 2022.3.13
+
+添加了好几种函数 基本完成了玩家属性的基本函数 为之后的装备系统作好准备
+
+给予玩家护盾函数
+
+给予玩家health函数
 
 ### 2022.3.12
 

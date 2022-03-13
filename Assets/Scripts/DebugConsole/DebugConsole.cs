@@ -21,6 +21,7 @@ public class DebugConsole : MonoBehaviour
     public static DebugCommand<int, int> SET_PLAYER_HP_BY_ID;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_EXP;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_MONEY;
+    public static DebugCommand<int, int> TO_GIVE_PLAYER_HP;
 
     public void OnToggleDebug(InputValue value)
     {
@@ -117,13 +118,18 @@ public class DebugConsole : MonoBehaviour
 
         TO_GIVE_PLAYER_EXP = new DebugCommand<int, int, int>("ToGivePlayerExp", "通过id给予玩家随机范围内的经验", "ToGivePlayerExp <id> <min> <max>", (id, min, max) =>
           {
-              CharManager.instance.GetExp(id, min, max);
+              CharManager.instance.ExpChange(id, min, max);
           });
 
         TO_GIVE_PLAYER_MONEY = new DebugCommand<int, int, int>("ToGivePlayerMoney", "通过id给予玩家随机范围内的经验", "ToGivePlayerMoney <id> <min> <max>", (id, min, max) =>
         {
-            CharManager.instance.GetMoney(id, min, max);
+            CharManager.instance.MoneyChange(id, min, max);
         });
+
+        TO_GIVE_PLAYER_HP = new DebugCommand<int, int>("ToGivePlayerHp", "通过id给予或扣除玩家指定血量", "ToGivePlayerHp <id> <health>", (id, health) =>
+           {
+               CharManager.instance.HealthChange(id, health);
+           });
 
         //将命令放进列表 
         //注意最后一个命令后不能有逗号 否则会无法调用
@@ -136,7 +142,8 @@ public class DebugConsole : MonoBehaviour
             //GET_ALL_PLAYER_INFO,
             SET_PLAYER_HP_BY_ID,
             TO_GIVE_PLAYER_EXP,
-            TO_GIVE_PLAYER_MONEY
+            TO_GIVE_PLAYER_MONEY,
+            TO_GIVE_PLAYER_HP
         };
     }
 
