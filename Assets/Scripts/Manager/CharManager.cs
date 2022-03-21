@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class CharManager : MonoBehaviour
 {
-    //public List<GameObject> playerGameObjectList;
 
-    public GameObject[] playerCameraList = new GameObject[10];
-
-    
+    public GameObject[] playerPosList = new GameObject[10];
 
     public static CharManager instance;
 
@@ -16,6 +13,7 @@ public class CharManager : MonoBehaviour
     {
         instance = this;
     }
+
 
 
     /// <summary>
@@ -83,8 +81,8 @@ public class CharManager : MonoBehaviour
         charBase.Death++;
         //------------------------
         //或为联机代码改动部分
-        GameObject charCamera = FindPlayerCameraById(runId);
-        FindChildObjWithTag("PlayerModel", charCamera).SetActive(false);
+        GameObject charPos = FindPlayerPosById(runId);
+        FindChildObjWithTag("PlayerModel", charPos).SetActive(false);
 
         //------------------------
         if (charBase.Buff == null)
@@ -421,7 +419,7 @@ public class CharManager : MonoBehaviour
             return null;
         }
 
-        return playerCameraList[runId].GetComponent<CharBase>();
+        return playerPosList[runId].GetComponent<CharBase>();
     }
 
     /// <summary>
@@ -429,14 +427,14 @@ public class CharManager : MonoBehaviour
     /// </summary>
     /// <param name="runId"></param>
     /// <returns></returns>
-    public GameObject FindPlayerCameraById(int runId)
+    public GameObject FindPlayerPosById(int runId)
     {
         if (runId >= 10 || runId < 0)
         {
             Debug.Log("runId只能为0~9");
             return null;
         }
-        return playerCameraList[runId];
+        return playerPosList[runId];
     }
 
     /// <summary>

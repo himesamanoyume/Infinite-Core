@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-13 02:44:30
- * @LastEditTime: 2022-03-12 23:30:19
+ * @LastEditTime: 2022-03-14 13:46:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \undefinedc:\Users\PrincessDreamland\Desktop\Infinite Core Project Doc.md
@@ -114,7 +114,7 @@
 
 位于地图正中心，HP不会回复，交战状态下每隔一段时间向周围释放一段AOE攻击，会优先攻击2秒内对核心造成最高单次伤害的玩家
 
-AOE伤害为3000，间隔8秒，单体攻击一次伤害为500，2秒间隔，发射后必中
+AOE伤害为2000，间隔8秒，单体攻击一次伤害为500，2秒间隔，发射后必中
 
 ---
 

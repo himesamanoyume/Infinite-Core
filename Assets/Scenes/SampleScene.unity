@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1120,7 +1121,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 7
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -1136,8 +1137,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.21372293, y: 0.4315629, z: -0.10602148, w: 0.86996293}
+  m_LocalPosition: {x: -14.111378, y: 9.267437, z: -10.72304}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1185,6 +1186,44 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 1686351543}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_OutputCamera: {fileID: 963194227}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_CallsDirty: 1
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_CallsDirty: 1
+  m_LastFrameUpdated: 63
+  mNextFrameId: 1
 --- !u!1 &1027272056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,6 +1512,11 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 2523419617968883941, guid: c15cfda07c0eda143a6297412f6f1e4e, type: 3}
   m_PrefabInstance: {fileID: 2523419617373333073}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1686351543 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2523419617968883940, guid: c15cfda07c0eda143a6297412f6f1e4e, type: 3}
+  m_PrefabInstance: {fileID: 2523419617373333073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1752630016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1710,10 +1754,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charBaseScript: {fileID: 0}
-  archer: {fileID: 4209743999441278569, guid: 9e4d0fc4b5027a446a228f52028a174c, type: 3}
-  doctor: {fileID: 2435913813034538577, guid: 41df196879145994e89b46bce12edf43, type: 3}
-  solider: {fileID: 3673556967975886775, guid: 43211e4c723fd6d47b53537749faa4b7, type: 3}
-  tanker: {fileID: 6718544276317344938, guid: bed89b9f4fc895c49a967c88bdd06d37, type: 3}
+  archer: {fileID: 9195612039792096820, guid: 9e4d0fc4b5027a446a228f52028a174c, type: 3}
+  doctor: {fileID: 6591107787464412770, guid: 41df196879145994e89b46bce12edf43, type: 3}
+  solider: {fileID: 196483385123004020, guid: 43211e4c723fd6d47b53537749faa4b7, type: 3}
+  tanker: {fileID: 4140793864147992203, guid: bed89b9f4fc895c49a967c88bdd06d37, type: 3}
   spawnRedPos1: {fileID: 1027272056}
   spawnRedPos2: {fileID: 103492746}
   spawnRedPos3: {fileID: 814017898}

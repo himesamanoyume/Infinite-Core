@@ -512,4 +512,7 @@ public class CharBase : MonoBehaviour
         }
     }
     public TeamEnum.playerTeam PlayerTeam { get => playerTeam; set => playerTeam = value; }
+
+
+    
 }

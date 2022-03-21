@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-11 00:39:53
- * @LastEditTime: 2022-03-13 21:00:55
+ * @LastEditTime: 2022-03-21 14:09:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \undefinedf:\_HomeWorks\Infinite Core\README.md
@@ -18,25 +18,57 @@
 
 ### 高优先级
 
-添加玩家控制
+新增玩家在房间选择生成设置(PUN的实例化只写一次调用似乎会自动多次调用，因此之前的生成逻辑必须更改)
 
-摄像机控制
+修复玩家第一次生成位置
 
-**即将测试联机**
+修复其他玩家无法绑定父物体
+
+在房间处就生成玩家模型/生成不被破坏的空物体用于记录玩家的职业技能选择
+
+---
 
 总控制器添加开局计时器 复活时间改为受时长影响
 
 装备血量主词条只影响玩家最大生命值
 
----
-
 ### 优先级低
 
 DebugConsole完善
 
----
+动画控制器记得加入photonView.IsMine的判断
 
 ## Done
+
+### 2022.3.21
+
+重写房间逻辑(1/2)
+
+### 2022.3.20
+
+玩家复活逻辑修复
+
+Launcher修复
+
+CharManager的List已修复
+
+玩家位置并未同步 *
+
+摄像机错乱绑定玩家 *
+
+只有某个玩家能够移动 *
+
+*：将photonView的followOnStart取消勾选即可,只在单机测试时勾选,打包发布时取消
+
+### 2022.3.19
+
+联机改造实现进度(1/3)
+
+### 2022.3.16
+
+摄像机控制
+
+添加玩家控制
 
 ### 2022.3.13
 

@@ -37,6 +37,18 @@ public class DebugConsole : MonoBehaviour
         }
     }
 
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.BackQuote))
+    //    {
+    //        OnToggleDebug();
+    //    }
+    //    if(Input.GetKeyDown(KeyCode.Return))
+    //    {
+    //        OnReturn();
+    //    }
+    //}
+
     private void HandleInput()
     {
         string[] properties = input.Split(' ');
