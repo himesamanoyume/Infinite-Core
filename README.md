@@ -1,11 +1,4 @@
-<!--
- * @Author: your name
- * @Date: 2022-03-11 00:39:53
- * @LastEditTime: 2022-03-21 14:09:40
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \undefinedf:\_HomeWorks\Infinite Core\README.md
--->
+
 # Infinite Core
 
 毕业设计
@@ -17,6 +10,8 @@
 ## To Do
 
 ### 高优先级
+
+比赛内逻辑重做
 
 新增玩家在房间选择生成设置(PUN的实例化只写一次调用似乎会自动多次调用，因此之前的生成逻辑必须更改)
 
@@ -38,7 +33,37 @@ DebugConsole完善
 
 动画控制器记得加入photonView.IsMine的判断
 
+---
+
+## Tips
+
+房间内玩家需要准备才可开始
+
+红方玩家材质都为红色 蓝方玩家材质都为蓝色
+
+玩家在房间内选择好自己的职业 每个职业的技能是固定的那3个
+
+如果主机切换 则需要新的主机负责生成野怪(AsteroidsGameManager.cs 131)
+
+倒计时显示XX.00位方法(AsteroidsGameManager.cs 100)
+
+当玩家属性更新时(AsteroidsGameManager.cs 148)
+
+检测玩家是否都加载完关卡(AsteroidsGameManager.cs 223)
+
+玩家在房间选择好属性 设置哈希表 全部准备完毕后才能开始 (PlayerListEntry.cs 39)
+
+快捷方便的开关UI面板方法(LobbyMainPanel.cs 328)
+
 ## Done
+
+### 2022.3.25
+
+学习其Demo(2.8/3)
+
+### 2022.3.23
+
+为了更好的学习PUN插件 正在学习其Demo(1/3)
 
 ### 2022.3.21
 

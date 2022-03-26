@@ -4,11 +4,15 @@ namespace Photon.Pun.Demo.Asteroids
 {
     public class AsteroidsGame
     {
+        //行星最小复活时间
         public const float ASTEROIDS_MIN_SPAWN_TIME = 5.0f;
+        //最大
         public const float ASTEROIDS_MAX_SPAWN_TIME = 10.0f;
 
+        //玩家复活时间
         public const float PLAYER_RESPAWN_TIME = 4.0f;
 
+        //玩家生命次数
         public const int PLAYER_MAX_LIVES = 3;
 
         public const string PLAYER_LIVES = "PlayerLives";

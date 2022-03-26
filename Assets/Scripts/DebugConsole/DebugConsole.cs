@@ -110,12 +110,12 @@ public class DebugConsole : MonoBehaviour
 
         GET_PLAYERNAME_BY_ID = new DebugCommand<int>("GetPlayerNameById", "根据id获取玩家姓名", "GetPlayerNameById <id>", (id) =>
         {
-            CharManager.instance.GetPlayerNameById(id);
+            CharManager.Instance.GetPlayerNameById(id);
         });
 
         PLAYER_LEVEL_UP_BY_ID = new DebugCommand<int,int>("PlayerLevelUp", "根据id提升玩家特定次数的1级等级", "PlayerLevelUp <id> <count>", (id,count) =>
            {
-               CharManager.instance.PlayerLevelUp(id,count);
+               CharManager.Instance.PlayerLevelUp(id,count);
            });
 
         GET_ALL_PLAYER_INFO = new DebugCommand("GetAllPlayerInfo", "获取所有已生成的玩家的信息", "GetAllPlayerInfo", () =>
@@ -125,22 +125,22 @@ public class DebugConsole : MonoBehaviour
 
         SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>
            {
-               CharManager.instance.SetPlayerHealth(id, health);
+               CharManager.Instance.SetPlayerHealth(id, health);
            });
 
         TO_GIVE_PLAYER_EXP = new DebugCommand<int, int, int>("ToGivePlayerExp", "通过id给予玩家随机范围内的经验", "ToGivePlayerExp <id> <min> <max>", (id, min, max) =>
           {
-              CharManager.instance.ExpChange(id, min, max);
+              CharManager.Instance.ExpChange(id, min, max);
           });
 
         TO_GIVE_PLAYER_MONEY = new DebugCommand<int, int, int>("ToGivePlayerMoney", "通过id给予玩家随机范围内的经验", "ToGivePlayerMoney <id> <min> <max>", (id, min, max) =>
         {
-            CharManager.instance.MoneyChange(id, min, max);
+            CharManager.Instance.MoneyChange(id, min, max);
         });
 
         TO_GIVE_PLAYER_HP = new DebugCommand<int, int>("ToGivePlayerHp", "通过id给予或扣除玩家指定血量", "ToGivePlayerHp <id> <health>", (id, health) =>
            {
-               CharManager.instance.HealthChange(id, health);
+               CharManager.Instance.HealthChange(id, health);
            });
 
         //将命令放进列表 

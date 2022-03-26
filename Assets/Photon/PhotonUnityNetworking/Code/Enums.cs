@@ -50,10 +50,10 @@ namespace Photon.Pun
         /// <summary>Sends the RPC to everyone. This client does not execute the RPC. New players get the RPC when they join as it's buffered (until this client leaves).</summary>
         OthersBuffered,
 
-        /// <summary>Sends the RPC to everyone (including this client) through the server.</summary>
+        /// <summary>Sends the RPC to everyone (including this client) through the server.通过服务器向每个人(包括这个客户端)发送RPC</summary>
         /// <remarks>
-        /// This client executes the RPC like any other when it received it from the server.
-        /// Benefit: The server's order of sending the RPCs is the same on all clients.
+        /// This client executes the RPC like any other when it received it from the server.当从服务器接收RPC时，这个客户机像其他客户机一样执行RPC
+        /// Benefit: The server's order of sending the RPCs is the same on all clients.好处:在所有客户端上，服务器发送rpc的顺序都是一样的。
         /// </remarks>
         AllViaServer,
 

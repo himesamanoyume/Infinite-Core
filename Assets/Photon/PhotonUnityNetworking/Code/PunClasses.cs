@@ -33,7 +33,7 @@ namespace Photon.Pun
     using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 
-    /// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>
+    /// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.用不同名称替换RPC属性。用于将方法标记为可远程调用的。</summary>
     public class PunRPC : Attribute
     {
     }

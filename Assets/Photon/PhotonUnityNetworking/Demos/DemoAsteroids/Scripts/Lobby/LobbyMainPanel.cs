@@ -313,11 +313,18 @@ namespace Photon.Pun.Demo.Asteroids
             roomListEntries.Clear();
         }
 
+        /// <summary>
+        /// 本地玩家属性已更新时 检测全部玩家是否都已准备
+        /// </summary>
         public void LocalPlayerPropertiesUpdated()
         {
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
+        /// <summary>
+        /// 设置面板启动
+        /// </summary>
+        /// <param name="activePanel"></param>
         private void SetActivePanel(string activePanel)
         {
             LoginPanel.SetActive(activePanel.Equals(LoginPanel.name));

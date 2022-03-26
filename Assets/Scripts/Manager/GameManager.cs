@@ -46,8 +46,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel("Test");
             Debug.LogFormat("PhotonNetwork : Loading Level : Test");
         }
-        
-        
+    }
+
+    public void StartGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Test");
+        }
     }
     #endregion
 

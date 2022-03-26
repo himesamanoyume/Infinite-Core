@@ -17,7 +17,7 @@ public class CharStateController : MonoBehaviour
         //…˝º∂
         if (charBase.Exp>=charBase.MaxExp)
         {
-            CharManager.instance.PlayerLevelUp(charBase.RunId,1);
+            CharManager.Instance.PlayerLevelUp(charBase.RunId,1);
         }
 
         //À¿Õˆ
@@ -25,7 +25,7 @@ public class CharStateController : MonoBehaviour
         {
             if (charBase.Health <= 0)
             {
-                CharManager.instance.PlayerKilled(charBase.RunId);
+                CharManager.Instance.PlayerKilled(charBase.RunId);
             }
         }
         

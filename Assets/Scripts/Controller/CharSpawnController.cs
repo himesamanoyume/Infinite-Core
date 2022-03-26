@@ -93,7 +93,7 @@ public class CharSpawnController : MonoBehaviour
     {
         charBase.State = CharEnum.StateEnum.存活;
         charBase.RespawnTime += 5f;
-        GameObject playerModel = CharManager.instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
+        GameObject playerModel = CharManager.Instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
         playerModel.SetActive(true);
         playerModel.transform.position = new Vector3(0, 0, 0);
     }
@@ -302,7 +302,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="playerName"></param>
     public void RespawnPlayer(int runId, string playerName)
     {
-        CharBase charBase = CharManager.instance.FindPlayerById(runId);
+        CharBase charBase = CharManager.Instance.FindPlayerById(runId);
         if (charBase == null) { return; }
 
         SpawnPlayer(charBase);
@@ -337,14 +337,14 @@ public class CharSpawnController : MonoBehaviour
         switch (charBase.PlayerTeam)
         {
             case TeamEnum.playerTeam.Red:
-                CharManager.instance.Log("Red");
+                CharManager.Instance.Log("Red");
                 charBase.RunId = redCount;
                 redCount++;
                 SelectPos(charBase);
                 break;
 
             case TeamEnum.playerTeam.Blue:
-                CharManager.instance.Log("Blue");
+                CharManager.Instance.Log("Blue");
                 charBase.RunId = blueCount + 5;
                 blueCount++;
                 SelectPos(charBase);
@@ -369,7 +369,7 @@ public class CharSpawnController : MonoBehaviour
         component = spawnPos.GetComponent<CharBase>();
         charBase.State = CharEnum.StateEnum.存活;
         //需要方便快速赋值
-        CharManager.instance.GetPlayerInfo(component, charBase);
+        CharManager.Instance.GetPlayerInfo(component, charBase);
     }
     //public void SpawnPlayerForPos(GameObject playerObject, CharBase charBase, GameObject spawnPos)
     //{

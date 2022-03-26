@@ -341,51 +341,67 @@ namespace Photon.Realtime
 
         /// <summary>
         /// Updates and synchronizes this Player's Custom Properties. Optionally, expectedProperties can be provided as condition.
+        /// 更新和同步此玩家的自定义属性。还可以将expectedProperties作为条件提供
         /// </summary>
         /// <remarks>
         /// Custom Properties are a set of string keys and arbitrary values which is synchronized
         /// for the players in a Room. They are available when the client enters the room, as
         /// they are in the response of OpJoin and OpCreate.
-        ///
+        /// 自定义属性是一组字符串键和任意值，为房间中的玩家同步。当客户端进入房间时，它们是可用的，因为它们在OpJoin和OpCreate的响应中。
+        /// 
         /// Custom Properties either relate to the (current) Room or a Player (in that Room).
-        ///
+        /// 自定义属性要么与(当前)房间相关，要么与玩家(在那个房间)相关。
+        /// 
         /// Both classes locally cache the current key/values and make them available as
         /// property: CustomProperties. This is provided only to read them.
         /// You must use the method SetCustomProperties to set/modify them.
-        ///
+        /// 这两个类都本地缓存当前键/值，并使它们作为属性:CustomProperties可用。这只是为了阅读它们。您必须使用SetCustomProperties方法来设置/修改它们。
+        /// 
         /// Any client can set any Custom Properties anytime (when in a room).
         /// It's up to the game logic to organize how they are best used.
-        ///
+        /// 任何客户端可以在任何时间里设置任何自定义属性(当在一个房间时)。这取决于游戏逻辑如何组织它们的最佳使用方式。
+        /// 
         /// You should call SetCustomProperties only with key/values that are new or changed. This reduces
         /// traffic and performance.
-        ///
+        /// 你应该只在键/值是新的或更改的情况下调用SetCustomProperties。这会降低流量和性能。
+        /// 
         /// Unless you define some expectedProperties, setting key/values is always permitted.
         /// In this case, the property-setting client will not receive the new values from the server but
         /// instead update its local cache in SetCustomProperties.
-        ///
+        /// 除非您定义了一些expectedProperties，否则总是允许设置键/值。在这种情况下，属性设置客户端将不会接收来自服务器的新值，而是在SetCustomProperties中更新其本地缓存。
+        /// 
         /// If you define expectedProperties, the server will skip updates if the server property-cache
         /// does not contain all expectedProperties with the same values.
         /// In this case, the property-setting client will get an update from the server and update it's
         /// cached key/values at about the same time as everyone else.
-        ///
+        /// 如果您定义了expectedProperties，如果服务器属性缓存不包含所有具有相同值的expectedProperties，则服务器将跳过更新。
+        /// 在这种情况下，属性设置客户端将从服务器获得更新，并在几乎与其他所有人同时更新缓存的键/值。
+        /// 
         /// The benefit of using expectedProperties can be only one client successfully sets a key from
         /// one known value to another.
+        /// 使用expectedProperties的好处是，只有一个客户端成功地将一个已知值设置为另一个已知值。
+        /// 
         /// As example: Store who owns an item in a Custom Property "ownedBy". It's 0 initally.
+        /// 例如:存储在自定义属性“ownedBy”中拥有项目的人。它最初是0。
+        /// 
         /// When multiple players reach the item, they all attempt to change "ownedBy" from 0 to their
         /// actorNumber. If you use expectedProperties {"ownedBy", 0} as condition, the first player to
         /// take the item will have it (and the others fail to set the ownership).
-        ///
+        /// 当多个玩家接收该物品时，他们都试图将“ownedBy”从0更改为他们的actorNumber。如果你使用expectedProperties {"ownedBy"， 0}作为条件，第一个获得该道具的玩家将拥有它(其他玩家将无法设置所有权)。
+        /// 
         /// Properties get saved with the game state for Turnbased games (which use IsPersistent = true).
+        /// 在回合制游戏中，属性保存在游戏状态中(使用IsPersistent = true)。IsPersistent = 是持久的
         /// </remarks>
-        /// <param name="propertiesToSet">Hashtable of Custom Properties to be set. </param>
-        /// <param name="expectedValues">If non-null, these are the property-values the server will check as condition for this update.</param>
-        /// <param name="webFlags">Defines if this SetCustomProperties-operation gets forwarded to your WebHooks. Client must be in room.</param>
+        /// <param name="propertiesToSet">Hashtable of Custom Properties to be set. 要设置的自定义属性哈希表。</param>
+        /// <param name="expectedValues">If non-null, these are the property-values the server will check as condition for this update.如果非空，服务器将检查这些属性值作为这次更新的条件。</param>
+        /// <param name="webFlags">Defines if this SetCustomProperties-operation gets forwarded to your WebHooks. Client must be in room.定义这个setcustomproperties操作是否被转发到你的webhooks。客户端必须在房间内。</param>
         /// <returns>
         /// False if propertiesToSet is null or empty or have zero string keys.
         /// True in offline mode even if expectedProperties or webFlags are used.
         /// If not in a room, returns true if local player and expectedValues and webFlags are null.
         /// (Use this to cache properties to be sent when joining a room).
         /// Otherwise, returns if this operation could be sent to the server.
+        /// 如果propertiesToSet为空或空或没有字符串键则为False。即使使用了expectedProperties或webFlags，离线模式下也为True。如果不是在一个房间，返回true如果本地播放器和expectedValues和webFlags为空。(当加入房间时，使用这个来缓存要发送的属性)。否则，返回是否可以将此操作发送到服务器。
         /// </returns>
         public bool SetCustomProperties(Hashtable propertiesToSet, Hashtable expectedValues = null, WebFlags webFlags = null)
         {

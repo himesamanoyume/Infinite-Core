@@ -32,6 +32,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     Text playerNameText;
     [SerializeField]
     Transform content;
+    [SerializeField]
+    GameObject startButton;
 
     public static Launcher instance;
 
@@ -165,7 +167,14 @@ public class Launcher : MonoBehaviourPunCallbacks
                 text.text = players[i].NickName;
                 
             }
+
+            startButton.SetActive(PhotonNetwork.IsMasterClient);
         }
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        startButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnPlayerEnteredRoom(Player other)

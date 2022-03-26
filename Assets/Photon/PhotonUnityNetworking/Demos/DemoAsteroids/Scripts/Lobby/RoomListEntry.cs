@@ -13,13 +13,14 @@ namespace Photon.Pun.Demo.Asteroids
 
         public void Start()
         {
+            //给按钮添加监听事件
             JoinRoomButton.onClick.AddListener(() =>
             {
                 if (PhotonNetwork.InLobby)
                 {
                     PhotonNetwork.LeaveLobby();
                 }
-
+                
                 PhotonNetwork.JoinRoom(roomName);
             });
         }

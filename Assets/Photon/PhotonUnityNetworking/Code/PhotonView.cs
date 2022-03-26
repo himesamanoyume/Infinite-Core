@@ -581,18 +581,37 @@ namespace Photon.Pun
 
         /// <summary>
         /// Call a RPC method of this GameObject on remote clients of this room (or on all, including this client).
+        /// 在这个房间的远程客户端（或所有客户端，包括这个客户端）上调用这个游戏对象的RPC方法。
         /// </summary>
         /// <remarks>
         /// [Remote Procedure Calls](@ref rpcManual) are an essential tool in making multiplayer games with PUN.
+        /// 
+        /// [远程过程调用]（@ref rpcManual）是使用PUN制作多人游戏的重要工具。
+        /// 
         /// It enables you to make every client in a room call a specific method.
+        /// 
+        ///它使您能够让房间中的每个客户机调用特定的方法。
         ///
         /// RPC calls can target "All" or the "Others".
+        /// 
+        /// RPC调用可以针对“所有”或“其他”。
+        /// 
         /// Usually, the target "All" gets executed locally immediately after sending the RPC.
+        /// 
+        /// 通常，目标“All”在发送RPC后立即在本地执行。
+        /// 
         /// The "*ViaServer" options send the RPC to the server and execute it on this client when it's sent back.
+        /// 
+        /// “*ViaServer”选项将RPC发送到服务器，并在发送回时在此客户端上执行。
+        /// 
         /// Of course, calls are affected by this client's lag and that of remote clients.
+        /// 
+        ///当然，呼叫会受到该客户端和远程客户端延迟的影响。
         ///
         /// Each call automatically is routed to the same PhotonView (and GameObject) that was used on the
         /// originating client.
+        /// 
+        ///每个呼叫都会自动路由到相同的PhotonView（GameObject）原始客户端。
         ///
         /// See: [Remote Procedure Calls](@ref rpcManual).
         /// </remarks>

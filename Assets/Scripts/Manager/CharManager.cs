@@ -7,11 +7,11 @@ public class CharManager : MonoBehaviour
 
     public GameObject[] playerPosList = new GameObject[10];
 
-    public static CharManager instance;
+    public static CharManager Instance;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
 
