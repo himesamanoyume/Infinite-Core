@@ -12,20 +12,7 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-
-    #region Photon Callbacks
-
-
-    /// <summary>
-    /// Called when the local player left the room. We need to load the launcher scene.
-    /// </summary>
-    public override void OnLeftRoom()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-
-    #endregion
+    public static GameManager Instance;
 
     #region Public Methods
 
@@ -59,13 +46,22 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Private Methods
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
 
 
 
     #endregion
 
     #region Photon Callbacks
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 
     public override void OnCreatedRoom()
     {

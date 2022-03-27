@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using ExitGames.Client.Photon;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 using Photon.Pun;
@@ -11,9 +8,152 @@ using Photon.Realtime;
 
 public class PlayerInfo : MonoBehaviourPunCallbacks
 {
+    private int ownerId;
+    private bool isPlayerReady;
+    [SerializeField]
+    private Text playerNameText;
+    [SerializeField]
+    GameObject readyButton;
+    [SerializeField]
+    Image readyImage;
+
+    private Color redTeamColor = new Color(1,0,0,0.3f);
+    private Color blueTeamColor = new Color (0,0,1,0.3f);
 
     public override void OnLeftRoom()
     {
+
         Destroy(gameObject);
+    }
+
+    public void Start()
+    {
+        if (PhotonNetwork.LocalPlayer.ActorNumber != ownerId)
+        {
+            readyButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            //readyButton.gameObject.SetActive(true);
+            readyButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                isPlayerReady = !isPlayerReady;
+                SetReadyButton(isPlayerReady);
+            });
+        }
+
+        //Player[] players = PhotonNetwork.PlayerList;
+        //if ((players.Length % 2) == 1)//Red
+        //{
+        //    component.InitPlayerProps(p, TeamEnum.Red);
+        //    component.OnTeamChanged(TeamEnum.Red);
+        //}
+        //else//Blue
+        //{
+        //    component.InitPlayerProps(p, TeamEnum.Blue);
+        //    component.OnTeamChanged(TeamEnum.Blue);
+        //}
+    }
+
+    public void InitPlayerTextEntryInfo(int playerId, string playerName)
+    {
+        ownerId = playerId;
+        playerNameText.text = playerName;
+    }
+
+    public void SetReadyButton(bool playerReady)
+    {
+        readyButton.GetComponentInChildren<Text>().text = playerReady ? "Ready!" : "Ready?";
+        readyImage.enabled = playerReady;
+        Hashtable props = new Hashtable{
+            { InfiniteCoreGame.PLAYER_READY,playerReady}
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
+
+    public void SetReadyImage(bool playerReady)
+    {
+        readyImage.enabled = playerReady;
+    }
+
+    public void OnTeamChanged(TeamEnum team)
+    {
+        Hashtable props = new Hashtable
+        {
+            {InfiniteCoreGame.PLAYER_TEAM, team}
+        };
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        SetTeam(team);
+
+
+    }
+
+    public void SetTeam(TeamEnum team)
+    {
+        
+
+        if (team == TeamEnum.Red)
+        {
+            gameObject.GetComponent<Image>().color = redTeamColor;
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = blueTeamColor;
+        }
+    }
+
+    /// <summary>
+    /// 在玩家进入房间后初始化自定义属性
+    /// </summary>
+    /// <param name="p"></param>
+    /// <param name="team"></param>
+    public void InitPlayerProps(Player p, TeamEnum team)
+    {
+        CharBase c = new CharBase();
+
+        Hashtable initProps = new Hashtable()
+        {
+            {InfiniteCoreGame.PLAYER_READY,  isPlayerReady},
+            {InfiniteCoreGame.PLAYER_NAME, p.NickName },
+            {InfiniteCoreGame.PLAYER_TEAM, team },
+            {InfiniteCoreGame.PLAYER_KILL, c.Kill },
+            {InfiniteCoreGame.PLAYER_DEATH, c.Death },
+            {InfiniteCoreGame.PLAYER_MONEY, c.Money },
+            {InfiniteCoreGame.PLAYER_CURRENT_EXP, c.CurrentExp },
+            {InfiniteCoreGame.PLAYER_MAX_EXP, c.MaxExp },
+            {InfiniteCoreGame.PLAYER_STATE, c.State },
+            {InfiniteCoreGame.PLAYER_BUFF, c.Buff },
+            {InfiniteCoreGame.PLAYER_PRO, ProEnum.近战},
+            {InfiniteCoreGame.PLAYER_LEVEL, c.Level},
+            {InfiniteCoreGame.PLAYER_ATTACK, c.Attack},
+            {InfiniteCoreGame.PLAYER_SHIELD, c.Shield},
+            {InfiniteCoreGame.PLAYER_MAX_HEALTH, c.MaxHealth },
+            {InfiniteCoreGame.PLAYER_CURRENT_HEALTH, c.CurrentHealth},
+            {InfiniteCoreGame.PLAYER_CRITICALHIT_HIT, c.CriticalHit},
+            {InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, c.CriticalHitRate },
+            {InfiniteCoreGame.PLAYER_DEFENCE, c.Defence},
+            {InfiniteCoreGame.PLAYER_ATTACK_SPEED, c.AttackSpeed},
+            {InfiniteCoreGame.PLAYER_RESTORE, c.Restore},
+            {InfiniteCoreGame.PLAYER_SKILL_Q, c.SkillQ},
+            {InfiniteCoreGame.PLAYER_SKILL_E, c.SkillE},
+            {InfiniteCoreGame.PLAYER_SKILL_R, c.SkillR},
+            {InfiniteCoreGame.PLAYER_SKILL_BRUST, c.SkillBurst },
+            {InfiniteCoreGame.PLAYER_HEAD_ID, c.HeadID},
+            {InfiniteCoreGame.PLAYER_ARMOR_ID, c.ArmorID},
+            {InfiniteCoreGame.PLAYER_HAND_ID, c.HandID},
+            {InfiniteCoreGame.PLAYER_KNEEL_ID, c.KneeID},
+            {InfiniteCoreGame.PLAYER_TROUSERS_ID, c.TrousersID},
+            {InfiniteCoreGame.PLAYER_SHOES, c.ShoesID},
+            {InfiniteCoreGame.PLAYER_MOVE_SPEED, c.MoveSpeed},
+            {InfiniteCoreGame.PLAYER_ATTACK_RANGE, c.AttackRange},
+            {InfiniteCoreGame.PLAYER_RESPAWN_TIME, c.RespawnTime},
+            {InfiniteCoreGame.PLAYER_RESPAWN_COUNTDOWN, c.RespawnCountDown}
+
+        };
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);
+        SetTeam(team);
     }
 }

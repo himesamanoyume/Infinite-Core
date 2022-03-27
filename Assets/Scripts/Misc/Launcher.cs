@@ -2,8 +2,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
-using UnityEngine.UI;
-
+using ExitGames.Client.Photon;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -29,11 +28,16 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     GameObject roomMenu;
     [SerializeField]
-    Text playerNameText;
+    GameObject loadingMenu;
+    [SerializeField]
+    GameObject playerNameEntry;
     [SerializeField]
     Transform content;
+    
     [SerializeField]
     GameObject startButton;
+
+    private Dictionary<int, GameObject> playerNameTextEntries;
 
     public static Launcher instance;
 
@@ -56,9 +60,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        progressLabel.SetActive(false);
-        mainMenu.SetActive(true);
-        roomMenu.SetActive(false);
+        SetActiveMenu(mainMenu.name);
     }
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
@@ -100,7 +102,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else
         {
-            progressLabel.SetActive(true);
+            SetActiveMenu(loadingMenu.name);
             
             // #Critical, we must first and foremost connect to Photon Online Server.
             isConnecting = PhotonNetwork.ConnectUsingSettings();
@@ -114,8 +116,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        roomMenu.SetActive(false);
-        mainMenu.SetActive(true);
+        SetActiveMenu(mainMenu.name);
     }
 
     public override void OnConnectedToMaster()
@@ -133,8 +134,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        SetActiveMenu(mainMenu.name);
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
     }
 
@@ -156,20 +156,110 @@ public class Launcher : MonoBehaviourPunCallbacks
             // Load the Room Level.
 
             //PhotonNetwork.LoadLevel("Room");
-            progressLabel.SetActive(false);
-            roomMenu.SetActive(true);
-            mainMenu.SetActive(false);
+            SetActiveMenu(roomMenu.name);
+
+            if (playerNameTextEntries ==null)
+            {
+                playerNameTextEntries = new Dictionary<int, GameObject>();
+            }
 
             Player[] players = PhotonNetwork.PlayerList;
-            for (int i = 0; i < players.Length; i++)
+            
+            foreach(Player p in players)
             {
-                Text text = Instantiate(playerNameText, content);
-                text.text = players[i].NickName;
-                
+                GameObject textEntry = Instantiate(playerNameEntry, content);
+
+                PlayerInfo component = textEntry.GetComponent<PlayerInfo>();
+
+                component.InitPlayerTextEntryInfo(p.ActorNumber, p.NickName);
+
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    Debug.Log("Master");
+                    if ((players.Length % 2) == 1)//Red
+                    {
+                        component.InitPlayerProps(p, TeamEnum.Red);
+                        
+                    }
+                    else//Blue
+                    {
+                        component.InitPlayerProps(p, TeamEnum.Blue);
+                        
+                    }
+                    
+                }
+                else
+                {
+                    Debug.Log("Not Master");
+                    object team;
+                    if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out team))
+                    {//这部分都是之前在房间里的玩家 已有了队伍属性 能读取到team则直接改色
+                        Debug.Log("haha");
+                        if ((TeamEnum)team==TeamEnum.Red)
+                        {
+                            component.SetTeam(TeamEnum.Red);
+                        }
+                        else
+                        {
+                            component.SetTeam(TeamEnum.Blue);
+                        }
+                    }
+                    else if (p.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                    {//到最后一个玩家也就是本人加入房间时 没有属性 因此初始化
+
+                        if ((players.Length % 2) == 1)//Red
+                        {
+                            component.InitPlayerProps(p, TeamEnum.Red);
+                            //component.SetTeam(TeamEnum.Red);
+                        }
+                        else//Blue
+                        {
+                            component.InitPlayerProps(p, TeamEnum.Blue);
+                            //component.SetTeam(TeamEnum.Blue);
+                        }
+                    }
+                    
+                }
+
+                object isPlayerReady;
+                if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_READY, out isPlayerReady))
+                {
+                    component.SetReadyButton((bool)isPlayerReady);
+                }
+
+                playerNameTextEntries.Add(p.ActorNumber, textEntry);
             }
 
             startButton.SetActive(PhotonNetwork.IsMasterClient);
         }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (playerNameTextEntries == null)
+        {
+            playerNameTextEntries = new Dictionary<int, GameObject>();
+        }
+
+        GameObject entry;
+        if (playerNameTextEntries.TryGetValue(targetPlayer.ActorNumber,out entry))
+        {
+            object isPlayerReady;
+            if (changedProps.TryGetValue(InfiniteCoreGame.PLAYER_READY,out isPlayerReady))
+            {
+                entry.GetComponent<PlayerInfo>().SetReadyImage((bool)isPlayerReady);
+            }
+
+            object team;
+            if (changedProps.TryGetValue(InfiniteCoreGame.PLAYER_TEAM,out team))
+            {
+                entry.GetComponent<PlayerInfo>().SetTeam((TeamEnum)team);
+            }
+        }
+
+        
+
+        //此处检查是否全部准备
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -179,26 +269,34 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Text text = Instantiate(playerNameText, content);
-        text.text = other.NickName;
+        GameObject textEntry = Instantiate(playerNameEntry, content);
+        PlayerInfo component = textEntry.GetComponent<PlayerInfo>();
+        component.InitPlayerTextEntryInfo(other.ActorNumber, other.NickName);
+
+        Player[] players = PhotonNetwork.PlayerList;
+        if ((players.Length % 2) == 1)//Red
+        {
+            component.InitPlayerProps(other, TeamEnum.Red);
+            //component.SetTeam(TeamEnum.Red);
+        }
+        else//Blue
+        {
+            component.InitPlayerProps(other, TeamEnum.Blue);
+            //component.SetTeam(TeamEnum.Blue);
+        }
+
+        playerNameTextEntries.Add(other.ActorNumber, textEntry);
         
-        //Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-        //}
-        //Debug.LogWarning(PhotonNetwork.CurrentRoom.PlayerCount);
+
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        for (int i = 0; i < content.childCount; i++)
-        {
-            if (content.GetChild(i).GetComponent<Text>().text == otherPlayer.NickName)
-            {
-                Destroy(content.GetChild(i).gameObject);
-            }
-        }
+        Destroy(playerNameTextEntries[otherPlayer.ActorNumber].gameObject);
+
+        playerNameTextEntries.Remove(otherPlayer.ActorNumber);
+
+        //此处要检查是否全部准备
 
     }
     #endregion
@@ -208,4 +306,16 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
     }
 
+    /// <summary>
+    /// 激活菜单
+    /// </summary>
+    /// <param name="menuName"></param>
+    private void SetActiveMenu(string menuName)
+    {
+        mainMenu.SetActive(menuName.Equals(mainMenu.name));
+        loadingMenu.SetActive(menuName.Equals(loadingMenu.name));
+        roomMenu.SetActive(menuName.Equals(roomMenu.name));
+    }
+
+    
 }

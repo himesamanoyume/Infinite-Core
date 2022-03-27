@@ -21,7 +21,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 队伍
     /// </summary>
-    private TeamEnum.playerTeam playerTeam;
+    private TeamEnum playerTeam;
     [SerializeField]
     /// <summary>
     /// 击杀数
@@ -41,7 +41,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 当前经验
     /// </summary>
-    private float exp = 0f;
+    private float currentExp = 0f;
     [SerializeField]
     /// <summary>
     /// 所需经验
@@ -51,17 +51,17 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 角色状态
     /// </summary>
-    private CharEnum.StateEnum state = CharEnum.StateEnum.尚未生成;
+    private StateEnum state = StateEnum.尚未生成;
     [SerializeField]
     /// <summary>
     /// 当前角色身上所带的buff
     /// </summary>
-    private List<CharEnum.BuffEnum> buff;
+    private List<BuffEnum> buff;
     [SerializeField]
     /// <summary>
     /// 角色职业
     /// </summary>
-    private CharEnum.ProEnum pro;
+    private ProEnum pro;
     [SerializeField]
     /// <summary>
     /// 等级
@@ -86,7 +86,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 当前生命
     /// </summary>
-    private float health = 1000f;
+    private float currentHealth = 1000f;
     [SerializeField]
     /// <summary>
     /// 爆伤
@@ -116,52 +116,52 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// Q技能
     /// </summary>
-    private SkillEnum.skillID skillQ;
+    private skillID skillQ;
     [SerializeField]
     /// <summary>
     /// E技能
     /// </summary>
-    private SkillEnum.skillID skillE;
+    private skillID skillE;
     [SerializeField]
     /// <summary>
     /// R技能
     /// </summary>
-    private SkillEnum.skillID skillR;
+    private skillID skillR;
     [SerializeField]
     /// <summary>
     /// Space技能
     /// </summary>
-    private SkillEnum.skillBurst skillBurst;
+    private skillBurst skillBurst;
     [SerializeField]
     /// <summary>
     /// 头盔
     /// </summary>
-    private EquipEnum.EquipID headID;
+    private EquipID headID;
     [SerializeField]
     /// <summary>
     /// 护甲
     /// </summary>
-    private EquipEnum.EquipID armorID;
+    private EquipID armorID;
     [SerializeField]
     /// <summary>
     /// 护手
     /// </summary>
-    private EquipEnum.EquipID handID;
+    private EquipID handID;
     [SerializeField]
     /// <summary>
     /// 护膝
     /// </summary>
-    private EquipEnum.EquipID kneeID;
+    private EquipID kneeID;
     [SerializeField]
     /// <summary>
     /// 护腿
     /// </summary>
-    private EquipEnum.EquipID trousersID;
+    private EquipID trousersID;
     [SerializeField]
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipEnum.EquipID shoesID;
+    private EquipID shoesID;
     [SerializeField]
     /// <summary>
     /// 移动速度
@@ -183,7 +183,7 @@ public class CharBase : MonoBehaviour
     /// </summary>
     private float respawnCountDown = 10f;
 
-    public CharBase(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam)
+    public CharBase(int runId, string playerName, ProEnum pro, skillID skillQ, skillID skillE, skillID skillR, skillBurst skillBurst, TeamEnum playerTeam)
     {
         this.runId = runId;
         this.playerName = playerName;
@@ -241,9 +241,9 @@ public class CharBase : MonoBehaviour
                 money = value;
             }
     }}
-    public float Exp 
+    public float CurrentExp 
     { 
-        get => exp;
+        get => currentExp;
         set {
             if (value <0)
             {
@@ -251,7 +251,7 @@ public class CharBase : MonoBehaviour
             }
             else
             {
-                exp = value;
+                currentExp = value;
             }
         }}
     public float MaxExp
@@ -269,9 +269,9 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public CharEnum.StateEnum State { get => state; set => state = value; }
-    public List<CharEnum.BuffEnum> Buff { get => buff; set => buff = value; }
-    public CharEnum.ProEnum Pro { get => pro; set => pro = value; }
+    public StateEnum State { get => state; set => state = value; }
+    public List<BuffEnum> Buff { get => buff; set => buff = value; }
+    public ProEnum Pro { get => pro; set => pro = value; }
     public int Level
     {
         get => level;
@@ -318,24 +318,24 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public float Health
+    public float CurrentHealth
     {
-        get => health;
+        get => currentHealth;
         set
         {
             if (value < 0)
             {
-                health = 0;
+                currentHealth = 0;
                 CharManager.Instance.Log(runId, "血量不合法,已使玩家死亡");
             }
             else if (value >maxHealth)
             {
-                health = maxHealth;
+                currentHealth = maxHealth;
                 CharManager.Instance.Log(runId, "血量不得超过最大血量");
             }
             else
             {
-                health = value;
+                currentHealth = value;
             }
         }
     }
@@ -437,16 +437,16 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public SkillEnum.skillID SkillQ { get => skillQ; set => skillQ = value; }
-    public SkillEnum.skillID SkillE { get => skillE; set => skillE = value; }
-    public SkillEnum.skillID SkillR { get => skillR; set => skillR = value; }
-    public SkillEnum.skillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
-    public EquipEnum.EquipID HeadID { get => headID; set => headID = value; }
-    public EquipEnum.EquipID ArmorID { get => armorID; set => armorID = value; }
-    public EquipEnum.EquipID HandID { get => handID; set => handID = value; }
-    public EquipEnum.EquipID KneeID { get => kneeID; set => kneeID = value; }
-    public EquipEnum.EquipID TrousersID { get => trousersID; set => trousersID = value; }
-    public EquipEnum.EquipID ShoesID { get => shoesID; set => shoesID = value; }
+    public skillID SkillQ { get => skillQ; set => skillQ = value; }
+    public skillID SkillE { get => skillE; set => skillE = value; }
+    public skillID SkillR { get => skillR; set => skillR = value; }
+    public skillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
+    public EquipID HeadID { get => headID; set => headID = value; }
+    public EquipID ArmorID { get => armorID; set => armorID = value; }
+    public EquipID HandID { get => handID; set => handID = value; }
+    public EquipID KneeID { get => kneeID; set => kneeID = value; }
+    public EquipID TrousersID { get => trousersID; set => trousersID = value; }
+    public EquipID ShoesID { get => shoesID; set => shoesID = value; }
     public float MoveSpeed
     {
         get => moveSpeed;
@@ -511,7 +511,7 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public TeamEnum.playerTeam PlayerTeam { get => playerTeam; set => playerTeam = value; }
+    public TeamEnum PlayerTeam { get => playerTeam; set => playerTeam = value; }
 
 
     

@@ -98,12 +98,12 @@ public class DebugConsole : MonoBehaviour
             }
             if (team == 0)//red
             {
-                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Red);
+                CharSpawnController.instance.SpawnPlayer(-1, "test1", ProEnum.近战, skillID.tempQ, skillID.tempE, skillID.tempR, skillBurst.超速, TeamEnum.Red);
 
             }
             else//blue
             {
-                CharSpawnController.instance.SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Blue);
+                CharSpawnController.instance.SpawnPlayer(-1, "test1", ProEnum.近战, skillID.tempQ, skillID.tempE, skillID.tempR, skillBurst.超速, TeamEnum.Blue);
 
             }
         });

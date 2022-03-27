@@ -37,6 +37,11 @@ namespace Photon.Pun.UtilityScripts
             player.SetCustomProperties(score);  // this locally sets the score and will sync it in-game asap.
         }
 
+        /// <summary>
+        /// ¼Ó·ÖÊ¾Àý
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="scoreToAddToCurrent"></param>
         public static void AddScore(this Player player, int scoreToAddToCurrent)
         {
             int current = player.GetScore();

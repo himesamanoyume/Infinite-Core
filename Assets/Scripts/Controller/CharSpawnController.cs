@@ -51,7 +51,7 @@ public class CharSpawnController : MonoBehaviour
     {
         
         
-            SpawnPlayer(-1, "test1", CharEnum.ProEnum.近战, SkillEnum.skillID.tempQ, SkillEnum.skillID.tempE, SkillEnum.skillID.tempR, SkillEnum.skillBurst.超速, TeamEnum.playerTeam.Red);
+            SpawnPlayer(-1, "test1", ProEnum.近战, skillID.tempQ, skillID.tempE, skillID.tempR, skillBurst.超速, TeamEnum.Red);
         
 
     }
@@ -67,7 +67,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="skillR"></param>
     /// <param name="skillBurst"></param>
     /// <param name="playerTeam"></param>
-    public void SpawnPlayer(int runId, string playerName, CharEnum.ProEnum pro, SkillEnum.skillID skillQ, SkillEnum.skillID skillE, SkillEnum.skillID skillR, SkillEnum.skillBurst skillBurst, TeamEnum.playerTeam playerTeam)
+    public void SpawnPlayer(int runId, string playerName, ProEnum pro, skillID skillQ, skillID skillE, skillID skillR, skillBurst skillBurst, TeamEnum playerTeam)
     {
         CharBase charBase = new CharBase(runId,playerName,pro,skillQ,skillE,skillR,skillBurst,playerTeam);
 
@@ -91,7 +91,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="charBase"></param>
     public void SpawnPlayer(CharBase charBase)
     {
-        charBase.State = CharEnum.StateEnum.存活;
+        charBase.State = StateEnum.存活;
         charBase.RespawnTime += 5f;
         GameObject playerModel = CharManager.Instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
         playerModel.SetActive(true);
@@ -108,7 +108,7 @@ public class CharSpawnController : MonoBehaviour
         Debug.LogWarning("调用了生成位置");
         switch (charBase.Pro)
         {
-            case CharEnum.ProEnum.近战:
+            case ProEnum.近战:
                 playerObject = PhotonNetwork.Instantiate(solider.name, new Vector3(0, 0, 0), Quaternion.identity);
                 
                 switch (charBase.RunId)
@@ -145,7 +145,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case CharEnum.ProEnum.远程:
+            case ProEnum.远程:
                 playerObject = PhotonNetwork.Instantiate(archer.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -181,7 +181,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case CharEnum.ProEnum.辅助:
+            case ProEnum.辅助:
                 playerObject = PhotonNetwork.Instantiate(doctor.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -217,7 +217,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case CharEnum.ProEnum.坦克:
+            case ProEnum.坦克:
                 playerObject = PhotonNetwork.Instantiate(tanker.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -318,14 +318,14 @@ public class CharSpawnController : MonoBehaviour
     {
         switch (charBase.PlayerTeam)
         {
-            case TeamEnum.playerTeam.Red:
+            case TeamEnum.Red:
                 if (redCount > 4)
                 {
                     Debug.Log("红方人数已达最大");
                     return;
                 }
                 break;
-            case TeamEnum.playerTeam.Blue:
+            case TeamEnum.Blue:
                 if (blueCount > 4)
                 {
                     Debug.Log("蓝方人数已达最大");
@@ -336,14 +336,14 @@ public class CharSpawnController : MonoBehaviour
         
         switch (charBase.PlayerTeam)
         {
-            case TeamEnum.playerTeam.Red:
+            case TeamEnum.Red:
                 CharManager.Instance.Log("Red");
                 charBase.RunId = redCount;
                 redCount++;
                 SelectPos(charBase);
                 break;
 
-            case TeamEnum.playerTeam.Blue:
+            case TeamEnum.Blue:
                 CharManager.Instance.Log("Blue");
                 charBase.RunId = blueCount + 5;
                 blueCount++;
@@ -367,7 +367,7 @@ public class CharSpawnController : MonoBehaviour
         playerObject.transform.position = new Vector3(0,0,0);
 
         component = spawnPos.GetComponent<CharBase>();
-        charBase.State = CharEnum.StateEnum.存活;
+        charBase.State = StateEnum.存活;
         //需要方便快速赋值
         CharManager.Instance.GetPlayerInfo(component, charBase);
     }

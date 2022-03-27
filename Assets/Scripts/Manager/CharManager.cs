@@ -41,11 +41,11 @@ public class CharManager : MonoBehaviour
             charBase.Level += 1;
             charBase.Attack += 100;
             charBase.MaxHealth += 1000;
-            charBase.Health += 1000;
+            charBase.CurrentHealth += 1000;
             
-            if (charBase.Exp >= charBase.MaxExp)
+            if (charBase.CurrentExp >= charBase.MaxExp)
             {
-                charBase.Exp -= charBase.MaxExp;
+                charBase.CurrentExp -= charBase.MaxExp;
             }
 
             charBase.MaxExp += charBase.Level * 500;
@@ -63,8 +63,8 @@ public class CharManager : MonoBehaviour
     {
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
-        charBase.Health = 0;
-        charBase.State = CharEnum.StateEnum.彻底死亡;
+        charBase.CurrentHealth = 0;
+        charBase.State = StateEnum.彻底死亡;
         Log(runId, "彻底死亡");
     }
 
@@ -77,7 +77,7 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        charBase.Health = 0;
+        charBase.CurrentHealth = 0;
         charBase.Death++;
         //------------------------
         //或为联机代码改动部分
@@ -93,16 +93,16 @@ public class CharManager : MonoBehaviour
         {
             for (int i = 0; i < charBase.Buff.Count; i++)
             {
-                if (charBase.Buff[i].Equals(CharEnum.BuffEnum.无核))
+                if (charBase.Buff[i].Equals(BuffEnum.无核))
                 {
-                    charBase.State = CharEnum.StateEnum.彻底死亡;
+                    charBase.State = StateEnum.彻底死亡;
                     break;
                 }
             }
         }
         Log(runId, "被击杀");
         PlayerRespawnCountDown(charBase.RunId);
-        charBase.State = CharEnum.StateEnum.复活中;
+        charBase.State = StateEnum.复活中;
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        charBase.State = CharEnum.StateEnum.复活中;
+        charBase.State = StateEnum.复活中;
         charBase.RespawnCountDown = charBase.RespawnTime;
         Log(runId, "开始重生倒计时");
     }
@@ -153,7 +153,7 @@ public class CharManager : MonoBehaviour
             Log(runId, "预修改的值不得小于0");
             return;
         }
-        charBase.Health = health;
+        charBase.CurrentHealth = health;
         Log(runId, "血量已修改");
     }
 
@@ -175,7 +175,7 @@ public class CharManager : MonoBehaviour
         if (charBase == null) { return; }
 
         float current = ToGivePlayerSomething(runId, minExp, maxExp);
-        charBase.Exp += current;
+        charBase.CurrentExp += current;
 
         Log(runId, "获得了"+ current + "经验");
     }
@@ -215,7 +215,7 @@ public class CharManager : MonoBehaviour
         if (charBase == null) { return; }
 
         int current = ToGivePlayerSomething(runId, health, health);
-        charBase.Health += current;
+        charBase.CurrentHealth += current;
         if (current >= 0)
         {
             Log(runId, "回复了" + current + "的血量");
@@ -470,7 +470,7 @@ public class CharManager : MonoBehaviour
         needTarget.Kill = provider.Kill;
         needTarget.Death = provider.Death;
         needTarget.Money = provider.Money;
-        needTarget.Exp = provider.Exp;
+        needTarget.CurrentExp = provider.CurrentExp;
         needTarget.MaxExp = provider.MaxExp;
         needTarget.State = provider.State;
         needTarget.Buff = provider.Buff;
@@ -478,7 +478,7 @@ public class CharManager : MonoBehaviour
         needTarget.Level = provider.Level;
         needTarget.Attack = provider.Attack;
         needTarget.MaxHealth = provider.MaxHealth;
-        needTarget.Health = provider.Health;
+        needTarget.CurrentHealth = provider.CurrentHealth;
         needTarget.CriticalHit = provider.CriticalHit;
         needTarget.CriticalHitRate = provider.CriticalHitRate;
         needTarget.Defence = provider.Defence;

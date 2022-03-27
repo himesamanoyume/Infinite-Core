@@ -78,6 +78,11 @@ namespace Photon.Pun.Demo.Asteroids
 
         #endregion
 
+        /// <summary>
+        /// 把id和名字赋给拥有者id和名字文本
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="playerName"></param>
         public void Initialize(int playerId, string playerName)
         {
             ownerId = playerId;
