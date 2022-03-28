@@ -96,6 +96,37 @@ public class Launcher : MonoBehaviourPunCallbacks
     #region Public Methods
 
 
+    public int RedCount {
+        get => redCount;
+        set
+        {
+            if (value<=0)
+            {
+                redCount = 0;
+            }
+            else
+            {
+                redCount = value;
+            }
+        }
+    }
+
+    public int BlueCount
+    {
+        get => blueCount;
+        set
+        {
+            if (value <= 0)
+            {
+                blueCount = 0;
+            }
+            else
+            {
+                blueCount = value;
+            }
+        }
+    }
+
     /// <summary>
     /// Start the connection process.
     /// - If already connected, we attempt joining a random room
@@ -128,8 +159,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         redButton.SetActive(false);
         blueButton.SetActive(true);
-        redCount++;
-        blueCount--;
     }
 
     public void OnBlueButtonClicked()
@@ -141,8 +170,33 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         blueButton.SetActive(false);
         redButton.SetActive(true);
-        blueCount++;
-        redCount--;
+    }
+
+    public void OnTeamChanged()
+    {
+        RedCount = 0;
+        BlueCount = 0;
+
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            object playerTeam;
+            if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM,out playerTeam))
+            {
+                if ((TeamEnum)playerTeam == TeamEnum.Red)
+                {
+                    RedCount++;
+                }
+                else if ((TeamEnum)playerTeam == TeamEnum.Blue)
+                {
+                    BlueCount++;
+                }
+                else
+                {
+                   
+                }
+            }
+
+        }
     }
     #endregion
 
@@ -151,6 +205,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SetActiveMenu(mainMenu.name);
+        playerNameTextEntries.Clear();
     }
 
     public override void OnConnectedToMaster()
@@ -165,31 +220,17 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
-
     public override void OnDisconnected(DisconnectCause cause)
     {
         SetActiveMenu(mainMenu.name);
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
     }
 
-    //public override void OnJoinRandomFailed(short returnCode, string message)
-    //{
-    //    Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
-
-    //    // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-    //    PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-    //}
-
     public override void OnJoinedRoom()
     {
-        Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 1)
         {
-            // #Critical
-            // Load the Room Level.
 
-            //PhotonNetwork.LoadLevel("Room");
             SetActiveMenu(roomMenu.name);
 
             if (playerNameTextEntries == null)
@@ -216,6 +257,7 @@ public class Launcher : MonoBehaviourPunCallbacks
                 {
                     if (PhotonNetwork.IsMasterClient)
                     {
+                        Debug.Log("OnJoinedRoom " + p.NickName + " Init");
                         component.InitPlayerProps(p);
                     }
                     
@@ -224,22 +266,30 @@ public class Launcher : MonoBehaviourPunCallbacks
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_READY, out isPlayerReady))
                 {
+                    Debug.LogWarning(p.NickName+ " gerReady "+(bool)isPlayerReady);
                     component.SetReadyImage((bool)isPlayerReady);
                 }
 
                 object playerTeam;
                 if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM,out playerTeam))
                 {
+                    Debug.LogWarning(p.NickName+" gerTeam "+(TeamEnum)playerTeam);
+                    component.GetComponent<PlayerInfo>().SetTeam((TeamEnum)playerTeam);
+
                     if ((TeamEnum)playerTeam == TeamEnum.Red)
                     {
-                        redCount++;
+                        RedCount++;
                     }
                     else if ((TeamEnum)playerTeam == TeamEnum.Blue)
                     {
-                        blueCount++;
+                        BlueCount++;
+                    }
+                    else
+                    {
+                        
                     }
                 }
-
+               
                 playerNameTextEntries.Add(p.ActorNumber, textEntry);
             }
 
@@ -247,8 +297,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// 当玩家属性更新时
+    /// </summary>
+    /// <param name="targetPlayer"></param>
+    /// <param name="changedProps"></param>
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        Debug.Log(targetPlayer.ActorNumber + " Update");
         if (playerNameTextEntries == null)
         {
             playerNameTextEntries = new Dictionary<int, GameObject>();
@@ -257,28 +313,23 @@ public class Launcher : MonoBehaviourPunCallbacks
         GameObject entry;
         if (playerNameTextEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
         {
+            
             object isPlayerReady;
             if (changedProps.TryGetValue(InfiniteCoreGame.PLAYER_READY, out isPlayerReady))
             {
+                Debug.Log(targetPlayer.ActorNumber + " SetReadyImage "+ (bool)isPlayerReady);
                 entry.GetComponent<PlayerInfo>().SetReadyImage((bool)isPlayerReady);
-
+                 
             }
 
             object playerTeam;
             if (changedProps.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out playerTeam))
             {
+                Debug.Log(targetPlayer.ActorNumber + " SetTeam "+ (TeamEnum)playerTeam);
                 entry.GetComponent<PlayerInfo>().SetTeam((TeamEnum)playerTeam);
 
-                if ((TeamEnum)playerTeam == TeamEnum.Red)
-                {
-                    redCount++;
-                    blueCount--;
-                }
-                else if ((TeamEnum)playerTeam == TeamEnum.Blue)
-                {
-                    blueCount++;
-                    redCount--;
-                }
+                OnTeamChanged();
+
             }
         }
 
@@ -300,18 +351,22 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         playerNameTextEntries.Add(other.ActorNumber, textEntry);
 
-        //if (other.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_NAME, out object name))
-        //{
+        //---
+        if (other.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_ACTOR_NUMBER, out object actorNumber))
+        {
 
-        //}
-        //else
-        //{
-        //    if (PhotonNetwork.IsMasterClient)
-        //    {
-        //        component.InitPlayerProps(other);
-        //    }
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                //Debug.LogError("Are you Master?");
+                Debug.Log("OnPlayerEnteredRoom " + other.NickName + " Init");
+                component.InitPlayerProps(other);
+            }
 
-        //}
+        }
+        //---
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -320,18 +375,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         playerNameTextEntries.Remove(otherPlayer.ActorNumber);
 
-        object playerTeam;
-        if (otherPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out playerTeam))
-        {
-            if ((TeamEnum)playerTeam == TeamEnum.Red)
-            {
-                redCount--;
-            }
-            else if ((TeamEnum)playerTeam == TeamEnum.Blue)
-            {
-                blueCount--;
-            }
-        }
+        OnTeamChanged();
 
         //此处要检查是否全部准备
 

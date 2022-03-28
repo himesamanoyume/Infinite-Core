@@ -21,8 +21,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     [SerializeField]
     TeamEnum currentTeam;
 
-    private Color redTeamColor = new Color(1, 0, 0, 0.3f);
-    private Color blueTeamColor = new Color(0, 0, 1, 0.3f);
+    Color redTeamColor = new Color(1, 0, 0, 0.3f);
+    Color blueTeamColor = new Color(0, 0, 1, 0.3f);
+    Color nullTeamColor = new Color(1, 1, 1, 0.3f);
 
     public override void OnLeftRoom()
     {
@@ -49,25 +50,15 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         }
         else
         {
-
+            SetTeam(TeamEnum.Null);
+            SetReadyImage(false);
             readyButton.GetComponent<Button>().onClick.AddListener(() =>
             {
-                this.isPlayerReady = !this.isPlayerReady;
+                isPlayerReady = !isPlayerReady;
                 SetReadyButton(isPlayerReady);
             });
         }
 
-        //Player[] players = PhotonNetwork.PlayerList;
-        //if ((players.Length % 2) == 1)//Red
-        //{
-        //    component.InitPlayerProps(p, TeamEnum.Red);
-        //    component.OnTeamChanged(TeamEnum.Red);
-        //}
-        //else//Blue
-        //{
-        //    component.InitPlayerProps(p, TeamEnum.Blue);
-        //    component.OnTeamChanged(TeamEnum.Blue);
-        //}
     }
 
     public void InitPlayerTextEntryInfo(int playerId, string playerName)
@@ -89,6 +80,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public void SetReadyImage(bool playerReady)
     {
         readyImage.enabled = playerReady;
+        isPlayerReady = playerReady;
     }
 
     public void OnTeamChanged(TeamEnum team)
@@ -107,7 +99,8 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 
     public void SetTeam(TeamEnum team)
     {
-
+        currentTeam = team;
+        //Debug.Log(ownerId + " SetTeam");
         if (team == TeamEnum.Red)
         {
             gameObject.GetComponent<Image>().color = redTeamColor;
@@ -115,6 +108,10 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         else if(team == TeamEnum.Blue)
         {
             gameObject.GetComponent<Image>().color = blueTeamColor;
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = nullTeamColor;
         }
     }
 
@@ -125,10 +122,12 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     /// <param name="team"></param>
     public void InitPlayerProps(Player p)
     {
+        Debug.LogWarning(p.NickName + " Init");
         CharBase c = new CharBase();
 
         Hashtable initProps = new Hashtable()
         {
+            {InfiniteCoreGame.PLAYER_ACTOR_NUMBER, p.ActorNumber},
             {InfiniteCoreGame.PLAYER_READY,  isPlayerReady},
             {InfiniteCoreGame.PLAYER_NAME, p.NickName },
             {InfiniteCoreGame.PLAYER_TEAM, c.PlayerTeam },

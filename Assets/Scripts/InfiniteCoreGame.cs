@@ -17,6 +17,8 @@ public class InfiniteCoreGame : MonoBehaviour
     /// </summary>
     public const string PLAYER_LOADED_LEVEL = "PlayerLoadedLevel";
 
+    public const string PLAYER_ACTOR_NUMBER = "PlayerActorNumber";
+
     public const string PLAYER_NAME = "PlayerName";
     public const string PLAYER_TEAM = "PlayerTeam";
     public const string PLAYER_KILL = "PlayerKill";
