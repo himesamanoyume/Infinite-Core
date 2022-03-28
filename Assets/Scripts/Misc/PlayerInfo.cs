@@ -8,22 +8,37 @@ using Photon.Realtime;
 
 public class PlayerInfo : MonoBehaviourPunCallbacks
 {
-    private int ownerId;
-    private bool isPlayerReady;
+    [SerializeField]
+    int ownerId;
+    [SerializeField]
+    bool isPlayerReady;
     [SerializeField]
     private Text playerNameText;
     [SerializeField]
     GameObject readyButton;
     [SerializeField]
     Image readyImage;
+    [SerializeField]
+    TeamEnum currentTeam;
 
-    private Color redTeamColor = new Color(1,0,0,0.3f);
-    private Color blueTeamColor = new Color (0,0,1,0.3f);
+    private Color redTeamColor = new Color(1, 0, 0, 0.3f);
+    private Color blueTeamColor = new Color(0, 0, 1, 0.3f);
 
     public override void OnLeftRoom()
     {
-
         Destroy(gameObject);
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        //if (targetPlayer.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
+        //object ready;
+        //if (changedProps.TryGetValue(InfiniteCoreGame.PLAYER_READY,out ready))
+        //{
+        //    isPlayerReady = (bool)ready;
+            
+        //}
     }
 
     public void Start()
@@ -34,10 +49,10 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         }
         else
         {
-            //readyButton.gameObject.SetActive(true);
+
             readyButton.GetComponent<Button>().onClick.AddListener(() =>
             {
-                isPlayerReady = !isPlayerReady;
+                this.isPlayerReady = !this.isPlayerReady;
                 SetReadyButton(isPlayerReady);
             });
         }
@@ -92,13 +107,12 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 
     public void SetTeam(TeamEnum team)
     {
-        
 
         if (team == TeamEnum.Red)
         {
             gameObject.GetComponent<Image>().color = redTeamColor;
         }
-        else
+        else if(team == TeamEnum.Blue)
         {
             gameObject.GetComponent<Image>().color = blueTeamColor;
         }
@@ -109,7 +123,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="p"></param>
     /// <param name="team"></param>
-    public void InitPlayerProps(Player p, TeamEnum team)
+    public void InitPlayerProps(Player p)
     {
         CharBase c = new CharBase();
 
@@ -117,7 +131,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         {
             {InfiniteCoreGame.PLAYER_READY,  isPlayerReady},
             {InfiniteCoreGame.PLAYER_NAME, p.NickName },
-            {InfiniteCoreGame.PLAYER_TEAM, team },
+            {InfiniteCoreGame.PLAYER_TEAM, c.PlayerTeam },
             {InfiniteCoreGame.PLAYER_KILL, c.Kill },
             {InfiniteCoreGame.PLAYER_DEATH, c.Death },
             {InfiniteCoreGame.PLAYER_MONEY, c.Money },
@@ -154,6 +168,6 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         };
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);
-        SetTeam(team);
+
     }
 }

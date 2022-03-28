@@ -46,6 +46,7 @@ public enum PlayerEnum
 
 public enum TeamEnum
 {
+    Null,
     Red,
     Blue
 }

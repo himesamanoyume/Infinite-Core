@@ -10,7 +10,7 @@ public enum EntryLevelUp
     R
 }
 
-public enum skillType
+public enum SkillType
 {
     Q,
     E,
@@ -18,7 +18,7 @@ public enum skillType
     Burst
 }
 
-public enum skillID
+public enum SkillID
 {
     tempQ,
     tempE,
@@ -26,7 +26,7 @@ public enum skillID
 }
 
 
-public enum skillBurst
+public enum SkillBurst
 {
     ³¬ËÙ,
     »Ø¸´,

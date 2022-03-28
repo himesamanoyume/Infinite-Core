@@ -9,7 +9,7 @@ public class SkillBase : MonoBehaviour
     /// </summary>
     public int skillID;
 
-    public skillType skillType;
+    public SkillType skillType;
 
     public int level;
 

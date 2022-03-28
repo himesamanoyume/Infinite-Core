@@ -51,7 +51,7 @@ public class CharSpawnController : MonoBehaviour
     {
         
         
-            SpawnPlayer(-1, "test1", ProEnum.近战, skillID.tempQ, skillID.tempE, skillID.tempR, skillBurst.超速, TeamEnum.Red);
+            SpawnPlayer(-1, "test1", ProEnum.近战, SkillID.tempQ, SkillID.tempE, SkillID.tempR, SkillBurst.超速, TeamEnum.Red);
         
 
     }
@@ -67,7 +67,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="skillR"></param>
     /// <param name="skillBurst"></param>
     /// <param name="playerTeam"></param>
-    public void SpawnPlayer(int runId, string playerName, ProEnum pro, skillID skillQ, skillID skillE, skillID skillR, skillBurst skillBurst, TeamEnum playerTeam)
+    public void SpawnPlayer(int runId, string playerName, ProEnum pro, SkillID skillQ, SkillID skillE, SkillID skillR, SkillBurst skillBurst, TeamEnum playerTeam)
     {
         CharBase charBase = new CharBase(runId,playerName,pro,skillQ,skillE,skillR,skillBurst,playerTeam);
 

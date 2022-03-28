@@ -246,8 +246,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -146.64555, y: 0}
-  m_SizeDelta: {x: 6.7115, y: 50}
+  m_AnchoredPosition: {x: -146.0276, y: 0}
+  m_SizeDelta: {x: 7.9408, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1158001830589539949
 CanvasRenderer:
@@ -381,6 +381,7 @@ MonoBehaviour:
   playerNameText: {fileID: 7183260363230140779}
   readyButton: {fileID: 226608553}
   readyImage: {fileID: 3392912365655205327}
+  currentTeam: 0
 --- !u!1 &4634188765639483606
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,8 +416,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -48.481102, y: 0.000009536743}
-  m_SizeDelta: {x: -96.9622, y: -0}
+  m_AnchoredPosition: {x: -48.862, y: 0.0000076293945}
+  m_SizeDelta: {x: -97.723, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4441100340289632456
 CanvasRenderer:

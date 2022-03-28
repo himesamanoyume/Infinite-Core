@@ -21,7 +21,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 队伍
     /// </summary>
-    private TeamEnum playerTeam;
+    private TeamEnum playerTeam = TeamEnum.Null;
     [SerializeField]
     /// <summary>
     /// 击杀数
@@ -116,22 +116,22 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// Q技能
     /// </summary>
-    private skillID skillQ;
+    private SkillID skillQ;
     [SerializeField]
     /// <summary>
     /// E技能
     /// </summary>
-    private skillID skillE;
+    private SkillID skillE;
     [SerializeField]
     /// <summary>
     /// R技能
     /// </summary>
-    private skillID skillR;
+    private SkillID skillR;
     [SerializeField]
     /// <summary>
     /// Space技能
     /// </summary>
-    private skillBurst skillBurst;
+    private SkillBurst skillBurst;
     [SerializeField]
     /// <summary>
     /// 头盔
@@ -183,7 +183,7 @@ public class CharBase : MonoBehaviour
     /// </summary>
     private float respawnCountDown = 10f;
 
-    public CharBase(int runId, string playerName, ProEnum pro, skillID skillQ, skillID skillE, skillID skillR, skillBurst skillBurst, TeamEnum playerTeam)
+    public CharBase(int runId, string playerName, ProEnum pro, SkillID skillQ, SkillID skillE, SkillID skillR, SkillBurst skillBurst, TeamEnum playerTeam)
     {
         this.runId = runId;
         this.playerName = playerName;
@@ -437,10 +437,10 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public skillID SkillQ { get => skillQ; set => skillQ = value; }
-    public skillID SkillE { get => skillE; set => skillE = value; }
-    public skillID SkillR { get => skillR; set => skillR = value; }
-    public skillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
+    public SkillID SkillQ { get => skillQ; set => skillQ = value; }
+    public SkillID SkillE { get => skillE; set => skillE = value; }
+    public SkillID SkillR { get => skillR; set => skillR = value; }
+    public SkillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
     public EquipID HeadID { get => headID; set => headID = value; }
     public EquipID ArmorID { get => armorID; set => armorID = value; }
     public EquipID HandID { get => handID; set => handID = value; }
