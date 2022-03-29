@@ -5,29 +5,29 @@ using UnityEngine;
 
 public enum ProEnum
 {
-    近战,//近战 Soilder
-    远程,//远程 Archer
-    辅助,//辅助 Doctor
-    坦克//坦克 Tanker
+    Soilder,//近战 Soilder
+    Archer,//远程 Archer
+    Doctor,//辅助 Doctor
+    Tanker//坦克 Tanker
 }
 
 public enum BuffEnum
 {
-    定身,
-    迟缓,
-    流血,
-    沉默,
-    侵蚀,//系统Buff
-    无核//拥有该buff时无法复活
+    FixedBody,//定身
+    Slow,//迟缓
+    Bleeding,//流血
+    Silent,//沉默
+    Erode,//系统Buff 侵蚀
+    Coreless//无核 拥有该buff时无法复活
 }
 
 public enum StateEnum
 {
-    尚未生成,
-    存活,
-    彻底死亡,
-    复活中
-        
+    NonLife,//尚未生成
+    Alive,//存活
+    Dead,//彻底死亡
+    Respawning//复活中
+
 }
 
 public enum PlayerEnum

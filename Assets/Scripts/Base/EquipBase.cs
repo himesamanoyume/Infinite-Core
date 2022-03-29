@@ -7,7 +7,7 @@ public class EquipBase : MonoBehaviour
     /// <summary>
     /// 装备ID
     /// </summary>
-    public EquipID equipID;
+    //public EquipID equipID;
 
     /// <summary>
     /// 装备类型

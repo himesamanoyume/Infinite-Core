@@ -64,7 +64,7 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
         charBase.CurrentHealth = 0;
-        charBase.State = StateEnum.彻底死亡;
+        charBase.State = StateEnum.Dead;
         Log(runId, "彻底死亡");
     }
 
@@ -93,16 +93,16 @@ public class CharManager : MonoBehaviour
         {
             for (int i = 0; i < charBase.Buff.Count; i++)
             {
-                if (charBase.Buff[i].Equals(BuffEnum.无核))
+                if (charBase.Buff[i].Equals(BuffEnum.Coreless))
                 {
-                    charBase.State = StateEnum.彻底死亡;
+                    charBase.State = StateEnum.Dead;
                     break;
                 }
             }
         }
         Log(runId, "被击杀");
         PlayerRespawnCountDown(charBase.RunId);
-        charBase.State = StateEnum.复活中;
+        charBase.State = StateEnum.Respawning;
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerById(runId);
         if (charBase == null) { return; }
 
-        charBase.State = StateEnum.复活中;
+        charBase.State = StateEnum.Respawning;
         charBase.RespawnCountDown = charBase.RespawnTime;
         Log(runId, "开始重生倒计时");
     }

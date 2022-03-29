@@ -51,7 +51,7 @@ public class CharSpawnController : MonoBehaviour
     {
         
         
-            SpawnPlayer(-1, "test1", ProEnum.近战, SkillID.tempQ, SkillID.tempE, SkillID.tempR, SkillBurst.超速, TeamEnum.Red);
+            SpawnPlayer(-1, "test1", ProEnum.Soilder, SkillQ.tempQ1, SkillE.tempE1, SkillR.tempR1, SkillBurst.FlashSpeed, TeamEnum.Red);
         
 
     }
@@ -67,7 +67,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="skillR"></param>
     /// <param name="skillBurst"></param>
     /// <param name="playerTeam"></param>
-    public void SpawnPlayer(int runId, string playerName, ProEnum pro, SkillID skillQ, SkillID skillE, SkillID skillR, SkillBurst skillBurst, TeamEnum playerTeam)
+    public void SpawnPlayer(int runId, string playerName, ProEnum pro, SkillQ skillQ, SkillE skillE, SkillR skillR, SkillBurst skillBurst, TeamEnum playerTeam)
     {
         CharBase charBase = new CharBase(runId,playerName,pro,skillQ,skillE,skillR,skillBurst,playerTeam);
 
@@ -91,7 +91,7 @@ public class CharSpawnController : MonoBehaviour
     /// <param name="charBase"></param>
     public void SpawnPlayer(CharBase charBase)
     {
-        charBase.State = StateEnum.存活;
+        charBase.State = StateEnum.Alive;
         charBase.RespawnTime += 5f;
         GameObject playerModel = CharManager.Instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
         playerModel.SetActive(true);
@@ -108,7 +108,7 @@ public class CharSpawnController : MonoBehaviour
         Debug.LogWarning("调用了生成位置");
         switch (charBase.Pro)
         {
-            case ProEnum.近战:
+            case ProEnum.Soilder:
                 playerObject = PhotonNetwork.Instantiate(solider.name, new Vector3(0, 0, 0), Quaternion.identity);
                 
                 switch (charBase.RunId)
@@ -145,7 +145,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case ProEnum.远程:
+            case ProEnum.Archer:
                 playerObject = PhotonNetwork.Instantiate(archer.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -181,7 +181,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case ProEnum.辅助:
+            case ProEnum.Doctor:
                 playerObject = PhotonNetwork.Instantiate(doctor.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -217,7 +217,7 @@ public class CharSpawnController : MonoBehaviour
                         break;
                 }
                 break;
-            case ProEnum.坦克:
+            case ProEnum.Tanker:
                 playerObject = PhotonNetwork.Instantiate(tanker.name, new Vector3(0, 0, 0), Quaternion.identity);
                 switch (charBase.RunId)
                 {
@@ -367,7 +367,7 @@ public class CharSpawnController : MonoBehaviour
         playerObject.transform.position = new Vector3(0,0,0);
 
         component = spawnPos.GetComponent<CharBase>();
-        charBase.State = StateEnum.存活;
+        charBase.State = StateEnum.Alive;
         //需要方便快速赋值
         CharManager.Instance.GetPlayerInfo(component, charBase);
     }

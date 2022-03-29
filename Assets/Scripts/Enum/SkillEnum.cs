@@ -18,18 +18,30 @@ public enum SkillType
     Burst
 }
 
-public enum SkillID
+public enum SkillQ
 {
-    tempQ,
-    tempE,
-    tempR
+    tempQ1,
+    tempQ2
+    
+}
+
+public enum SkillE
+{
+    tempE1,
+    tempE2
+}
+
+public enum SkillR
+{
+    tempR1,
+    tempR2
 }
 
 
 public enum SkillBurst
 {
-    超速,
-    回复,
-    斩杀
+    FlashSpeed,//超速
+    Healing,//回复
+    Execute//处决
 }
 

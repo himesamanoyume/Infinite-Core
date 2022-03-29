@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 250.8, y: 25.1}
-  m_SizeDelta: {x: 93.986, y: 42.119}
+  m_AnchoredPosition: {x: 968, y: 103.920296}
+  m_SizeDelta: {x: 239.81, y: 149.0184}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &226608557
 CanvasRenderer:
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 2
-    m_MaxSize: 20
+    m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -246,8 +246,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -146.0276, y: 0}
-  m_SizeDelta: {x: 7.9408, y: 50}
+  m_AnchoredPosition: {x: -537.9096, y: 0}
+  m_SizeDelta: {x: 24.192, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1158001830589539949
 CanvasRenderer:
@@ -325,8 +325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -5.175995}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchoredPosition: {x: 0, y: -5.1760254}
+  m_SizeDelta: {x: 1100, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5498084975998284398
 CanvasRenderer:
@@ -378,6 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a5db476f19deb47837b43d842461f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownerId: 0
+  isPlayerReady: 0
   playerNameText: {fileID: 7183260363230140779}
   readyButton: {fileID: 226608553}
   readyImage: {fileID: 3392912365655205327}
@@ -416,8 +418,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -48.862, y: 0.0000076293945}
-  m_SizeDelta: {x: -97.723, y: 0}
+  m_AnchoredPosition: {x: -121.29, y: 0.0000076293945}
+  m_SizeDelta: {x: -290.94, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4441100340289632456
 CanvasRenderer:
@@ -452,8 +454,8 @@ MonoBehaviour:
     m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 25
+    m_MinSize: 10
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

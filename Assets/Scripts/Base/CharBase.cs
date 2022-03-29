@@ -51,7 +51,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 角色状态
     /// </summary>
-    private StateEnum state = StateEnum.尚未生成;
+    private StateEnum state = StateEnum.NonLife;
     [SerializeField]
     /// <summary>
     /// 当前角色身上所带的buff
@@ -116,17 +116,17 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// Q技能
     /// </summary>
-    private SkillID skillQ;
+    private SkillQ skillQ;
     [SerializeField]
     /// <summary>
     /// E技能
     /// </summary>
-    private SkillID skillE;
+    private SkillE skillE;
     [SerializeField]
     /// <summary>
     /// R技能
     /// </summary>
-    private SkillID skillR;
+    private SkillR skillR;
     [SerializeField]
     /// <summary>
     /// Space技能
@@ -136,32 +136,32 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 头盔
     /// </summary>
-    private EquipID headID;
+    private EquipHead headID;
     [SerializeField]
     /// <summary>
     /// 护甲
     /// </summary>
-    private EquipID armorID;
+    private EquipArmor armorID;
     [SerializeField]
     /// <summary>
     /// 护手
     /// </summary>
-    private EquipID handID;
+    private EquipHand handID;
     [SerializeField]
     /// <summary>
     /// 护膝
     /// </summary>
-    private EquipID kneeID;
+    private EquipKnee kneeID;
     [SerializeField]
     /// <summary>
     /// 护腿
     /// </summary>
-    private EquipID trousersID;
+    private EquipTrousers trousersID;
     [SerializeField]
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipID shoesID;
+    private EquipShoes shoesID;
     [SerializeField]
     /// <summary>
     /// 移动速度
@@ -183,7 +183,7 @@ public class CharBase : MonoBehaviour
     /// </summary>
     private float respawnCountDown = 10f;
 
-    public CharBase(int runId, string playerName, ProEnum pro, SkillID skillQ, SkillID skillE, SkillID skillR, SkillBurst skillBurst, TeamEnum playerTeam)
+    public CharBase(int runId, string playerName, ProEnum pro, SkillQ skillQ, SkillE skillE, SkillR skillR, SkillBurst skillBurst, TeamEnum playerTeam)
     {
         this.runId = runId;
         this.playerName = playerName;
@@ -437,16 +437,16 @@ public class CharBase : MonoBehaviour
             }
         }
     }
-    public SkillID SkillQ { get => skillQ; set => skillQ = value; }
-    public SkillID SkillE { get => skillE; set => skillE = value; }
-    public SkillID SkillR { get => skillR; set => skillR = value; }
+    public SkillQ SkillQ { get => skillQ; set => skillQ = value; }
+    public SkillE SkillE { get => skillE; set => skillE = value; }
+    public SkillR SkillR { get => skillR; set => skillR = value; }
     public SkillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
-    public EquipID HeadID { get => headID; set => headID = value; }
-    public EquipID ArmorID { get => armorID; set => armorID = value; }
-    public EquipID HandID { get => handID; set => handID = value; }
-    public EquipID KneeID { get => kneeID; set => kneeID = value; }
-    public EquipID TrousersID { get => trousersID; set => trousersID = value; }
-    public EquipID ShoesID { get => shoesID; set => shoesID = value; }
+    public EquipHead HeadID { get => headID; set => headID = value; }
+    public EquipArmor ArmorID { get => armorID; set => armorID = value; }
+    public EquipHand HandID { get => handID; set => handID = value; }
+    public EquipKnee KneeID { get => kneeID; set => kneeID = value; }
+    public EquipTrousers TrousersID { get => trousersID; set => trousersID = value; }
+    public EquipShoes ShoesID { get => shoesID; set => shoesID = value; }
     public float MoveSpeed
     {
         get => moveSpeed;
