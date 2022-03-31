@@ -161,7 +161,7 @@ public class CharBase : MonoBehaviour
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipShoes shoesID;
+    private EquipBoots shoesID;
     [SerializeField]
     /// <summary>
     /// 移动速度
@@ -446,7 +446,7 @@ public class CharBase : MonoBehaviour
     public EquipHand HandID { get => handID; set => handID = value; }
     public EquipKnee KneeID { get => kneeID; set => kneeID = value; }
     public EquipTrousers TrousersID { get => trousersID; set => trousersID = value; }
-    public EquipShoes ShoesID { get => shoesID; set => shoesID = value; }
+    public EquipBoots ShoesID { get => shoesID; set => shoesID = value; }
     public float MoveSpeed
     {
         get => moveSpeed;

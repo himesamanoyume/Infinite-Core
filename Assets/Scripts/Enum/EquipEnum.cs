@@ -18,7 +18,7 @@ public enum EquipType
     [Tooltip("护膝")]
     Knee,
     [Tooltip("鞋子")]
-    Shoes
+    Boots
 }
 
 /// <summary>
@@ -120,7 +120,7 @@ public enum EquipKnee
 /// <summary>
 /// 鞋子枚举
 /// </summary>
-public enum EquipShoes
+public enum EquipBoots
 {
     Null,
     [Tooltip("持之以恒系列")]
