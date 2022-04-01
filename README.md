@@ -13,8 +13,6 @@
 
 重做枚举 为装备系统作准备
 
-ScrollView鼠标滚轮滚动
-
 新增玩家在房间选择生成设置(PUN的实例化只写一次调用似乎会自动多次调用，因此之前的生成逻辑必须更改)
 
 #### bug
@@ -40,6 +38,10 @@ DebugConsole完善
 动画控制器记得加入photonView.IsMine的判断
 
 ## Tips
+
+技能碰撞限制
+
+项目命名空间无法识别时直接到Unity 的Edit-> Perferences-> External Tools-> Regenarate project files
 
 以后我再也不要在代码里除字符串和注释以外的任何地方写中文了
 
@@ -74,6 +76,12 @@ DebugConsole完善
 如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可
 
 ## Done
+
+### 2022.4.1
+
+小优化UI
+
+技能系统(1/10)
 
 ### 2022.3.30
 

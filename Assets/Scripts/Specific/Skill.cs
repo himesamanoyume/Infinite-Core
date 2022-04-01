@@ -1,6 +1,29 @@
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+using UnityEngine;
+
+
+public class Skill : MonoBehaviour 
+{
+    
+    
+    private void Start()
+    {
+        #region TempQ1
+        Dictionary<int, SkillData> tempQ1data = new Dictionary<int, SkillData>();
+
+        tempQ1data.Add(1, new SkillData(new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 0), 0.5f, 1));
+
+        SkillBase tempQ1 = new SkillBase(SkillType.Q, "TempQ1", 1, 20,tempQ1data);
+        #endregion
+    }
+
+    
+
+
+
+}
 
 //public class TempQ1 : SkillBase
 //{
@@ -15,8 +38,8 @@
 
 //    public TempQ1(SkillQ id, SkillType type, string skillName, int level, float cd, float skillRange, float[] damage) : base(type,  skillName,  level,  cd,  skillRange,  damage)
 //    {
-        
-       
+
+
 //    }
 //    //public SkillType Type { get => type; }
 //    //public string SkillName { get => skillName; }
