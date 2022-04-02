@@ -1018,7 +1018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5611530498424730800}
   m_Layer: 5
-  m_Name: SelectSkillBrustContent
+  m_Name: SelectSkillBurstContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
