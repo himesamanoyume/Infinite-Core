@@ -8,8 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Launcher.unity
     guid: 31c7c21c4b08b66409e4b9d9adf8542f
-  - enabled: 0
-    path: Assets/Scenes/Test.unity
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
     guid: d618bad576d9c1247ab216576a357129
   - enabled: 0
     path: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scenes/DemoAsteroids-LobbyScene.unity

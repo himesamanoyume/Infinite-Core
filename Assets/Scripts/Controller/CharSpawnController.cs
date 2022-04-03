@@ -27,18 +27,6 @@ public class CharSpawnController : MonoBehaviour
 
     //public GameObject mainCamera;
 
-    //public Camera redPlayer1Camera;
-    //public Camera redPlayer2Camera;
-    //public Camera redPlayer3Camera;
-    //public Camera redPlayer4Camera;
-    //public Camera redPlayer5Camera;
-
-    //public Camera bluePlayer1Camera;
-    //public Camera bluePlayer2Camera;
-    //public Camera bluePlayer3Camera;
-    //public Camera bluePlayer4Camera;
-    //public Camera bluePlayer5Camera;
-
     int redCount = 0;
     int blueCount = 0;
 
@@ -111,7 +99,7 @@ public class CharSpawnController : MonoBehaviour
             case ProEnum.Soilder:
                 playerObject = PhotonNetwork.Instantiate(solider.name, new Vector3(0, 0, 0), Quaternion.identity);
                 
-                switch (charBase.RunId)
+                switch (charBase.ActorNumber)
                 {
                     case 0:
                         SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
@@ -147,7 +135,7 @@ public class CharSpawnController : MonoBehaviour
                 break;
             case ProEnum.Archer:
                 playerObject = PhotonNetwork.Instantiate(archer.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.RunId)
+                switch (charBase.ActorNumber)
                 {
                     case 0:
                         SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
@@ -183,7 +171,7 @@ public class CharSpawnController : MonoBehaviour
                 break;
             case ProEnum.Doctor:
                 playerObject = PhotonNetwork.Instantiate(doctor.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.RunId)
+                switch (charBase.ActorNumber)
                 {
                     case 0:
                         SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
@@ -219,7 +207,7 @@ public class CharSpawnController : MonoBehaviour
                 break;
             case ProEnum.Tanker:
                 playerObject = PhotonNetwork.Instantiate(tanker.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.RunId)
+                switch (charBase.ActorNumber)
                 {
                     case 0:
                         SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
@@ -260,7 +248,7 @@ public class CharSpawnController : MonoBehaviour
     public void RespawnSelectPos(GameObject playerObject, CharBase charBase)
     {
         //´Ë´¦playerObjectÎªplayerModel
-        switch (charBase.RunId)
+        switch (charBase.ActorNumber)
         {
             case 0:
                 SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
@@ -338,14 +326,14 @@ public class CharSpawnController : MonoBehaviour
         {
             case TeamEnum.Red:
                 CharManager.Instance.Log("Red");
-                charBase.RunId = redCount;
+                charBase.ActorNumber = redCount;
                 redCount++;
                 SelectPos(charBase);
                 break;
 
             case TeamEnum.Blue:
                 CharManager.Instance.Log("Blue");
-                charBase.RunId = blueCount + 5;
+                charBase.ActorNumber = blueCount + 5;
                 blueCount++;
                 SelectPos(charBase);
                 break;

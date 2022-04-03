@@ -72,7 +72,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     private void Start()
     {
         SetActiveMenu(connectMenu.name);
+        redButton.GetComponent<Button>().onClick.AddListener(OnRedButtonClicked);
+        blueButton.GetComponent<Button>().onClick.AddListener(OnBlueButtonClicked);
+        startButton.GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartGame);
     }
+
     /// <summary>
     /// MonoBehaviour method called on GameObject by Unity during early initialization phase.
     /// </summary>
@@ -165,10 +169,6 @@ public class Launcher : MonoBehaviourPunCallbacks
             {InfiniteCoreGame.PLAYER_TEAM,TeamEnum.Red }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        //redButton.GetComponent<Button>().interactable = false;
-        //blueButton.GetComponent<Button>().interactable = true;
-        //redButton.SetActive(false);
-        //blueButton.SetActive(true);
     }
 
     public void OnBlueButtonClicked()
@@ -178,8 +178,6 @@ public class Launcher : MonoBehaviourPunCallbacks
             {InfiniteCoreGame.PLAYER_TEAM,TeamEnum.Blue }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        //blueButton.SetActive(false);
-        //redButton.SetActive(true);
     }
 
     /// <summary>

@@ -101,7 +101,7 @@ public class CharManager : MonoBehaviour
             }
         }
         Log(runId, "±»»÷É±");
-        PlayerRespawnCountDown(charBase.RunId);
+        PlayerRespawnCountDown(charBase.ActorNumber);
         charBase.State = StateEnum.Respawning;
     }
 
@@ -465,7 +465,7 @@ public class CharManager : MonoBehaviour
     {
         //charBase = component;
 
-        needTarget.RunId = provider.RunId;
+        needTarget.ActorNumber = provider.ActorNumber;
         needTarget.PlayerName = provider.PlayerName;
         needTarget.Kill = provider.Kill;
         needTarget.Death = provider.Death;

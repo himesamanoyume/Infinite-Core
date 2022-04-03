@@ -1345,17 +1345,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aded1ccb7216fd458610b787cedb386, type: 3}
---- !u!114 &650032255 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5057136355556729029, guid: 5aded1ccb7216fd458610b787cedb386, type: 3}
-  m_PrefabInstance: {fileID: 650032254}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96d9011b785ef5e4db3fe6f7c44e39c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &750595723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,19 +1741,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 859304838}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 291101440}
-        m_TargetAssemblyTypeName: Launcher, Assembly-CSharp
-        m_MethodName: OnBlueButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &859304838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2089,19 +2066,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 937982935}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 291101440}
-        m_TargetAssemblyTypeName: Launcher, Assembly-CSharp
-        m_MethodName: OnRedButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &937982935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4113,19 +4078,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1833820317}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 650032255}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1833820317
 MonoBehaviour:
   m_ObjectHideFlags: 0

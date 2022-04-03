@@ -3,15 +3,17 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class CharBase : MonoBehaviour
+using Photon.Pun;
+
+public class CharBase : MonoBehaviourPunCallbacks
 {
 
-    
+    #region Private Fields
     [SerializeField]
     /// <summary>
     /// 运行时才赋予的独特ID 用于控制器快速为指定ID添加或删除特定效果
     /// </summary>
-    private int runId = -1;
+    private int actorNumber = -1;
     [SerializeField]
     /// <summary>
     /// 玩家姓名
@@ -183,9 +185,12 @@ public class CharBase : MonoBehaviour
     /// </summary>
     private float respawnCountDown = 10f;
 
-    public CharBase(int runId, string playerName, ProEnum pro, SkillQ skillQ, SkillE skillE, SkillR skillR, SkillBurst skillBurst, TeamEnum playerTeam)
+    #endregion
+
+    #region Public Functions
+    public CharBase(int actorNumber, string playerName, ProEnum pro, SkillQ skillQ, SkillE skillE, SkillR skillR, SkillBurst skillBurst, TeamEnum playerTeam)
     {
-        this.runId = runId;
+        this.actorNumber = actorNumber;
         this.playerName = playerName;
         this.pro = pro;
         this.skillQ = skillQ;
@@ -200,7 +205,7 @@ public class CharBase : MonoBehaviour
 
     }
 
-    public int RunId { get => runId; set => runId = value; }
+    public int ActorNumber { get => actorNumber; set => actorNumber = value; }
     public string PlayerName { get => playerName; set => playerName = value; }
     public int Kill 
     { 
@@ -208,7 +213,7 @@ public class CharBase : MonoBehaviour
         set {
             if (value<0)
             {
-                CharManager.Instance.Log(runId, "杀敌数不合法");
+                CharManager.Instance.Log(actorNumber, "杀敌数不合法");
             }
             else
             {
@@ -221,7 +226,7 @@ public class CharBase : MonoBehaviour
         set {
             if (value<0)
             {
-                CharManager.Instance.Log(runId, "死亡数不合法");
+                CharManager.Instance.Log(actorNumber, "死亡数不合法");
             }
             else
             {
@@ -234,7 +239,7 @@ public class CharBase : MonoBehaviour
         set {
             if (value<0 || value > 999999)
             {
-                CharManager.Instance.Log(runId, "金钱不合法");
+                CharManager.Instance.Log(actorNumber, "金钱不合法");
             }
             else
             {
@@ -247,7 +252,7 @@ public class CharBase : MonoBehaviour
         set {
             if (value <0)
             {
-                CharManager.Instance.Log(runId, "经验不合法");
+                CharManager.Instance.Log(actorNumber, "经验不合法");
             }
             else
             {
@@ -261,7 +266,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "最大经验值不合法");
+                CharManager.Instance.Log(actorNumber, "最大经验值不合法");
             }
             else
             {
@@ -279,7 +284,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "等级不合法");
+                CharManager.Instance.Log(actorNumber, "等级不合法");
             }
             else
             {
@@ -294,7 +299,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "攻击力不合法");
+                CharManager.Instance.Log(actorNumber, "攻击力不合法");
             }
             else
             {
@@ -310,7 +315,7 @@ public class CharBase : MonoBehaviour
             if (value < 0)
             {
                 shield = 0;
-                CharManager.Instance.Log(runId, "护盾不合法,已使护盾为0");
+                CharManager.Instance.Log(actorNumber, "护盾不合法,已使护盾为0");
             }
             else
             {
@@ -326,12 +331,12 @@ public class CharBase : MonoBehaviour
             if (value < 0)
             {
                 currentHealth = 0;
-                CharManager.Instance.Log(runId, "血量不合法,已使玩家死亡");
+                CharManager.Instance.Log(actorNumber, "血量不合法,已使玩家死亡");
             }
             else if (value >maxHealth)
             {
                 currentHealth = maxHealth;
-                CharManager.Instance.Log(runId, "血量不得超过最大血量");
+                CharManager.Instance.Log(actorNumber, "血量不得超过最大血量");
             }
             else
             {
@@ -347,7 +352,7 @@ public class CharBase : MonoBehaviour
             if (value < 1)
             {
                 maxHealth = 1;
-                CharManager.Instance.Log(runId, "最大血量不合法,已达到最低值");
+                CharManager.Instance.Log(actorNumber, "最大血量不合法,已达到最低值");
             }
             else
             {
@@ -397,7 +402,7 @@ public class CharBase : MonoBehaviour
             if (value < 0)
             {
                 defence = 0;
-                CharManager.Instance.Log(runId, "防御不合法,已为最低值");
+                CharManager.Instance.Log(actorNumber, "防御不合法,已为最低值");
             }
             else
             {
@@ -413,7 +418,7 @@ public class CharBase : MonoBehaviour
             if (value < 0.1f)
             {
                 attackSpeed = 0.1f;
-                CharManager.Instance.Log(runId, "攻速不合法,已为最低值");
+                CharManager.Instance.Log(actorNumber, "攻速不合法,已为最低值");
             }
             else
             {
@@ -429,7 +434,7 @@ public class CharBase : MonoBehaviour
             if (value < 0)
             {
                 restore = 0;
-                CharManager.Instance.Log(runId, "回血速度不合法");
+                CharManager.Instance.Log(actorNumber, "回血速度不合法");
             }
             else
             {
@@ -454,7 +459,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "移速不合法");
+                CharManager.Instance.Log(actorNumber, "移速不合法");
             }
             else
             {
@@ -469,7 +474,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "攻击范围不合法");
+                CharManager.Instance.Log(actorNumber, "攻击范围不合法");
             }
             else
             {
@@ -484,7 +489,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < 0)
             {
-                CharManager.Instance.Log(runId, "重生时间不合法");
+                CharManager.Instance.Log(actorNumber, "重生时间不合法");
             }
             else if (respawnTime+value>60f)
             {
@@ -503,7 +508,7 @@ public class CharBase : MonoBehaviour
         {
             if (value < -1f)
             {
-                CharManager.Instance.Log(runId, "重生倒计时不合法");
+                CharManager.Instance.Log(actorNumber, "重生倒计时不合法");
             }
             else
             {
@@ -513,6 +518,15 @@ public class CharBase : MonoBehaviour
     }
     public TeamEnum PlayerTeam { get => playerTeam; set => playerTeam = value; }
 
+    #endregion
 
-    
+    #region Photon Callbacks
+
+    public void OnCharBaseUpdate()
+    {
+
+    }
+
+    #endregion
+
 }
