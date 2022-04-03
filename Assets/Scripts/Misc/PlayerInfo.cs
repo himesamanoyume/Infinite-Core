@@ -50,7 +50,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         }
         else
         {
-            SetTeam(TeamEnum.Null);
+            InitPlayerProps(PhotonNetwork.LocalPlayer);
             SetReadyImage(false);
             readyButton.GetComponent<Button>().onClick.AddListener(() =>
             {

@@ -108,7 +108,6 @@ public class Launcher : MonoBehaviourPunCallbacks
             else
             {
                 redCount = value;
-                CheckTeamCount();
             }
         }
     }
@@ -125,7 +124,6 @@ public class Launcher : MonoBehaviourPunCallbacks
             else
             {
                 blueCount = value;
-                CheckTeamCount();
             }
         }
     }
@@ -217,6 +215,34 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
+    ///  检查玩家是否全部准备
+    /// </summary>
+    /// <returns></returns>
+    public void CheckPlayerReady()
+    {
+        object isReady, team;
+        Debug.Log("CheckPlayerReady");
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_READY, out isReady) && p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM,out team))
+            {
+                if ((bool)isReady &&((TeamEnum)team == TeamEnum.Blue || (TeamEnum)team == TeamEnum.Red))
+                {
+                    continue;
+                }
+                Debug.LogFormat("{0} 玩家未准备好", p.NickName);
+                startButton.GetComponent<Button>().interactable = false;
+                return;
+            }
+
+            Debug.LogFormat("{0} 玩家未准备好", p.NickName);
+            startButton.GetComponent<Button>().interactable = false;
+            return;
+        }
+        startButton.GetComponent<Button>().interactable = true;
+    }
+
+    /// <summary>
     /// 当阵营变动时
     /// </summary>
     public void OnTeamChanged()
@@ -244,12 +270,13 @@ public class Launcher : MonoBehaviourPunCallbacks
                     
                 }
             }
-            CheckTeamCount();
+            //CheckTeamCount();
             Debug.LogFormat("RedCount: {0}, BlueCount: {1}" ,RedCount, BlueCount);
             
         }
-
+        
         CheckTeamCount();
+        CheckPlayerReady();
     }
     #endregion
 
@@ -257,9 +284,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        SetActiveMenu(mainMenu.name);
-        PhotonNetwork.LocalPlayer.CustomProperties.Clear();
-        playerNameTextEntries.Clear();
+        if (PhotonNetwork.IsConnected)
+        {
+            SetActiveMenu(mainMenu.name);
+            PhotonNetwork.LocalPlayer.CustomProperties.Clear();
+            playerNameTextEntries.Clear();
+            Debug.Log("OnLeftRoom");
+        }
+        
     }
 
     public override void OnConnectedToMaster()
@@ -267,8 +299,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         if (isConnecting)
         {
-
-            //PhotonNetwork.JoinOrCreateRoom("test", new RoomOptions { MaxPlayers = maxPlayersPerRoom }, default);
             SetActiveMenu(mainMenu.name);
             TextInputField.text = "Player " + Random.Range(1000, 10000);
             isConnecting = false;
@@ -293,9 +323,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             playerNameTextEntries = new Dictionary<int, GameObject>();
         }
 
-        Player[] players = PhotonNetwork.PlayerList;
-
-        foreach (Player p in players)
+        foreach (Player p in PhotonNetwork.PlayerList)
         {
             GameObject textEntry = Instantiate(playerNameEntry, content);
 
@@ -303,21 +331,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
             component.InitPlayerTextEntryInfo(p.ActorNumber, p.NickName);
 
-                
-            if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_NAME,out object name))
-            {
-                    
-            }
-            else
-            {
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    Debug.Log("OnJoinedRoom " + p.NickName + " Init");
-                    component.InitPlayerProps(p);
-                }
-                    
-            }
-                
             object isPlayerReady;
             if (p.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_READY, out isPlayerReady))
             {
@@ -351,7 +364,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         CheckTeamCount();
         startButton.SetActive(PhotonNetwork.IsMasterClient);
-        
+        CheckPlayerReady();
     }
 
     /// <summary>
@@ -376,7 +389,12 @@ public class Launcher : MonoBehaviourPunCallbacks
             {
                 Debug.Log(targetPlayer.ActorNumber + " SetReadyImage "+ (bool)isPlayerReady);
                 entry.GetComponent<PlayerInfo>().SetReadyImage((bool)isPlayerReady);
-                 
+
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    CheckPlayerReady();
+                }
+
             }
 
             object playerTeam;
@@ -390,9 +408,8 @@ public class Launcher : MonoBehaviourPunCallbacks
             }
         }
 
-
-        CheckTeamCount();
-        //此处检查是否全部准备
+        //CheckPlayerReady();
+        
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -408,22 +425,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         playerNameTextEntries.Add(other.ActorNumber, textEntry);
 
-        //---
-        if (other.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_ACTOR_NUMBER, out object actorNumber))
-        {
-
-        }
-        else
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                //Debug.LogError("Are you Master?");
-                Debug.Log("OnPlayerEnteredRoom " + other.NickName + " Init");
-                component.InitPlayerProps(other);
-            }
-
-        }
-        //---
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -434,8 +435,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         OnTeamChanged();
 
-        //此处要检查是否全部准备
-
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CheckPlayerReady();
+        }
     }
     #endregion
 
@@ -447,6 +450,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         redButton.GetComponent<Button>().interactable=true;
         blueButton.GetComponent<Button>().interactable=true;
         PhotonNetwork.LeaveRoom();
+        SetActiveMenu(mainMenu.name);
     }
 
     /// <summary>
