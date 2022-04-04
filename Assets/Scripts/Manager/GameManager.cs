@@ -55,6 +55,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         Instance = this;
     }
 
+    private void Update()
+    {
+        GameEventManager.Update();
+    }
+
     #endregion
 
     #region Photon Callbacks
