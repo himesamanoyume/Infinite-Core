@@ -149,7 +149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 103492746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.51}
+  m_LocalPosition: {x: 0, y: 1.99, z: 1.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -408,7 +408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 584813660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2.04}
+  m_LocalPosition: {x: 0, y: 1.99, z: -2.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -578,7 +578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626697414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5, y: 0, z: -1.71}
+  m_LocalPosition: {x: 4.5, y: 1.99, z: -1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -837,7 +837,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 789608003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.63, y: 0, z: 0}
+  m_LocalPosition: {x: 4.63, y: 1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -855,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -928,7 +928,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814017898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -946,7 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -1019,7 +1019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855104565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.4, y: 0, z: -2.41}
+  m_LocalPosition: {x: 4.4, y: 1.99, z: -2.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1037,7 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -1110,7 +1110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890781934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.28, y: 0, z: 2.83}
+  m_LocalPosition: {x: 5.28, y: 1.99, z: 2.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1128,7 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -1328,7 +1328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027272056}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.61}
+  m_LocalPosition: {x: 0, y: 1.99, z: 2.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -1515,7 +1515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785496391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.96, y: 0, z: 1.43}
+  m_LocalPosition: {x: 4.96, y: 1.99, z: 1.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1533,7 +1533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0
@@ -1739,7 +1739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2029508684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.33}
+  m_LocalPosition: {x: 0, y: 1.99, z: -1.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1757,7 +1757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runId: -1
+  actorNumber: -1
   playerName: 
   playerTeam: 0
   kill: 0

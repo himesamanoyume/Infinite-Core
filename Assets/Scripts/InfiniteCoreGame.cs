@@ -16,6 +16,10 @@ public class InfiniteCoreGame : MonoBehaviour
     /// 是否加载关卡完成
     /// </summary>
     public const string PLAYER_LOADED_LEVEL = "PlayerLoadedLevel";
+    /// <summary>
+    /// 阵营序号
+    /// </summary>
+    public const string PLAYER_NUMBER = "PlayerNumber";
 
     public const string PLAYER_ACTOR_NUMBER = "PlayerActorNumber";
 

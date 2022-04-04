@@ -17,7 +17,7 @@ public class CharManager : MonoBehaviour
 
 
     /// <summary>
-    /// 通过id获取玩家名字
+    /// 【待重写】通过id获取玩家名字
     /// </summary>
     /// <param name="runId"></param>
     public void GetPlayerNameById(int runId)
@@ -56,7 +56,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过id使玩家强制立即彻底死亡 【GM命令】
+    /// 【待重写】通过id使玩家强制立即彻底死亡 【GM命令】
     /// </summary>
     /// <param name="runId"></param>
     public void PlayerDead(int runId)
@@ -69,7 +69,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过id使玩家正常死亡
+    /// 【待重写】通过id使玩家正常死亡
     /// </summary>
     /// <param name="runId"></param>
     public void PlayerKilled(int runId)
@@ -106,7 +106,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 玩家达成了击杀 根据击杀者id增加一次杀敌数
+    /// 【待重写】玩家达成了击杀 根据击杀者id增加一次杀敌数
     /// </summary>
     /// <param name="runId"></param>
     public void PlayerKill(int runId)
@@ -119,7 +119,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 玩家重生倒计时
+    /// 【待重写】玩家重生倒计时
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="time"></param>
@@ -134,7 +134,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过id直接修改玩家当前生命值
+    /// 【待重写】通过id直接修改玩家当前生命值
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="health"></param>
@@ -158,7 +158,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给玩家经验
+    /// 【待重写】给玩家经验
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minExp"></param>
@@ -181,7 +181,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给予/扣除玩家金钱 最大值和最小值可为负数 即为扣钱
+    /// 【待重写】给予/扣除玩家金钱 最大值和最小值可为负数 即为扣钱
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minMoney"></param>
@@ -205,7 +205,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家血量 数值可为负数
+    /// 【待重写】给与/扣除玩家血量 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="health"></param>
@@ -227,7 +227,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家最大血量 数值可为负数
+    /// 【待重写】给与/扣除玩家最大血量 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minMaxHealth"></param>
@@ -250,7 +250,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家护盾值 数值可为负数
+    ///【待重写】 给与/扣除玩家护盾值 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="shield"></param>
@@ -272,7 +272,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家爆伤 数值可为负数
+    /// 【待重写】给与/扣除玩家爆伤 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minCriticalHit"></param>
@@ -295,7 +295,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家暴击率 数值可为负数
+    /// 【待重写】给与/扣除玩家暴击率 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minCriticalHitRate"></param>
@@ -318,7 +318,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家移速 数值可为负数
+    /// 【待重写】给与/扣除玩家移速 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minMoveSpeedChange"></param>
@@ -341,7 +341,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给与/扣除玩家攻速 数值可为负数
+    /// 【待重写】给与/扣除玩家攻速 数值可为负数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="minAttackSpeed"></param>
@@ -365,7 +365,7 @@ public class CharManager : MonoBehaviour
     // --------------------------------------
 
     /// <summary>
-    /// 玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
+    /// 【待重写】玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="lowerLimit"></param>
@@ -380,7 +380,7 @@ public class CharManager : MonoBehaviour
         return value;
     }
     /// <summary>
-    /// 玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
+    /// 【待重写】玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
     /// </summary>
     /// <param name="runId"></param>
     /// <param name="lowerLimit"></param>
@@ -407,7 +407,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过ID获取特定玩家的组件,适用于将要进行特定属性进行修改时
+    /// 【待重写】通过ID获取特定玩家的组件,适用于将要进行特定属性进行修改时
     /// </summary>
     /// <param name="runId"></param>
     /// <returns></returns>
@@ -423,7 +423,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过id找某个摄像机
+    /// 【待重写】通过id找某个摄像机
     /// </summary>
     /// <param name="runId"></param>
     /// <returns></returns>
@@ -456,7 +456,7 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据CharBase组件获取所有信息
+    /// 【待重写】根据CharBase组件获取所有信息
     /// </summary>
     /// <param name="needTarget"></param>
     /// <param name="provider"></param>

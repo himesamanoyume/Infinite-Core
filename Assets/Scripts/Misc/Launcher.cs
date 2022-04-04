@@ -89,12 +89,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         TextInputField.text = "Player " + Random.Range(1000, 10000);
     }
 
-
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity during initialization phase.
-    /// </summary>
-
-
     #endregion
 
 
