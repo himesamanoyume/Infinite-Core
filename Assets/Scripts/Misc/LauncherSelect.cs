@@ -75,7 +75,7 @@ public class LauncherSelect : MonoBehaviourPunCallbacks
     {
         Hashtable props = new Hashtable()
         {
-            {InfiniteCoreGame.PLAYER_SKILL_Q,(SkillBurst)skillBurstSelect.value }
+            {InfiniteCoreGame.PLAYER_SKILL_BURST,(SkillBurst)skillBurstSelect.value }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         Debug.Log((SkillBurst)skillBurstSelect.value + " Changed");

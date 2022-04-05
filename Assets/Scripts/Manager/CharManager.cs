@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Photon.Pun;
+using Photon.Realtime;
+
 public class CharManager : MonoBehaviour
 {
 
     public GameObject[] playerPosList = new GameObject[10];
+
+
+    Dictionary<int, GameObject> playerModelList;
 
     public static CharManager Instance;
 
@@ -14,17 +20,59 @@ public class CharManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        playerModelList = new Dictionary<int, GameObject>();
+    }
 
+    private void Update()
+    {
+        GetPlayerModelList();
+        //foreach (var item in playerModelList)
+        //{
+        //    Debug.Log(item.Value.name);
+        //}
+    }
+
+    /// <summary>
+    /// 获取场内所有玩家模型
+    /// </summary>
+    void GetPlayerModelList()
+    {
+        if (PhotonNetwork.PlayerList.Length == playerModelList.Count)
+        {
+            return;
+        }
+        else
+        {
+            playerModelList.Clear();
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerModel");
+            foreach (Player p in PhotonNetwork.PlayerList)
+            {
+                foreach (GameObject obj in gameObjects)
+                {
+
+                    if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
+                    {
+                        obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)?p.NickName + " (My)": p.NickName;
+                        playerModelList.Add(p.ActorNumber, obj);
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
 
     /// <summary>
     /// 【待重写】通过id获取玩家名字
     /// </summary>
-    /// <param name="runId"></param>
-    public void GetPlayerNameById(int runId)
+    /// <param name="actorNumber"></param>
+    public void GetPlayerNameById(int actorNumber)
     {
-        CharBase charBase = FindPlayerById(runId);
-        if (charBase == null) { return; }
-        Log(runId, "名为"+charBase.PlayerName);
+        //CharBase charBase = FindPlayerById(actorNumber);
+        //if (charBase == null) { return; }
+        //Log(actorNumber, "名为"+charBase.PlayerName);
     }
 
     /// <summary>
@@ -85,21 +133,21 @@ public class CharManager : MonoBehaviour
         FindChildObjWithTag("PlayerModel", charPos).SetActive(false);
 
         //------------------------
-        if (charBase.Buff == null)
-        {
+        //if (charBase.Buff == null)
+        //{
 
-        }
-        else
-        {
-            for (int i = 0; i < charBase.Buff.Count; i++)
-            {
-                if (charBase.Buff[i].Equals(BuffEnum.Coreless))
-                {
-                    charBase.State = StateEnum.Dead;
-                    break;
-                }
-            }
-        }
+        //}
+        //else
+        //{
+        //    for (int i = 0; i < charBase.Buff.Count; i++)
+        //    {
+        //        if (charBase.Buff[i].Equals(BuffEnum.Coreless))
+        //        {
+        //            charBase.State = StateEnum.Dead;
+        //            break;
+        //        }
+        //    }
+        //}
         Log(runId, "被击杀");
         PlayerRespawnCountDown(charBase.ActorNumber);
         charBase.State = StateEnum.Respawning;
@@ -473,7 +521,7 @@ public class CharManager : MonoBehaviour
         needTarget.CurrentExp = provider.CurrentExp;
         needTarget.MaxExp = provider.MaxExp;
         needTarget.State = provider.State;
-        needTarget.Buff = provider.Buff;
+        //needTarget.Buff = provider.Buff;
         needTarget.Pro = provider.Pro;
         needTarget.Level = provider.Level;
         needTarget.Attack = provider.Attack;
@@ -493,7 +541,7 @@ public class CharManager : MonoBehaviour
         needTarget.HeadID = provider.HeadID;
         needTarget.KneeID = provider.KneeID;
         needTarget.TrousersID = provider.TrousersID;
-        needTarget.ShoesID = provider.ShoesID;
+        needTarget.BootsID = provider.BootsID;
         needTarget.MoveSpeed = provider.MoveSpeed;
         needTarget.AttackRange = provider.AttackRange;
         needTarget.RespawnTime = provider.RespawnTime;

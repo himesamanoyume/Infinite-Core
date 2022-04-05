@@ -38,7 +38,7 @@ public class CharStateController : MonoBehaviour
                 charBase.RespawnCountDown = 0;
                 charBase.State = StateEnum.Alive;
                 charBase.CurrentHealth = charBase.MaxHealth;
-                CharSpawnController.instance.SpawnPlayer(charBase);
+                //CharSpawnController.instance.SpawnPlayer(charBase);
             }
         }
 

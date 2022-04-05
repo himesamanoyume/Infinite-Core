@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 1259490272339368446}
   - component: {fileID: -5285226530087299361}
   - component: {fileID: 1307905066947866740}
+  - component: {fileID: 7818566967889310626}
   m_Layer: 0
   m_Name: Doctor
   m_TagString: PlayerModel
@@ -253,6 +254,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1307905066947866740}
   - {fileID: -5285226530087299361}
+  - {fileID: 7818566967889310626}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -284,3 +286,50 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7818566967889310626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027300526949257307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorNumber: -1
+  playerName: 
+  playerTeam: 0
+  kill: 0
+  death: 0
+  money: 0
+  currentExp: 0
+  maxExp: 500
+  state: 0
+  buff: 
+  pro: 0
+  level: 1
+  attack: 100
+  shield: 0
+  maxHealth: 1000
+  currentHealth: 1000
+  criticalHit: 0.5
+  criticalHitRate: 0.05
+  defence: 1000
+  attackSpeed: 1
+  restore: 10
+  skillQ: 0
+  skillE: 0
+  skillR: 0
+  skillBurst: 0
+  headID: 0
+  armorID: 0
+  handID: 0
+  kneeID: 0
+  trousersID: 0
+  shoesID: 0
+  moveSpeed: 10
+  attackRange: 10
+  respawnTime: 10
+  respawnCountDown: 10

@@ -13,7 +13,7 @@
 
 【重点】CharManager、CharSpawnController
 
-每个玩家时刻获取自定义属性并赋值到CharBase 更新值时不更新脚本的值 而是更新属性
+阅读一下stream如何同步数组
 
 开始学习并实际运用事件系统
 
@@ -30,8 +30,6 @@
 离开房间时会回到连接界面而不是主界面
 
 ### 优先级低
-
-修复其他玩家无法绑定父物体
 
 玩家退出时用PUN销毁物体
 
@@ -80,6 +78,10 @@ DebugConsole 改版
 如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可
 
 ## Done
+
+### 2022.4.5
+
+初步实现同步玩家的CharBase
 
 ### 2022.4.4
 

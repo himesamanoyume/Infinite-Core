@@ -3,10 +3,14 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Photon.Realtime;
 using Photon.Pun;
 
-public class CharBase : MonoBehaviourPunCallbacks
+public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 {
+
+    [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+    public static GameObject LocalPlayerInstance;
 
     #region Private Fields
     [SerializeField]
@@ -58,7 +62,7 @@ public class CharBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// 当前角色身上所带的buff
     /// </summary>
-    private List<BuffEnum> buff;
+    private List<BuffEnum> buff = new List<BuffEnum>();
     [SerializeField]
     /// <summary>
     /// 角色职业
@@ -163,7 +167,7 @@ public class CharBase : MonoBehaviourPunCallbacks
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipBoots shoesID;
+    private EquipBoots bootsID;
     [SerializeField]
     /// <summary>
     /// 移动速度
@@ -188,22 +192,6 @@ public class CharBase : MonoBehaviourPunCallbacks
     #endregion
 
     #region Public Functions
-    public CharBase(int actorNumber, string playerName, ProEnum pro, SkillQ skillQ, SkillE skillE, SkillR skillR, SkillBurst skillBurst, TeamEnum playerTeam)
-    {
-        this.actorNumber = actorNumber;
-        this.playerName = playerName;
-        this.pro = pro;
-        this.skillQ = skillQ;
-        this.skillE = skillE;
-        this.skillR = skillR;
-        this.skillBurst = skillBurst;
-        this.playerTeam = playerTeam;
-    }
-
-    public CharBase()
-    {
-
-    }
 
     public int ActorNumber { get => actorNumber; set => actorNumber = value; }
     public string PlayerName { get => playerName; set => playerName = value; }
@@ -451,7 +439,7 @@ public class CharBase : MonoBehaviourPunCallbacks
     public EquipHand HandID { get => handID; set => handID = value; }
     public EquipKnee KneeID { get => kneeID; set => kneeID = value; }
     public EquipTrousers TrousersID { get => trousersID; set => trousersID = value; }
-    public EquipBoots ShoesID { get => shoesID; set => shoesID = value; }
+    public EquipBoots BootsID { get => bootsID; set => bootsID = value; }
     public float MoveSpeed
     {
         get => moveSpeed;
@@ -524,9 +512,110 @@ public class CharBase : MonoBehaviourPunCallbacks
 
     public void OnCharBaseUpdate()
     {
+        
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send the others our data
+            stream.SendNext(ActorNumber);
+            stream.SendNext(PlayerName);
+            stream.SendNext(PlayerTeam);
+            stream.SendNext(Kill);
+            stream.SendNext(Death);
+            stream.SendNext(Money);
+            stream.SendNext(CurrentExp);
+            stream.SendNext(MaxExp);
+            stream.SendNext(State);
+            //stream.SendNext(Buff);
+            stream.SendNext(Pro);
+            stream.SendNext(Level);
+            stream.SendNext(Attack);
+            stream.SendNext(Shield);
+            stream.SendNext(MaxHealth);
+            stream.SendNext(CurrentHealth);
+            stream.SendNext(CriticalHit);
+            stream.SendNext(CriticalHitRate);
+            stream.SendNext(Defence);
+            stream.SendNext(AttackSpeed);
+            stream.SendNext(Restore);
+            stream.SendNext(SkillQ);
+            stream.SendNext(SkillE);
+            stream.SendNext(SkillR);
+            stream.SendNext(SkillBurst);
+            stream.SendNext(HeadID);
+            stream.SendNext(ArmorID);
+            stream.SendNext(HandID);
+            stream.SendNext(KneeID);
+            stream.SendNext(TrousersID);
+            stream.SendNext(BootsID);
+            stream.SendNext(MoveSpeed);
+            stream.SendNext(AttackRange);
+            stream.SendNext(RespawnTime);
+            stream.SendNext(RespawnCountDown);
+
+        }
+        else
+        {
+            // Network player, receive datastream.SendNext(ActorNumber);
+            ActorNumber = (int)stream.ReceiveNext();
+            PlayerName = (string)stream.ReceiveNext();
+            PlayerTeam = (TeamEnum)stream.ReceiveNext();
+            Kill = (int)stream.ReceiveNext();
+            Death = (int)stream.ReceiveNext();
+            Money = (int)stream.ReceiveNext();
+            CurrentExp = (float)stream.ReceiveNext();
+            MaxExp = (float)stream.ReceiveNext();
+            State = (StateEnum)stream.ReceiveNext();
+            //Buff = (List<BuffEnum>)stream.ReceiveNext();
+            Pro = (ProEnum)stream.ReceiveNext();
+            Level = (int)stream.ReceiveNext();
+            Attack = (float)stream.ReceiveNext();
+            Shield = (float)stream.ReceiveNext();
+            MaxHealth = (float)stream.ReceiveNext();
+            CurrentHealth = (float)stream.ReceiveNext();
+            CriticalHit = (float)stream.ReceiveNext();
+            CriticalHitRate = (float)stream.ReceiveNext();
+            Defence = (float)stream.ReceiveNext();
+            AttackSpeed = (float)stream.ReceiveNext();
+            Restore = (float)stream.ReceiveNext();
+            SkillQ = (SkillQ)stream.ReceiveNext();
+            SkillE = (SkillE)stream.ReceiveNext();
+            SkillR = (SkillR)stream.ReceiveNext();
+            SkillBurst = (SkillBurst)stream.ReceiveNext();
+            HeadID = (EquipHead)stream.ReceiveNext();
+            ArmorID = (EquipArmor)stream.ReceiveNext();
+            HandID = (EquipHand)stream.ReceiveNext();
+            KneeID = (EquipKnee)stream.ReceiveNext();
+            TrousersID = (EquipTrousers)stream.ReceiveNext();
+            BootsID = (EquipBoots)stream.ReceiveNext();
+            MoveSpeed = (float)stream.ReceiveNext();
+            AttackRange = (float)stream.ReceiveNext();
+            RespawnTime = (float)stream.ReceiveNext();
+            RespawnCountDown = (float)stream.ReceiveNext();
+
+        }
+    }
+    #endregion
+
+    #region Unity Functions
+
+    void Awake()
+    {
+
+        //if (photonView.IsMine)
+        //{
+        //    LocalPlayerInstance = gameObject;
+        //}
+
+    }
+
+    void Start()
+    {
 
     }
 
     #endregion
-
 }
