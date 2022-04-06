@@ -5,28 +5,44 @@ using UnityEngine;
 
 public enum ProEnum
 {
-    Soilder,//近战 Soilder
-    Archer,//远程 Archer
-    Doctor,//辅助 Doctor
-    Tanker//坦克 Tanker
+    [Tooltip("近战")]
+    Soilder,
+    [Tooltip("远程")]
+    Archer,
+    [Tooltip("辅助")]
+    Doctor,
+    [Tooltip("坦克")]
+    Tanker
 }
 
 public enum BuffEnum
 {
-    FixedBody,//定身
-    Slow,//迟缓
-    Bleeding,//流血
-    Silent,//沉默
-    Erode,//系统Buff 侵蚀
-    Coreless//无核 拥有该buff时无法复活
+    [Tooltip("正常")]
+    Default,
+    [Tooltip("定身")]
+    FixedBody,
+    [Tooltip("迟缓")]
+    Slow,
+    [Tooltip("流血")]
+    Bleeding,
+    [Tooltip("沉默")]
+    Silent,
+    [Tooltip("系统Buff 侵蚀")]
+    Erode,
+    [Tooltip("无核 拥有该buff时无法复活")]
+    Coreless
 }
 
 public enum StateEnum
 {
-    NonLife,//尚未生成
-    Alive,//存活
-    Dead,//彻底死亡
-    Respawning//复活中
+    [Tooltip("尚未生成")]
+    NonLife,
+    [Tooltip("存活")]
+    Alive,
+    [Tooltip("彻底死亡")]
+    Dead,
+    [Tooltip("复活中")]
+    Respawning
 
 }
 

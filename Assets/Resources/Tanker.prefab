@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: -5285226530087299361}
   - component: {fileID: 1307905066947866740}
   - component: {fileID: -6169942037003107968}
+  - component: {fileID: -4056897152679128056}
   m_Layer: 0
   m_Name: Tanker
   m_TagString: PlayerModel
@@ -307,7 +308,6 @@ MonoBehaviour:
   currentExp: 0
   maxExp: 500
   state: 0
-  buff: 
   pro: 0
   level: 1
   attack: 100
@@ -328,8 +328,20 @@ MonoBehaviour:
   handID: 0
   kneeID: 0
   trousersID: 0
-  shoesID: 0
+  bootsID: 0
   moveSpeed: 10
   attackRange: 10
   respawnTime: 10
   respawnCountDown: 10
+--- !u!114 &-4056897152679128056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027300526949257307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -25,7 +25,7 @@ public class CharStateController : MonoBehaviour
         {
             if (charBase.CurrentHealth <= 0)
             {
-                CharManager.Instance.PlayerKilled(charBase.ActorNumber);
+                CharManager.Instance.OnPlayerKilled(charBase.ActorNumber);
             }
         }
         
@@ -33,12 +33,14 @@ public class CharStateController : MonoBehaviour
         if (charBase.State == StateEnum.Respawning)
         {
             charBase.RespawnCountDown -= Time.deltaTime;
+
             if (charBase.RespawnCountDown<0)
             {
                 charBase.RespawnCountDown = 0;
                 charBase.State = StateEnum.Alive;
                 charBase.CurrentHealth = charBase.MaxHealth;
-                //CharSpawnController.instance.SpawnPlayer(charBase);
+
+                CharSpawnController.instance.OnRespawnPlayer(charBase.ActorNumber);
             }
         }
 

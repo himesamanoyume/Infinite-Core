@@ -11,10 +11,6 @@
 
 ### 高优先级
 
-【重点】CharManager、CharSpawnController
-
-阅读一下stream如何同步数组
-
 开始学习并实际运用事件系统
 
 ---
@@ -26,6 +22,8 @@
 异步加载地图 全部玩家加载完后再跳转
 
 #### bug
+
+用DebugConsole将血量调为0 不触发正常逻辑
 
 离开房间时会回到连接界面而不是主界面
 
@@ -79,7 +77,15 @@ DebugConsole 改版
 
 ## Done
 
+### 2022.4.6
+
+重写CharManager、CharSpawnController
+
 ### 2022.4.5
+
+好！能同步！(通过DebugConsole测试是否数据同步)
+
+---
 
 初步实现同步玩家的CharBase
 

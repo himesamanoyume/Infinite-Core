@@ -137,7 +137,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             //{InfiniteCoreGame.PLAYER_CURRENT_EXP, c.CurrentExp },
             //{InfiniteCoreGame.PLAYER_MAX_EXP, c.MaxExp },
             {InfiniteCoreGame.PLAYER_STATE, c.State },
-            //{InfiniteCoreGame.PLAYER_BUFF, new BuffEnum[20] },
+            //{InfiniteCoreGame.PLAYER_BUFF, c.Buff},
             {InfiniteCoreGame.PLAYER_PRO, ProEnum.Soilder},
             //{InfiniteCoreGame.PLAYER_LEVEL, c.Level},
             {InfiniteCoreGame.PLAYER_ATTACK, c.Attack},

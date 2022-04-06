@@ -62,7 +62,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 当前角色身上所带的buff
     /// </summary>
-    private List<BuffEnum> buff = new List<BuffEnum>();
+    private Dictionary<int,BuffEnum> buff;
     [SerializeField]
     /// <summary>
     /// 角色职业
@@ -263,7 +263,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
     public StateEnum State { get => state; set => state = value; }
-    public List<BuffEnum> Buff { get => buff; set => buff = value; }
+    public Dictionary<int,BuffEnum> Buff { get => buff; set => buff = value; }
     public ProEnum Pro { get => pro; set => pro = value; }
     public int Level
     {
@@ -529,7 +529,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(CurrentExp);
             stream.SendNext(MaxExp);
             stream.SendNext(State);
-            //stream.SendNext(Buff);
+            stream.SendNext(Buff);
             stream.SendNext(Pro);
             stream.SendNext(Level);
             stream.SendNext(Attack);
@@ -569,7 +569,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             CurrentExp = (float)stream.ReceiveNext();
             MaxExp = (float)stream.ReceiveNext();
             State = (StateEnum)stream.ReceiveNext();
-            //Buff = (List<BuffEnum>)stream.ReceiveNext();
+            Buff = (Dictionary<int,BuffEnum>)stream.ReceiveNext();
             Pro = (ProEnum)stream.ReceiveNext();
             Level = (int)stream.ReceiveNext();
             Attack = (float)stream.ReceiveNext();
@@ -605,16 +605,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     void Awake()
     {
 
-        //if (photonView.IsMine)
-        //{
-        //    LocalPlayerInstance = gameObject;
-        //}
-
     }
 
     void Start()
     {
-
+        
     }
 
     #endregion

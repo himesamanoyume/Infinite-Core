@@ -26,11 +26,6 @@ public class CharSpawnController : MonoBehaviour
     public GameObject spawnBluePos4;
     public GameObject spawnBluePos5;
 
-    //public GameObject mainCamera;
-
-    int redCount = 0;
-    int blueCount = 0;
-
     List<GameObject> redPosList;
     List<GameObject> bluePosList;
 
@@ -98,176 +93,29 @@ public class CharSpawnController : MonoBehaviour
     }
 
     /// <summary>
-    /// 【待重写】生成玩家的复活分支
+    /// 生成玩家的复活分支
     /// </summary>
-    /// <param name="charBase"></param>
-    public void RespawnPlayer(CharBase charBase)
+    /// <param name="actorNumber"></param>
+    public void OnRespawnPlayer(int actorNumber)
     {
+        CharBase charBase = CharManager.Instance.FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+
         charBase.State = StateEnum.Alive;
         charBase.RespawnTime += 5f;
-        GameObject playerModel = CharManager.Instance.FindChildObjWithTag("PlayerModel", charBase.gameObject);
-        playerModel.SetActive(true);
-        playerModel.transform.position = new Vector3(0, 0, 0);
-    }
 
-    /// <summary>
-    /// 【已弃用】给玩家选择生成位置
-    /// </summary>
-    /// <param name="charBase"></param>
-    public void SelectPos(CharBase charBase)
-    {
-        GameObject playerObject;
-        Debug.LogWarning("调用了生成位置");
-        switch (charBase.Pro)
+        playerModel.SetActive(true);
+
+        if (charBase.PlayerTeam == TeamEnum.Red)
         {
-            case ProEnum.Soilder:
-                playerObject = PhotonNetwork.Instantiate(solider.name, new Vector3(0, 0, 0), Quaternion.identity);
-                
-                switch (charBase.ActorNumber)
-                {
-                    case 0:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
-                        break;
-                    case 1:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2);
-                        break;
-                    case 2:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3);
-                        break;
-                    case 3:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4);
-                        break;
-                    case 4:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5);
-                        break;
-                    case 5:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1);
-                        break;
-                    case 6:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2);
-                        break;
-                    case 7:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3);
-                        break;
-                    case 8:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4);
-                        break;
-                    case 9:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5);
-                        break;
-                }
-                break;
-            case ProEnum.Archer:
-                playerObject = PhotonNetwork.Instantiate(archer.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.ActorNumber)
-                {
-                    case 0:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
-                        break;
-                    case 1:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2);
-                        break;
-                    case 2:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3);
-                        break;
-                    case 3:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4);
-                        break;
-                    case 4:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5);
-                        break;
-                    case 5:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1);
-                        break;
-                    case 6:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2);
-                        break;
-                    case 7:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3);
-                        break;
-                    case 8:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4);
-                        break;
-                    case 9:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5);
-                        break;
-                }
-                break;
-            case ProEnum.Doctor:
-                playerObject = PhotonNetwork.Instantiate(doctor.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.ActorNumber)
-                {
-                    case 0:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
-                        break;
-                    case 1:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2);
-                        break;
-                    case 2:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3);
-                        break;
-                    case 3:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4);
-                        break;
-                    case 4:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5);
-                        break;
-                    case 5:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1);
-                        break;
-                    case 6:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2);
-                        break;
-                    case 7:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3);
-                        break;
-                    case 8:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4);
-                        break;
-                    case 9:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5);
-                        break;
-                }
-                break;
-            case ProEnum.Tanker:
-                playerObject = PhotonNetwork.Instantiate(tanker.name, new Vector3(0, 0, 0), Quaternion.identity);
-                switch (charBase.ActorNumber)
-                {
-                    case 0:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
-                        break;
-                    case 1:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos2);
-                        break;
-                    case 2:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos3);
-                        break;
-                    case 3:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos4);
-                        break;
-                    case 4:
-                        SpawnPlayerForPos(playerObject, charBase, spawnRedPos5);
-                        break;
-                    case 5:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos1);
-                        break;
-                    case 6:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos2);
-                        break;
-                    case 7:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos3);
-                        break;
-                    case 8:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos4);
-                        break;
-                    case 9:
-                        SpawnPlayerForPos(playerObject, charBase, spawnBluePos5);
-                        break;
-                }
-                break;
+            playerModel.transform.position = redPosList[Random.Range(0, 5)].transform.position;
+        }
+        else if (charBase.PlayerTeam == TeamEnum.Blue)
+        {
+            playerModel.transform.position = bluePosList[Random.Range(0, 5)].transform.position;
         }
         
     }
+
 
     /// <summary>
     /// 待重写 已弃用
@@ -313,49 +161,6 @@ public class CharSpawnController : MonoBehaviour
     }
 
     /// <summary>
-    /// 【已弃用】生成一个新玩家时给玩家赋予一个runId
-    /// </summary>
-    /// <param name="playerTeam"></param>
-    /// <param name="player"></param>
-    public void SetPlayerRunId(CharBase charBase)
-    {
-        switch (charBase.PlayerTeam)
-        {
-            case TeamEnum.Red:
-                if (redCount > 4)
-                {
-                    Debug.Log("红方人数已达最大");
-                    return;
-                }
-                break;
-            case TeamEnum.Blue:
-                if (blueCount > 4)
-                {
-                    Debug.Log("蓝方人数已达最大");
-                    return;
-                }
-                break;
-        }
-        
-        switch (charBase.PlayerTeam)
-        {
-            case TeamEnum.Red:
-                CharManager.Instance.Log("Red");
-                charBase.ActorNumber = redCount;
-                redCount++;
-                SelectPos(charBase);
-                break;
-
-            case TeamEnum.Blue:
-                CharManager.Instance.Log("Blue");
-                charBase.ActorNumber = blueCount + 5;
-                blueCount++;
-                SelectPos(charBase);
-                break;
-        }
-    }
-
-    /// <summary>
     /// 根据模型,CharBase信息,生成地点,玩家对应的值赋给玩家
     /// </summary>
     /// <param name="playerObject"></param>
@@ -374,8 +179,8 @@ public class CharSpawnController : MonoBehaviour
         //需要方便快速赋值
         CharManager.Instance.GetPlayerInfo(component, charBase);
     }
-
-    /// <summary>
+    
+    /// <summary
     /// 根据玩家属性获取所有信息
     /// </summary>
     /// <param name="needTarget"></param>

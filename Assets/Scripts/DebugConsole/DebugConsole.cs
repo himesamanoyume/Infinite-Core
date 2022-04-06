@@ -14,10 +14,8 @@ public class DebugConsole : MonoBehaviour
 
     //声明命令处
     public static DebugCommand TEST;
-    public static DebugCommand<int> SPAWN_PLAYER;
     public static DebugCommand<int> GET_PLAYERNAME_BY_ID;
     public static DebugCommand<int,int> PLAYER_LEVEL_UP_BY_ID;
-    public static DebugCommand GET_ALL_PLAYER_INFO;
     public static DebugCommand<int, int> SET_PLAYER_HP_BY_ID;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_EXP;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_MONEY;
@@ -37,17 +35,6 @@ public class DebugConsole : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.BackQuote))
-    //    {
-    //        OnToggleDebug();
-    //    }
-    //    if(Input.GetKeyDown(KeyCode.Return))
-    //    {
-    //        OnReturn();
-    //    }
-    //}
 
     private void HandleInput()
     {
@@ -89,25 +76,6 @@ public class DebugConsole : MonoBehaviour
             Debug.Log("Hello World");
         });
 
-        SPAWN_PLAYER = new DebugCommand<int>("SpawnPlayer", "生成一个名为'test1',近战,超速爆发的玩家,阵营为team=(0,1),0为红,1为蓝", "SpawnPlayer <team>", (team) =>
-        {
-            if (team != 0 && team != 1)
-            {
-                Debug.LogError("输入值非0或1");
-                return;
-            }
-            if (team == 0)//red
-            {
-                //CharSpawnController.instance.SpawnPlayer(-1, "test1", ProEnum.Soilder, SkillQ.tempQ1, SkillE.tempE1, SkillR.tempR1, SkillBurst.FlashSpeed, TeamEnum.Red);
-
-            }
-            else//blue
-            {
-                //CharSpawnController.instance.SpawnPlayer(-1, "test1", ProEnum.Soilder, SkillQ.tempQ1, SkillE.tempE1, SkillR.tempR1, SkillBurst.FlashSpeed, TeamEnum.Blue);
-
-            }
-        });
-
         GET_PLAYERNAME_BY_ID = new DebugCommand<int>("GetPlayerNameById", "根据id获取玩家姓名", "GetPlayerNameById <id>", (id) =>
         {
             CharManager.Instance.GetPlayerNameById(id);
@@ -115,13 +83,8 @@ public class DebugConsole : MonoBehaviour
 
         PLAYER_LEVEL_UP_BY_ID = new DebugCommand<int,int>("PlayerLevelUp", "根据id提升玩家特定次数的1级等级", "PlayerLevelUp <id> <count>", (id,count) =>
            {
-               CharManager.Instance.PlayerLevelUp(id,count);
+               CharManager.Instance.PlayerLevelUp(id, count);
            });
-
-        GET_ALL_PLAYER_INFO = new DebugCommand("GetAllPlayerInfo", "获取所有已生成的玩家的信息", "GetAllPlayerInfo", () =>
-        {
-            //CharManager.instance.GetAllPlayer();
-        });
 
         SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>
            {
@@ -148,10 +111,8 @@ public class DebugConsole : MonoBehaviour
         commandList = new List<object>
         {
             TEST,
-            SPAWN_PLAYER,
             GET_PLAYERNAME_BY_ID,
             PLAYER_LEVEL_UP_BY_ID,
-            //GET_ALL_PLAYER_INFO,
             SET_PLAYER_HP_BY_ID,
             TO_GIVE_PLAYER_EXP,
             TO_GIVE_PLAYER_MONEY,
