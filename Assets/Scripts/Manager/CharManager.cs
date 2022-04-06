@@ -11,8 +11,6 @@ using Photon.Realtime;
 public class CharManager : MonoBehaviour
 {
 
-    //public GameObject[] playerPosList = new GameObject[10];
-
     Dictionary<int, GameObject> playerModelList;
 
     public static CharManager Instance;
@@ -60,6 +58,7 @@ public class CharManager : MonoBehaviour
                 }
 
             }
+            Debug.LogError("ÃÌº”ÕÍ≥…");
         }
     }
 

@@ -13,6 +13,8 @@ public class CharSpawnController : MonoBehaviour
     public GameObject doctor;
     public GameObject solider;
     public GameObject tanker;
+    public GameObject recorder;
+    public GameObject total;
 
     public GameObject spawnRedPos1;
     public GameObject spawnRedPos2;
@@ -71,21 +73,40 @@ public class CharSpawnController : MonoBehaviour
 
                     player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
 
+                    GameObject playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+
+                    playerRecorder.transform.parent = total.transform;
+
                     GameObject playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), redPosList[Random.Range(0,5)].transform.position, Quaternion.identity);
 
-                    playerModel.name = player.NickName + " (My)";
+                    //GameObject playerRecorder = playerModel.transform.Find("PlayerDataRecorder").gameObject;
 
-                    GetPlayerInfo(playerModel.GetComponent<CharBase>(), player);
+                    playerModel.name = player.NickName + " (My)";
+                    playerRecorder.name = player.NickName + " Recorder {My}";
+
+                    GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+
+                    playerRecorder.transform.SetParent(total.transform);
+
                     break;
                 case TeamEnum.Blue:
  
                     player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
 
+                    playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+
+                    playerRecorder.transform.parent = total.transform;
+
                     playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0,5)].transform.position, Quaternion.identity);
 
-                    playerModel.name = player.NickName;
+                    //playerRecorder = playerModel.transform.Find("PlayerDataRecorder").gameObject;
 
-                    GetPlayerInfo(playerModel.GetComponent<CharBase>(), player);
+                    playerModel.name = player.NickName + " (My)";
+                    playerRecorder.name = player.NickName + " Recorder {My}";
+
+                    GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+
+                    playerRecorder.transform.SetParent(total.transform);
 
                     break;
             }
@@ -116,52 +137,8 @@ public class CharSpawnController : MonoBehaviour
         
     }
 
-
     /// <summary>
-    /// 待重写 已弃用
-    /// </summary>
-    /// <param name="playerObject"></param>
-    /// <param name="charBase"></param>
-    public void RespawnSelectPos(GameObject playerObject, CharBase charBase)
-    {
-        //此处playerObject为playerModel
-        switch (charBase.ActorNumber)
-        {
-            case 0:
-                SpawnPlayerForPos(playerObject, charBase, spawnRedPos1);
-                break;
-            case 1:
-                SpawnPlayerForPos(playerObject, charBase, spawnRedPos2);
-                break;
-            case 2:
-                SpawnPlayerForPos(playerObject, charBase, spawnRedPos3);
-                break;
-            case 3:
-                SpawnPlayerForPos(playerObject, charBase, spawnRedPos4);
-                break;
-            case 4:
-                SpawnPlayerForPos(playerObject, charBase, spawnRedPos5);
-                break;
-            case 5:
-                SpawnPlayerForPos(playerObject, charBase, spawnBluePos1);
-                break;
-            case 6:
-                SpawnPlayerForPos(playerObject, charBase, spawnBluePos2);
-                break;
-            case 7:
-                SpawnPlayerForPos(playerObject, charBase, spawnBluePos3);
-                break;
-            case 8:
-                SpawnPlayerForPos(playerObject, charBase, spawnBluePos4);
-                break;
-            case 9:
-                SpawnPlayerForPos(playerObject, charBase, spawnBluePos5);
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 根据模型,CharBase信息,生成地点,玩家对应的值赋给玩家
+    /// 【可能会弃用】根据模型,CharBase信息,生成地点,玩家对应的值赋给玩家
     /// </summary>
     /// <param name="playerObject"></param>
     /// <param name="charBase"></param>
@@ -180,7 +157,7 @@ public class CharSpawnController : MonoBehaviour
         CharManager.Instance.GetPlayerInfo(component, charBase);
     }
     
-    /// <summary
+    /// <summary>
     /// 根据玩家属性获取所有信息
     /// </summary>
     /// <param name="needTarget"></param>

@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8261284882752522266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8210877370085805198}
+  - component: {fileID: 6335478668967977655}
+  - component: {fileID: 4600758666631930024}
+  m_Layer: 0
+  m_Name: PlayerDataRecorder
+  m_TagString: PlayerRecorder
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8210877370085805198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261284882752522266}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.74057055, y: 0.73, z: -0.9899529}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6335478668967977655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261284882752522266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorNumber: -1
+  playerName: 
+  playerTeam: 0
+  kill: 0
+  death: 0
+  money: 0
+  currentExp: 0
+  maxExp: 500
+  state: 0
+  pro: 0
+  level: 1
+  attack: 100
+  shield: 0
+  maxHealth: 1000
+  currentHealth: 1000
+  criticalHit: 0.5
+  criticalHitRate: 0.05
+  defence: 1000
+  attackSpeed: 1
+  restore: 10
+  skillQ: 0
+  skillE: 0
+  skillR: 0
+  skillBurst: 0
+  headID: 0
+  armorID: 0
+  handID: 0
+  kneeID: 0
+  trousersID: 0
+  bootsID: 0
+  moveSpeed: 10
+  attackRange: 10
+  respawnTime: 10
+  respawnCountDown: 10
+--- !u!114 &4600758666631930024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261284882752522266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 6335478668967977655}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

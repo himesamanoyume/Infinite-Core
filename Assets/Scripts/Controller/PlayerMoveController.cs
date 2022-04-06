@@ -37,33 +37,7 @@ public class PlayerMoveController : MonoBehaviourPunCallbacks
         var hor = Input.GetAxis("Horizontal");
         var ver = Input.GetAxis("Vertical");
 
-        //Vector3 wDirection = new Vector3(1, 0, 0);
-        //Vector3 sDirection = new Vector3(-1, 0, 0);
-        //Vector3 aDirection = new Vector3(0, 0, 1);
-        //Vector3 dDirection = new Vector3(0, 0, -1);
-
         Vector3 direction = new Vector3(hor, 0, ver).normalized;
-
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    Vector3 move = wDirection * Speed * Time.deltaTime;
-        //    controller.Move(move);
-        //}
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    Vector3 move = sDirection * Speed * Time.deltaTime;
-        //    controller.Move(move);
-        //}
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    Vector3 move = aDirection * Speed * Time.deltaTime;
-        //    controller.Move(move);
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    Vector3 move = dDirection * Speed * Time.deltaTime;
-        //    controller.Move(move);
-        //}
 
         Vector3 move = direction * Speed * Time.deltaTime;
         controller.Move(move);

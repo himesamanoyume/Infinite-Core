@@ -11,6 +11,8 @@
 
 ### 高优先级
 
+优化添加列表方式 使用RPC远程调用某些方法
+
 开始学习并实际运用事件系统
 
 ---
@@ -23,7 +25,7 @@
 
 #### bug
 
-用DebugConsole将血量调为0 不触发正常逻辑
+playerModel和playerDataRecorder列表的添加速度太慢 并且本机无法对其他客户端的父物体进行修改
 
 离开房间时会回到连接界面而不是主界面
 
@@ -78,6 +80,12 @@ DebugConsole 改版
 ## Done
 
 ### 2022.4.6
+
+重写了玩家生成逻辑
+
+添加了一些事件但还未使用
+
+---
 
 重写CharManager、CharSpawnController
 

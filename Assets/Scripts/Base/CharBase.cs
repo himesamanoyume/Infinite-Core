@@ -519,7 +519,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // We own this player: send the others our data
             stream.SendNext(ActorNumber);
             stream.SendNext(PlayerName);
             stream.SendNext(PlayerTeam);
@@ -530,7 +529,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(MaxExp);
             stream.SendNext(State);
             stream.SendNext(Buff);
-            stream.SendNext(Pro);
+            //stream.SendNext(Pro);
             stream.SendNext(Level);
             stream.SendNext(Attack);
             stream.SendNext(Shield);
@@ -559,7 +558,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            // Network player, receive datastream.SendNext(ActorNumber);
             ActorNumber = (int)stream.ReceiveNext();
             PlayerName = (string)stream.ReceiveNext();
             PlayerTeam = (TeamEnum)stream.ReceiveNext();
@@ -570,7 +568,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             MaxExp = (float)stream.ReceiveNext();
             State = (StateEnum)stream.ReceiveNext();
             Buff = (Dictionary<int,BuffEnum>)stream.ReceiveNext();
-            Pro = (ProEnum)stream.ReceiveNext();
+            //Pro = (ProEnum)stream.ReceiveNext();
             Level = (int)stream.ReceiveNext();
             Attack = (float)stream.ReceiveNext();
             Shield = (float)stream.ReceiveNext();

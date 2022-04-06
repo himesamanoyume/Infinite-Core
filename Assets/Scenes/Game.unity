@@ -132,8 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 103492747}
-  - component: {fileID: 103492749}
-  - component: {fileID: 103492748}
   m_Layer: 0
   m_Name: RedPlayerPos2
   m_TagString: Untagged
@@ -155,64 +153,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &103492748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103492746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &103492749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103492746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &412825808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,8 +330,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 584813661}
-  - component: {fileID: 584813663}
-  - component: {fileID: 584813662}
   m_Layer: 0
   m_Name: RedPlayerPos5
   m_TagString: Untagged
@@ -413,64 +351,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &584813662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584813660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &584813663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584813660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &615391146
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,8 +439,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 626697415}
-  - component: {fileID: 626697417}
-  - component: {fileID: 626697416}
   m_Layer: 0
   m_Name: BluePlayerPos4
   m_TagString: Untagged
@@ -582,64 +460,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &626697416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626697414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &626697417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626697414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &645129571
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,8 +637,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 789608004}
-  - component: {fileID: 789608006}
-  - component: {fileID: 789608005}
   m_Layer: 0
   m_Name: BluePlayerPos3
   m_TagString: Untagged
@@ -840,64 +658,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &789608005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789608003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &789608006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789608003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &814017898
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,8 +667,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 814017899}
-  - component: {fileID: 814017901}
-  - component: {fileID: 814017900}
   m_Layer: 0
   m_Name: RedPlayerPos3
   m_TagString: Untagged
@@ -930,64 +688,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &814017900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814017898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &814017901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814017898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &855104565
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,8 +697,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855104566}
-  - component: {fileID: 855104568}
-  - component: {fileID: 855104567}
   m_Layer: 0
   m_Name: BluePlayerPos5
   m_TagString: Untagged
@@ -1020,64 +718,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &855104567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855104565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &855104568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855104565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &890781934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,8 +727,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 890781935}
-  - component: {fileID: 890781937}
-  - component: {fileID: 890781936}
   m_Layer: 0
   m_Name: BluePlayerPos1
   m_TagString: Untagged
@@ -1110,64 +748,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &890781936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 890781934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &890781937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 890781934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,8 +884,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1027272057}
-  - component: {fileID: 1027272059}
-  - component: {fileID: 1027272058}
   m_Layer: 0
   m_Name: RedPlayerPos1
   m_TagString: Untagged
@@ -1327,64 +905,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1027272058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027272056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &1027272059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027272056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1137310825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,8 +1010,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1785496392}
-  - component: {fileID: 1785496394}
-  - component: {fileID: 1785496393}
   m_Layer: 0
   m_Name: BluePlayerPos2
   m_TagString: Untagged
@@ -1513,64 +1031,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1785496393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785496391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &1785496394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785496391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1896808387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,8 +1173,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2029508685}
-  - component: {fileID: 2029508687}
-  - component: {fileID: 2029508686}
   m_Layer: 0
   m_Name: RedPlayerPos4
   m_TagString: Untagged
@@ -1736,64 +1194,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2029508686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029508684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 428f678d489e4f142a634c1c2e79f255, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actorNumber: -1
-  playerName: 
-  playerTeam: 0
-  kill: 0
-  death: 0
-  money: 0
-  currentExp: 0
-  maxExp: 500
-  state: 0
-  pro: 0
-  level: 1
-  attack: 100
-  shield: 0
-  maxHealth: 1000
-  currentHealth: 1000
-  criticalHit: 0.5
-  criticalHitRate: 0.05
-  defence: 1000
-  attackSpeed: 1
-  restore: 10
-  skillQ: 0
-  skillE: 0
-  skillR: 0
-  skillBurst: 0
-  headID: 0
-  armorID: 0
-  handID: 0
-  kneeID: 0
-  trousersID: 0
-  bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
---- !u!114 &2029508687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029508684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1252089328219413641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1849,46 +1249,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Total
       objectReference: {fileID: 0}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[0]
-      value: 
-      objectReference: {fileID: 1027272056}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[1]
-      value: 
-      objectReference: {fileID: 103492746}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[2]
-      value: 
-      objectReference: {fileID: 814017898}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[3]
-      value: 
-      objectReference: {fileID: 2029508684}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[4]
-      value: 
-      objectReference: {fileID: 584813660}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[5]
-      value: 
-      objectReference: {fileID: 890781934}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[6]
-      value: 
-      objectReference: {fileID: 1785496391}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[7]
-      value: 
-      objectReference: {fileID: 789608003}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[8]
-      value: 
-      objectReference: {fileID: 626697414}
-    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: playerPosList.Array.data[9]
-      value: 
-      objectReference: {fileID: 855104565}
     - target: {fileID: 1252089328583133771, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
       propertyPath: spawnRedPos1
       value: 
