@@ -21,156 +21,132 @@ public class GameEventManager
 
         //于此处控制事件组和事件的初始状态
         RootGroup.Enable = true;
-        EnableAllEvents(EVENT_PLAYER_GROUP, true);
+
+        EnableAllEvents(EventName.playerGroup, true);
+        EnableAllEvents(EventName.systemGroup, true);
     }
-
-    #region Const Event Name
-
-    public const string EVENT_PLAYER_GROUP = "PlayerGroup";
-    public const string EVENT_PLAYER_MGR_GROUP = "PlayerMgrGroup";
-    public const string EVENT_ON_PLAYER_ACTORNUMBER_CHANGED = "OnPlayerActorNumberChanged";
-    public const string EVENT_ON_PLAYER_NAME_CHANGED = "OnPlayerNameChanged";
-    public const string EVENT_ON_PLAYER_TEAM_CHANGED = "OnPlayerTeamChanged";
-    public const string EVENT_ON_PLAYER_KILL = "OnPlayerKill";
-    public const string EVENT_ON_PLAYER_KILLED = "OnPlayerKilled";
-    public const string EVENT_ON_PLAYER_DEAD = "OnPlayerDead";
-    public const string EVENT_ON_PLAYER_RESPAWN = "OnPlayerRespawn";
-    public const string EVENT_ON_PLAYER_MONEY_CHANGED = "OnPlayerMoneyChanged";
-    public const string EVENT_ON_PLAYER_CURRENT_EXP_CHANGED = "OnPlayerCurrentExpChanged";
-    public const string EVENT_ON_PLAYER_MAX_EXP_CHANGED = "OnPlayerMaxExpChanged";
-    public const string EVENT_ON_PLAYER_STATE_CHANGED = "OnPlayerStateChanged";
-    public const string EVENT_ON_PLAYER_BUFF_CHANGED = "OnPlayerBuffChanged";
-    public const string EVENT_ON_PLAYER_LEVEL_CHANGED = "OnPlayerLevelChanged";
-    public const string EVENT_ON_PLAYER_LEVEL_UP = "OnPlayerLevelUp";
-    public const string EVENT_ON_PLAYER_ATTACK_CHANGED = "OnPlayerAttackChanged";
-    public const string EVENT_ON_PLAYER_SHIELD_CHANGED = "OnPlayerShieldChanged";
-    public const string EVENT_ON_PLAYER_MAX_HEALTH_CHANGED = "OnPlayerMaxHealthChanged";
-    public const string EVENT_ON_PLAYER_CURRENT_HEALTH_CHANGED = "OnPlayerCurrentHealthChanged";
-    public const string EVENT_ON_PLAYER_CRITICAL_HIT_CHANGED = "OnPlayerCriticalHitChanged";
-    public const string EVENT_ON_PLAYER_CRITICAL_HIT_RATE_CHANGED = "OnPlayerCriticalHitRateChanged";
-    public const string EVENT_ON_PLAYER_DEFENCE_CHANGED = "OnPlayerDefenceChanged";
-    public const string EVENT_ON_PLAYER_ATTACK_SPEED_CHANGED = "OnPlayerAttackSpeedChanged";
-    public const string EVENT_ON_PLAYER_RESTORE_CHANGED = "OnPlayerRestoreChanged";
-    public const string EVENT_PLAYER_SKILL_GROUP = "PlayerSkillGroup";
-    public const string EVENT_PLAYER_EQUIP_GROUP = "PlayerEquipGroup";
-    public const string EVENT_ON_PLAYER_MOVE_SPEED_CHANGED = "OnPlayerMoveSpeedChanged";
-    public const string EVENT_ON_PLAYER_ATTACK_RANGE_CHANGED = "OnPlayerAttackRangeChanged";
-    public const string EVENT_ON_PLAYER_RESPAWN_TIME_CHANGED = "OnPlayerRespawnTimeChanged";
-    public const string EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_START = "OnPlayerRespawnCountDownStart";
-    public const string EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_END = "OnPlayerRespawnCountDownEnd";
-
-    #endregion
 
     private static void Init()
     {
-        RootGroup = new GameEventGroup("RootGroup");
+        RootGroup = new GameEventGroup(EventName.rootGroup);
 
-        //于此处添加事件组和事件
+        //于此处添加事件组和事件 事件组命名最后必须有Group
 
-        #region PlayerGroup
-        GameEventGroup playerGroup = new GameEventGroup(EVENT_PLAYER_GROUP);
+        #region SystemGroup
+        GameEventGroup systemGroup = new GameEventGroup(EventName.systemGroup);
+        RootGroup.AddEvent(systemGroup);
+
+        GameEvent onToast = new GameEvent(EventName.onToast);
+        systemGroup.AddEvent(onToast);
+        #endregion
+
+        GameEventGroup playerGroup = new GameEventGroup(EventName.playerGroup);
         RootGroup.AddEvent(playerGroup);
+        #region PlayerGroup
 
-        #region PlayerGroup -> PlayerMgrGroup
-        GameEventGroup playerMgrGroup = new GameEventGroup(EVENT_PLAYER_MGR_GROUP);
+        GameEventGroup playerMgrGroup = new GameEventGroup(EventName.playerMgrGroup);
         playerGroup.AddEvent(playerMgrGroup);
+        #region PlayerGroup -> PlayerMgrGroup
 
-        GameEvent onPlayerActorNumberChanged = new GameEvent(EVENT_ON_PLAYER_ACTORNUMBER_CHANGED);
+        GameEvent onPlayerActorNumberChanged = new GameEvent(EventName.onPlayerActorNumberChanged);
         playerMgrGroup.AddEvent(onPlayerActorNumberChanged);
 
-        GameEvent onPlayerNameChanged = new GameEvent(EVENT_ON_PLAYER_NAME_CHANGED);
+        GameEvent onPlayerNameChanged = new GameEvent(EventName.onPlayerNameChanged);
         playerMgrGroup.AddEvent(onPlayerNameChanged);
 
-        GameEvent onPlayerTeamChanged = new GameEvent(EVENT_ON_PLAYER_TEAM_CHANGED);
+        GameEvent onPlayerTeamChanged = new GameEvent(EventName.onPlayerTeamChanged);
         playerMgrGroup.AddEvent(onPlayerTeamChanged);
 
-        GameEvent onPlayerKill = new GameEvent(EVENT_ON_PLAYER_KILL);
+        GameEvent onPlayerKill = new GameEvent(EventName.onPlayerKill);
         playerMgrGroup.AddEvent(onPlayerKill);
 
-        GameEvent onPlayerKilled = new GameEvent(EVENT_ON_PLAYER_KILLED);
+        GameEvent onPlayerKilled = new GameEvent(EventName.onPlayerKilled);
         playerMgrGroup.AddEvent(onPlayerKilled);
 
-        GameEvent onPlayerDead = new GameEvent(EVENT_ON_PLAYER_DEAD);
+        GameEvent onPlayerDead = new GameEvent(EventName.onPlayerDead);
         playerMgrGroup.AddEvent(onPlayerDead);
 
-        GameEvent onPlayerRespawn = new GameEvent(EVENT_ON_PLAYER_RESPAWN);
+        GameEvent onPlayerRespawn = new GameEvent(EventName.onPlayerRespawn);
         playerMgrGroup.AddEvent(onPlayerRespawn);
 
-        GameEvent onPlayerMoneyChanged = new GameEvent(EVENT_ON_PLAYER_MONEY_CHANGED);
+        GameEvent onPlayerRespawning = new GameEvent(EventName.onPlayerRespawning);
+        playerMgrGroup.AddEvent(onPlayerRespawning);
+
+        GameEvent onPlayerMoneyChanged = new GameEvent(EventName.onPlayerMoneyChanged);
         playerMgrGroup.AddEvent(onPlayerMoneyChanged);
 
-        GameEvent onPlayerCurrentExpChanged = new GameEvent(EVENT_ON_PLAYER_CURRENT_EXP_CHANGED);
+        GameEvent onPlayerCurrentExpChanged = new GameEvent(EventName.onPlayerCurrentExpChanged);
         playerMgrGroup.AddEvent(onPlayerCurrentExpChanged);
 
-        GameEvent onPlayerMaxExpChanged = new GameEvent(EVENT_ON_PLAYER_MAX_EXP_CHANGED);
+        GameEvent onPlayerMaxExpChanged = new GameEvent(EventName.onPlayerMaxExpChanged);
         playerMgrGroup.AddEvent(onPlayerMaxExpChanged);
 
-        GameEvent onPlayerStateChanged = new GameEvent(EVENT_ON_PLAYER_STATE_CHANGED);
+        GameEvent onPlayerStateChanged = new GameEvent(EventName.onPlayerStateChanged);
         playerMgrGroup.AddEvent(onPlayerStateChanged);
 
-        GameEvent onPlayerBuffChanged = new GameEvent(EVENT_ON_PLAYER_BUFF_CHANGED);
+        GameEvent onPlayerBuffChanged = new GameEvent(EventName.onPlayerBuffChanged);
         playerMgrGroup.AddEvent(onPlayerBuffChanged);
 
-        GameEvent onPlayerLevelChanged = new GameEvent(EVENT_ON_PLAYER_LEVEL_CHANGED);
+        GameEvent onPlayerLevelChanged = new GameEvent(EventName.onPlayerLevelChanged);
         playerMgrGroup.AddEvent(onPlayerLevelChanged);
 
-        GameEvent onPlayerLevelUp = new GameEvent(EVENT_ON_PLAYER_LEVEL_UP);
+        GameEvent onPlayerLevelUp = new GameEvent(EventName.onPlayerLevelUp);
         playerMgrGroup.AddEvent(onPlayerLevelUp);
 
-        GameEvent onPlayerAttackChanged = new GameEvent(EVENT_ON_PLAYER_ATTACK_CHANGED);
+        GameEvent onPlayerAttackChanged = new GameEvent(EventName.onPlayerAttackChanged);
         playerMgrGroup.AddEvent(onPlayerAttackChanged);
 
-        GameEvent onPlayerShieldChanged = new GameEvent(EVENT_ON_PLAYER_SHIELD_CHANGED);
+        GameEvent onPlayerShieldChanged = new GameEvent(EventName.onPlayerShieldChanged);
         playerMgrGroup.AddEvent(onPlayerShieldChanged);
 
-        GameEvent onPlayerMaxHealthChanged = new GameEvent(EVENT_ON_PLAYER_MAX_HEALTH_CHANGED);
+        GameEvent onPlayerMaxHealthChanged = new GameEvent(EventName.onPlayerMaxHealthChanged);
         playerMgrGroup.AddEvent(onPlayerMaxHealthChanged);
 
-        GameEvent onPlayerCurrentHealthChanged = new GameEvent(EVENT_ON_PLAYER_CURRENT_HEALTH_CHANGED);
+        GameEvent onPlayerCurrentHealthChanged = new GameEvent(EventName.onPlayerCurrentHealthChanged);
         playerMgrGroup.AddEvent(onPlayerCurrentHealthChanged);
 
-        GameEvent onPlayerCriticalHitChanged = new GameEvent(EVENT_ON_PLAYER_CRITICAL_HIT_CHANGED);
+        GameEvent onPlayerCriticalHitChanged = new GameEvent(EventName.onPlayerCriticalHitChanged);
         playerMgrGroup.AddEvent(onPlayerCriticalHitChanged);
 
-        GameEvent onPlayerCriticalHitRateChanged = new GameEvent(EVENT_ON_PLAYER_CRITICAL_HIT_RATE_CHANGED);
+        GameEvent onPlayerCriticalHitRateChanged = new GameEvent(EventName.onPlayerCriticalHitRateChanged);
         playerMgrGroup.AddEvent(onPlayerCriticalHitRateChanged);
 
-        GameEvent onPlayerDefenceChanged = new GameEvent(EVENT_ON_PLAYER_DEFENCE_CHANGED);
+        GameEvent onPlayerDefenceChanged = new GameEvent(EventName.onPlayerDefenceChanged);
         playerMgrGroup.AddEvent(onPlayerDefenceChanged);
 
-        GameEvent onPlayerAttackSpeedChanged = new GameEvent(EVENT_ON_PLAYER_ATTACK_SPEED_CHANGED);
+        GameEvent onPlayerAttackSpeedChanged = new GameEvent(EventName.onPlayerAttackSpeedChanged);
         playerMgrGroup.AddEvent(onPlayerAttackSpeedChanged);
 
-        GameEvent onPlayerRestoreChanged = new GameEvent(EVENT_ON_PLAYER_RESTORE_CHANGED);
+        GameEvent onPlayerRestoreChanged = new GameEvent(EventName.onPlayerRestoreChanged);
         playerMgrGroup.AddEvent(onPlayerRestoreChanged);
 
+        
+
+        GameEventGroup playerSkillGroup = new GameEventGroup(EventName.playerSkillGroup);
+        playerMgrGroup.AddEvent(playerSkillGroup);
         #region PlayerGroup -> PlayerMgrGroup -> SkillGroup
 
-        GameEventGroup playerSkillGroup = new GameEventGroup(EVENT_PLAYER_SKILL_GROUP);
-        playerMgrGroup.AddEvent(playerSkillGroup);
-
         #endregion
 
+        GameEventGroup playerEquipGroup = new GameEventGroup(EventName.playerEquipGroup);
+        playerMgrGroup.AddEvent(playerEquipGroup);
         #region PlayerGroup -> PlayerMgrGroup -> EquipGroup
 
-        GameEventGroup playerEquipGroup = new GameEventGroup(EVENT_PLAYER_EQUIP_GROUP);
-        playerMgrGroup.AddEvent(playerEquipGroup);
-
         #endregion
 
-        GameEvent onPlayerMoveSpeedChanged = new GameEvent(EVENT_ON_PLAYER_MOVE_SPEED_CHANGED);
+        GameEvent onPlayerMoveSpeedChanged = new GameEvent(EventName.onPlayerMoveSpeedChanged);
         playerMgrGroup.AddEvent(onPlayerMoveSpeedChanged);
 
-        GameEvent onPlayerAttackRangeChanged = new GameEvent(EVENT_ON_PLAYER_ATTACK_RANGE_CHANGED);
+        GameEvent onPlayerAttackRangeChanged = new GameEvent(EventName.onPlayerAttackRangeChanged);
         playerMgrGroup.AddEvent(onPlayerAttackRangeChanged);
 
-        GameEvent onPlayerRespawnTimeChanged = new GameEvent(EVENT_ON_PLAYER_RESPAWN_TIME_CHANGED);
+        GameEvent onPlayerRespawnTimeChanged = new GameEvent(EventName.onPlayerRespawnTimeChanged);
         playerMgrGroup.AddEvent(onPlayerRespawnTimeChanged);
 
-        GameEvent onPlayerRespawnCountDownStart = new GameEvent(EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_START);
+        GameEvent onPlayerRespawnCountDownStart = new GameEvent(EventName.onPlayerRespawnCountDownStart);
         playerMgrGroup.AddEvent(onPlayerRespawnCountDownStart);
 
-        GameEvent onPlayerRespawnCountDownEnd = new GameEvent(EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_END);
+        GameEvent onPlayerRespawnCountDownEnd = new GameEvent(EventName.onPlayerRespawnCountDownEnd);
         playerMgrGroup.AddEvent(onPlayerRespawnCountDownEnd);
 
         #endregion
@@ -183,7 +159,7 @@ public class GameEventManager
     /// </summary>
     /// <param name="eventName"></param>
     /// <param name="check"></param>
-    public static void RegisterEvent(string eventName,GameEvent.CheckHandle check)
+    public static void RegisterEvent(EventName eventName,GameEvent.CheckHandle check)
     {
         var target = RootGroup?.GetEvent(eventName);
         if (target != null && target is GameEvent temp)
@@ -197,7 +173,7 @@ public class GameEventManager
     /// </summary>
     /// <param name="eventName"></param>
     /// <param name="response"></param>
-    public static void SubscribeEvent(string eventName,GameEvent.ResponseHandle response)
+    public static void SubscribeEvent(EventName eventName,GameEvent.ResponseHandle response)
     {
         var target = RootGroup.GetEvent(eventName);
         if (target != null && target is GameEvent temp)
@@ -211,8 +187,9 @@ public class GameEventManager
     /// </summary>
     /// <param name="eventName"></param>
     /// <param name="enable"></param>
-    public static void EnableEvent(string eventName,bool enable)
+    public static void EnableEvent(EventName eventName,bool enable)
     {
+        if (eventName == EventName.rootGroup) Debug.LogWarning("RootGroup不应使用此方法 无效启用");
         var target = RootGroup.GetEvent(eventName);
         if (target != null)
         {
@@ -220,8 +197,9 @@ public class GameEventManager
         }
     }
 
-    public static void EnableAllEvents(string eventName, bool enable)
+    public static void EnableAllEvents(EventName eventName, bool enable)
     {
+        if (eventName == EventName.rootGroup) Debug.LogWarning("RootGroup不应使用此方法 无效启用");
         var target = RootGroup?.GetEvent(eventName) as GameEventGroup;
         if (target != null)
         {

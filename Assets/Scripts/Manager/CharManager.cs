@@ -27,7 +27,7 @@ public class CharManager : MonoBehaviour
         playerModelList = new Dictionary<int, GameObject>();
         recorders = new Dictionary<int, GameObject>();
 
-        GameEventManager.SubscribeEvent(GameEventManager.EVENT_ON_PLAYER_LEVEL_UP, PlayerLevelUp);
+        GameEventManager.SubscribeEvent(EventName.onPlayerLevelUp, PlayerLevelUp);
     }
 
     private void Update()
@@ -69,6 +69,9 @@ public class CharManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 获取场内所有玩家记录器
+    /// </summary>
     void GetRecorderList()
     {
         if (recorders.Count == PhotonNetwork.PlayerList.Length)
@@ -103,7 +106,7 @@ public class CharManager : MonoBehaviour
         CharBase charBase = FindPlayerByActorNumber(actorNumber,out GameObject playerModel);
         if (charBase == null) { return; }
 
-        Log(actorNumber, "名为" + charBase.PlayerName);
+        Toast(new object[2] { actorNumber, "名为" + charBase.PlayerName });
     }
 
     /// <summary>
@@ -137,8 +140,8 @@ public class CharManager : MonoBehaviour
                 
                 charBase.Restore += 10;
             }
-
-            Log(actorNumber, "level已经提升" + count + "级");
+            GameEventManager.EnableEvent(EventName.onPlayerLevelUp, false);
+            Toast(new object[2] { actorNumber, "level已经提升" + count + "级" });
         }
     }
 
@@ -146,7 +149,7 @@ public class CharManager : MonoBehaviour
     /// 通过id使玩家强制立即彻底死亡 【GM命令】
     /// </summary>
     /// <param name="actorNumber"></param>
-    public void OnPlayerDead(int actorNumber)
+    public void SetPlayerDead(int actorNumber)
     {
         CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
         if (charBase == null) { return; }
@@ -154,26 +157,39 @@ public class CharManager : MonoBehaviour
 
         charBase.CurrentHealth = 0;
         charBase.State = StateEnum.Dead;
-        Log(actorNumber, "彻底死亡");
+
+        GameEventManager.EnableEvent(EventName.onPlayerDead, false);
+        Toast(new object[2] { actorNumber, "彻底死亡" });
+        
     }
 
     /// <summary>
     /// 通过id使玩家被击杀
     /// </summary>
     /// <param name="actorNumber"></param>
-    public void OnPlayerKilled(int actorNumber)
+    public void OnPlayerKilled(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber;
 
-        charBase.State = StateEnum.Respawning;
-        charBase.CurrentHealth = 0;
-        charBase.Death++;
-        
-        playerModel.SetActive(false);
+        if(args.Length == 1)
+        {
+            actorNumber = (int)args[0];
 
-        Log(actorNumber, "被击杀");
-        OnPlayerRespawnCountDownStart(charBase.ActorNumber);
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.State = StateEnum.Respawning;
+            charBase.CurrentHealth = 0;
+            charBase.Death++;
+
+            //这句话需要改为全局摧毁
+            playerModel.SetActive(false);
+
+            Toast(new object[2] { actorNumber, "被击杀" });
+            GameEventManager.EnableEvent(EventName.onPlayerKilled, false);
+            GameEventManager.EnableEvent(EventName.onPlayerRespawnCountDownStart, true);
+        }     
+        //OnPlayerRespawnCountDownStart(charBase.ActorNumber);
         
     }
 
@@ -181,13 +197,50 @@ public class CharManager : MonoBehaviour
     /// 玩家达成了击杀 根据击杀者id增加一次杀敌数
     /// </summary>
     /// <param name="actorNumber"></param>
-    public void OnPlayerKill(int actorNumber)
+    public void OnPlayerKill(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber;
+        if(args.Length == 1)
+        {
+            actorNumber = (int)args[0];
 
-        charBase.Kill++;
-        Log(actorNumber, "击杀了敌人");
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.Kill++;
+
+            GameEventManager.EnableEvent(EventName.onPlayerKill, false);
+            Toast(new object[2] { actorNumber, "击杀了敌人" });
+        }
+    }
+
+    /// <summary>
+    /// 玩家回血
+    /// </summary>
+    /// <param name="args"></param>
+    public void OnPlayerRestore(object[] args)
+    {
+
+    }
+
+    /// <summary>
+    /// 玩家处于无核状态下彻底死亡
+    /// </summary>
+    /// <param name="args"></param>
+    public void OnPlayerDead(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.State = StateEnum.Dead;
+            GameEventManager.EnableEvent(EventName.onPlayerDead, false);
+            Toast(new object[2] { actorNumber, "彻底死亡" });
+        }
     }
 
     /// <summary>
@@ -195,14 +248,87 @@ public class CharManager : MonoBehaviour
     /// </summary>
     /// <param name="actorNumber"></param>
     /// <param name="time"></param>
-    public void OnPlayerRespawnCountDownStart(int actorNumber)
+    public void OnPlayerRespawnCountDownStart(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber;
+        if(args.Length == 1)
+        {
+            actorNumber= (int)args[0];
 
-        charBase.State = StateEnum.Respawning;
-        charBase.RespawnCountDown = charBase.RespawnTime;
-        Log(actorNumber, "开始重生倒计时");
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.State = StateEnum.Respawning;
+            charBase.RespawnCountDown = charBase.RespawnTime;
+
+            GameEventManager.EnableEvent(EventName.onPlayerRespawnCountDownStart, false);
+            GameEventManager.EnableEvent(EventName.onPlayerRespawning,true);
+            Toast(new object[2] { actorNumber, "开始重生倒计时" });
+        }
+
+    }
+
+    public void OnPlayerRespawning(object[] args)
+    {
+        int actorNumber;
+
+        if( args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            if (charBase.State == StateEnum.Respawning)
+            {
+                charBase.RespawnCountDown -= Time.deltaTime;
+            }
+
+            if (charBase.RespawnCountDown == 0)
+            {
+                GameEventManager.EnableEvent(EventName.onPlayerRespawning,false);
+                GameEventManager.EnableEvent(EventName.onPlayerRespawnCountDownEnd, true);
+            }
+        }
+
+    }
+
+    public void OnPlayerRespawnCountDownEnd(object[] args)
+    {
+        int actorNumber;
+
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.State = StateEnum.Alive;
+
+            GameEventManager.EnableEvent(EventName.onPlayerRespawn, true);
+            GameEventManager.EnableEvent(EventName.onPlayerRespawnCountDownEnd, false);
+            
+        }
+    }
+
+    public void OnPlayerRespawn(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            charBase.CurrentHealth = charBase.MaxHealth;
+            //复活逻辑
+
+            //
+            GameEventManager.EnableEvent(EventName.onPlayerRespawn, false);
+        }
+       
     }
 
     /// <summary>
@@ -210,23 +336,32 @@ public class CharManager : MonoBehaviour
     /// </summary>
     /// <param name="actorNumber"></param>
     /// <param name="health"></param>
-    public void SetPlayerHealth(int actorNumber,int health)
+    public void SetPlayerHealth(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber,health;
+        if(args.Length == 2)
+        {
+            actorNumber = (int)args [0];
+            health = (int)args[1];
 
-        if (health>charBase.MaxHealth)
-        {
-            Log(actorNumber,"预修改的值不得大于玩家最大生命");
-            return;
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            if (health > charBase.MaxHealth)
+            {
+                Toast(new object[2] { actorNumber, "预修改的值不得大于玩家最大生命" });
+                return;
+            }
+            if (health < 0)
+            {
+                Toast(new object[2] { actorNumber, "预修改的值不得小于0" });
+                return;
+            }
+            charBase.CurrentHealth = health;
+
+            GameEventManager.EnableEvent(EventName.onPlayerCurrentHealthChanged, false);
+            Toast(new object[2] { actorNumber, "血量已修改" });
         }
-        if (health<0)
-        {
-            Log(actorNumber, "预修改的值不得小于0");
-            return;
-        }
-        charBase.CurrentHealth = health;
-        Log(actorNumber, "血量已修改");
     }
 
     /// <summary>
@@ -235,21 +370,33 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minExp"></param>
     /// <param name="maxExp"></param>
-    public void ExpChange(int actorNumber,float minExp,float maxExp)
+    public void ExpChange(object[] args)
     {
-        if (minExp< 0 || maxExp <0)
+        int actorNumber; float minExp, maxExp;
+
+        if(args.Length == 3)
         {
-            Log(actorNumber, "的经验值变动不能为负数");
-            return;
+            actorNumber = (int)args[0];
+            minExp = (float)args[1];
+            maxExp = (float)args[2];
+
+            if (minExp < 0 || maxExp < 0)
+            {
+                Toast(new object[2] { actorNumber, "的经验值变动不能为负数" });
+                return;
+            }
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            float current = ToGivePlayerSomething(args);
+            charBase.CurrentExp += current;
+
+            GameEventManager.EnableEvent(EventName.onPlayerCurrentExpChanged, false);
+            Toast(new object[2] { actorNumber, "获得了" + current + "经验" });
         }
 
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
-
-        float current = ToGivePlayerSomething(actorNumber, minExp, maxExp);
-        charBase.CurrentExp += current;
-
-        Log(actorNumber, "获得了"+ current + "经验");
+        
     }
 
     /// <summary>
@@ -258,22 +405,32 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minMoney"></param>
     /// <param name="maxMoney"></param>
-    public void MoneyChange(int actorNumber, int minMoney, int maxMoney)
+    public void MoneyChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minMoney, maxMoney;
 
-        int current = ToGivePlayerSomething(actorNumber, minMoney, maxMoney);
-        charBase.Money += current;
+        if( args.Length == 3)
+        {
+            actorNumber = (int)args [0];
+            minMoney = (int)args[1];
+            maxMoney = (int)args[2];
 
-        if (current>=0)
-        {
-            Log(actorNumber, "获得了" + current + "金钱");
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(args);
+            charBase.Money += current;
+
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "获得了" + current + "金钱" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "金钱" });
+            }
         }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "金钱");
-        }
+
     }
 
     /// <summary>
@@ -281,21 +438,29 @@ public class CharManager : MonoBehaviour
     /// </summary>
     /// <param name="actorNumber"></param>
     /// <param name="health"></param>
-    public void HealthChange(int actorNumber,int health)
+    public void HealthChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, health;
 
-        int current = ToGivePlayerSomething(actorNumber, health, health);
-        charBase.CurrentHealth += current;
+        if(args.Length == 2)
+        {
+            actorNumber = (int)args[0];
+            health = (int)args[1];
 
-        if (current >= 0)
-        {
-            Log(actorNumber, "回复了" + current + "的血量");
-        }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的血量");
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(new object[] { actorNumber, health, health });
+            charBase.CurrentHealth += current;
+
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的血量" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的血量" });
+            }
         }
     }
 
@@ -305,21 +470,32 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minMaxHealth"></param>
     /// <param name="maxMaxHealth"></param>
-    public void MaxHealthChange(int actorNumber, int minMaxHealth, int maxMaxHealth)
+    public void MaxHealthChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minMaxHealth, maxMaxHealth;
 
-        int current = ToGivePlayerSomething(actorNumber, minMaxHealth, maxMaxHealth);
-        charBase.MaxHealth += current;
-        if (current >= 0)
+        if(args.Length == 3)
         {
-            Log(actorNumber, "提高了" + current + "的最大生命值");
+            actorNumber = (int)args[0];
+            minMaxHealth = (int)args[1];
+            maxMaxHealth = (int)args[2];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(args);
+            charBase.MaxHealth += current;
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "提高了" + current + "的最大生命值" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的最大生命值" });
+            }
         }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的最大生命值");
-        }
+
+        
     }
 
     /// <summary>
@@ -327,21 +503,29 @@ public class CharManager : MonoBehaviour
     /// </summary>
     /// <param name="actorNumber"></param>
     /// <param name="shield"></param>
-    public void ShieldChange(int actorNumber,int shield)
+    public void ShieldChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, shield;
 
-        int current = ToGivePlayerSomething(actorNumber, shield, shield);
-        charBase.Shield += current;
-        if (shield >= 0)
+        if(args.Length == 2)
         {
-            Log(actorNumber, "回复了" + current + "的护盾值");
-        }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的护盾值");
-        }
+            actorNumber = (int)args[0];
+            shield = (int)args[1];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(new object[] { actorNumber, shield, shield });
+            charBase.Shield += current;
+            if (shield >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的护盾值" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的护盾值" });
+            }
+        } 
     }
 
     /// <summary>
@@ -350,20 +534,29 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minCriticalHit"></param>
     /// <param name="maxCriticalHit"></param>
-    public void CriticalHitChange(int actorNumber, int minCriticalHit, int maxCriticalHit)
+    public void CriticalHitChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minCriticalHit, maxCriticalHit;
 
-        int current = ToGivePlayerSomething(actorNumber, minCriticalHit, maxCriticalHit);
-        charBase.CriticalHit += current;
-        if (current >= 0)
+        if(args.Length == 3)
         {
-            Log(actorNumber, "回复了" + current + "的爆伤");
-        }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的爆伤");
+            actorNumber = (int)args[0];
+            minCriticalHit = (int)args[1];
+            maxCriticalHit = (int)args[2];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(args);
+            charBase.CriticalHit += current;
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的爆伤" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的爆伤" });
+            }
         }
     }
 
@@ -373,21 +566,31 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minCriticalHitRate"></param>
     /// <param name="maxCriticalHitRate"></param>
-    public void CriticalHitRateChange(int actorNumber, int minCriticalHitRate, int maxCriticalHitRate)
+    public void CriticalHitRateChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minCriticalHitRate, maxCriticalHitRate;
+        if (args.Length == 3)
+        {
+            actorNumber = (int)args[0];
+            minCriticalHitRate = (int)args[1];
+            maxCriticalHitRate = (int)args[2];
 
-        int current = ToGivePlayerSomething(actorNumber, minCriticalHitRate, maxCriticalHitRate);
-        charBase.CriticalHitRate += current;
-        if (current >= 0)
-        {
-            Log(actorNumber, "回复了" + current + "的暴击率");
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(args);
+            charBase.CriticalHitRate += current;
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的暴击率" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的暴击率" });
+            }
         }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的暴击率");
-        }
+
+
     }
 
     /// <summary>
@@ -396,21 +599,31 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minMoveSpeedChange"></param>
     /// <param name="maxMoveSpeedChange"></param>
-    public void MoveSpeedChange(int actorNumber, int minMoveSpeed, int maxMoveSpeed)
+    public void MoveSpeedChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minMoveSpeed, maxMoveSpeed;
 
-        int current = ToGivePlayerSomething(actorNumber, minMoveSpeed, maxMoveSpeed);
-        charBase.MoveSpeed += current;
-        if (current >= 0)
+        if(args.Length == 3)
         {
-            Log(actorNumber, "回复了" + current + "的移速");
+            actorNumber = (int)args[0];
+            minMoveSpeed = (int)args[1];
+            maxMoveSpeed = (int)args[2];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+            int current = ToGivePlayerSomething(args);
+            charBase.MoveSpeed += current;
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的移速" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的移速" });
+            }
         }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的移速");
-        }
+
     }
 
     /// <summary>
@@ -419,37 +632,32 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     /// <param name="minAttackSpeed"></param>
     /// <param name="maxAttackSpeed"></param>
-    public void AttackSpeedChange(int actorNumber, int minAttackSpeed, int maxAttackSpeed)
+    public void AttackSpeedChange(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
+        int actorNumber, minAttackSpeed, maxAttackSpeed;
 
-        int current = ToGivePlayerSomething(actorNumber, minAttackSpeed, maxAttackSpeed);
-        charBase.AttackSpeed += current;
-        if (current >= 0)
+        if(args.Length == 3)
         {
-            Log(actorNumber, "回复了" + current + "的攻速");
-        }
-        else
-        {
-            Log(actorNumber, "扣除了" + current + "的攻速");
-        }
-    }
+            actorNumber = (int)args[0];
+            minAttackSpeed = (int)args[1];
+            maxAttackSpeed = (int)args[2];
 
-    /// <summary>
-    /// (float)玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="lowerLimit"></param>
-    /// <param name="upperLimit"></param>
-    /// <returns>返回值用于给装备显示词条数值</returns>
-    public float ToGivePlayerSomething(int actorNumber,float lowerLimit,float upperLimit)
-    {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return 0; }
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
 
-        float value = Random.Range(lowerLimit, upperLimit);
-        return value;
+            int current = ToGivePlayerSomething(args);
+            charBase.AttackSpeed += current;
+            if (current >= 0)
+            {
+                Toast(new object[2] { actorNumber, "回复了" + current + "的攻速" });
+            }
+            else
+            {
+                Toast(new object[2] { actorNumber, "扣除了" + current + "的攻速" });
+            }
+        }
+
+        
     }
 
     /// <summary>
@@ -459,24 +667,51 @@ public class CharManager : MonoBehaviour
     /// <param name="lowerLimit"></param>
     /// <param name="upperLimit"></param>
     /// <returns>返回值用于给装备显示词条数值</returns>
-    public int ToGivePlayerSomething(int actorNumber, int lowerLimit, int upperLimit)
+    public int ToGivePlayerSomething(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return 0; }
+        int actorNumber, lowerLimit, upperLimit;
 
-        int value = Random.Range(lowerLimit, upperLimit);
-        return value;
+        if(args.Length == 3)
+        {
+            actorNumber = (int)args[0];
+            lowerLimit = (int)args[1];
+            upperLimit = (int)args[2];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return 0; }
+
+            int value = Random.Range(lowerLimit, upperLimit);
+            return value;
+        }
+        else
+        {
+            Toast(new object[1] { "随机数值参数错误" });
+            return 0;
+        }
+        
     }
 
-
-    public void Log(int actorNumber,string text)
+    /// <summary>
+    /// 吐丝
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="text"></param>
+    public void Toast(object[] args)
     {
-        Debug.Log("ActorNumber为" + actorNumber + "的玩家" + text);
-    }
-
-    public void Log(string text)
-    {
-        Debug.Log(text);
+        int actorNumber;
+        string text;
+        if (args.Length == 2)
+        {
+            actorNumber = (int)args[0];
+            text = args[1].ToString();
+            Debug.Log("ActorNumber为" + actorNumber + "的玩家" + text);
+        }
+        if (args.Length == 1)
+        {
+            text = args[0].ToString();
+            Debug.Log(text);
+        }
+        GameEventManager.EnableEvent(EventName.onToast, false);
     }
 
     /// <summary>

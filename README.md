@@ -11,9 +11,9 @@
 
 ### 高优先级
 
-新增新的事件监听
+CharManager,CharBase补完注册订阅事件
 
-开始实际运用事件系统 将事件管理器中的文本改为const
+开始实际运用事件系统
 
 ---
 
@@ -40,6 +40,8 @@ DebugConsole 改版
 动画控制器记得加入photonView.IsMine的判断
 
 ## Tips
+
+该事件系统中 RootGroup必须enable为true，且只能在GameEventManager中使用enable修改， 无法使用EnableAllEvents或EnableEvent对EventName.rootGroup进行操作，必须从RootGroup下的第一级事件组当中进行操作 如EventName.playerGroup  
 
 技能碰撞限制
 
@@ -78,6 +80,14 @@ DebugConsole 改版
 ## Done
 
 ### 2022.4.7
+
+重写CharBase(1.8/2) 肢解CharStateController
+
+重写CharManager(1.5/2)
+
+重写事件系统
+
+---
 
 重写了玩家基本逻辑
 

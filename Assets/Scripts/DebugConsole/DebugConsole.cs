@@ -89,22 +89,26 @@ public class DebugConsole : MonoBehaviour
 
         SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>
            {
-               CharManager.Instance.SetPlayerHealth(id, health);
+               object[] args = { id, health };
+               CharManager.Instance.SetPlayerHealth(args);
            });
 
         TO_GIVE_PLAYER_EXP = new DebugCommand<int, int, int>("ToGivePlayerExp", "通过id给予玩家随机范围内的经验", "ToGivePlayerExp <id> <min> <max>", (id, min, max) =>
           {
-              CharManager.Instance.ExpChange(id, min, max);
+              object[] args = { id, min, max };
+              CharManager.Instance.ExpChange(args);
           });
 
         TO_GIVE_PLAYER_MONEY = new DebugCommand<int, int, int>("ToGivePlayerMoney", "通过id给予玩家随机范围内的经验", "ToGivePlayerMoney <id> <min> <max>", (id, min, max) =>
         {
-            CharManager.Instance.MoneyChange(id, min, max);
+            object[] args = { id, min, max };
+            CharManager.Instance.MoneyChange(args);
         });
 
         TO_GIVE_PLAYER_HP = new DebugCommand<int, int>("ToGivePlayerHp", "通过id给予或扣除玩家指定血量", "ToGivePlayerHp <id> <health>", (id, health) =>
            {
-               CharManager.Instance.HealthChange(id, health);
+               object[] args = { id, health };
+               CharManager.Instance.HealthChange(args);
            });
 
         //将命令放进列表 

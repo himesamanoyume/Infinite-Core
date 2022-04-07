@@ -12,9 +12,6 @@ public class CharStateController : MonoBehaviour
     {
         FindCharBase();
 
-        
-        //GameEventManager.EnableEvent(GameEventManager.EVENT_ON_PLAYER_LEVEL_UP, false);
-
     }
 
     private void Update()
@@ -50,21 +47,16 @@ public class CharStateController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Éı¼¶ToGivePlayerExp 1 1000 1200
-        if (charBase.CurrentExp >= charBase.MaxExp && charBase.CurrentExp!=0)
-        {
-
-        }
 
         //ËÀÍö
-        if (charBase.State == StateEnum.Alive)
-        {
-            if (charBase.CurrentHealth <= 0)
-            {
+        //if (charBase.State == StateEnum.Alive)
+        //{
+        //    if (charBase.CurrentHealth <= 0)
+        //    {
 
-                //CharManager.Instance.OnPlayerKilled(charBase.ActorNumber);
-            }
-        }
+        //        //CharManager.Instance.OnPlayerKilled(charBase.ActorNumber);
+        //    }
+        //}
 
         //¸´»î
         if (charBase.State == StateEnum.Respawning)
@@ -98,12 +90,5 @@ public class CharStateController : MonoBehaviour
             }
         }
     }
-
-    bool OnPlayerLevelUpCheck(out object[] args)
-    {
-        args = new object[2] { charBase.ActorNumber, 1 };
-        return true;
-    }
-
 
 }

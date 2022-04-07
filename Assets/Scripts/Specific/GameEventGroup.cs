@@ -7,7 +7,7 @@ public class GameEventGroup : GameEventBase
 
     protected List<GameEventBase> events;
     
-    public GameEventGroup(string eventName)
+    public GameEventGroup(EventName eventName)
     {
         Name = eventName;
     }
@@ -26,6 +26,7 @@ public class GameEventGroup : GameEventBase
         //检查重名
         if (events.Find(e=>e.Name == gameEvent.Name)!=null)
         {
+            Debug.LogWarning("事件有重名!");
             return;
         }
         events.Add(gameEvent);
@@ -36,7 +37,7 @@ public class GameEventGroup : GameEventBase
     /// </summary>
     /// <param name="eventName"></param>
     /// <returns></returns>
-    public GameEventBase GetEvent(string eventName)
+    public GameEventBase GetEvent(EventName eventName)
     {
         Queue<GameEventBase> queue = new Queue<GameEventBase>();
 
@@ -75,11 +76,13 @@ public class GameEventGroup : GameEventBase
             {
                 //如果是事件组 则启用事件组内所有事件
                 (eventItem as GameEventGroup).EnableAllEvents(enable);
+                //Debug.Log(eventItem.Name + " " + enable);
             }
             else
             {
                 //如果是单个事件 则启动其事件
                 eventItem.Enable = enable;
+                //Debug.Log(eventItem.Name + " " + enable);
             }
         }
     }
@@ -88,7 +91,7 @@ public class GameEventGroup : GameEventBase
     /// 移除事件
     /// </summary>
     /// <param name="eventName"></param>
-    public void RemoveEvent(string eventName)
+    public void RemoveEvent(EventName eventName)
     {
         if (events == null) return;
 

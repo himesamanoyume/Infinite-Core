@@ -8,11 +8,12 @@ public class GameEvent : GameEventBase
     protected ResponseHandle response;
 
     public delegate bool CheckHandle(out object[] args);
+
     protected CheckHandle checkHandle;
 
     protected object[] args;
 
-    public GameEvent(string eventName)
+    public GameEvent(EventName eventName)
     {
         Name = eventName;
     }
