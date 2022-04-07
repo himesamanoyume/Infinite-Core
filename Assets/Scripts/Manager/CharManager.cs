@@ -10,8 +10,10 @@ using Photon.Realtime;
 /// </summary>
 public class CharManager : MonoBehaviour
 {
+    public GameObject total;
 
-    Dictionary<int, GameObject> playerModelList;
+    public Dictionary<int, GameObject> playerModelList;
+    public Dictionary<int, GameObject> recorders;
 
     public static CharManager Instance;
 
@@ -23,12 +25,17 @@ public class CharManager : MonoBehaviour
     private void Start()
     {
         playerModelList = new Dictionary<int, GameObject>();
+        recorders = new Dictionary<int, GameObject>();
+
+        GameEventManager.SubscribeEvent(GameEventManager.EVENT_ON_PLAYER_LEVEL_UP, PlayerLevelUp);
     }
 
     private void Update()
     {
         GetPlayerModelList();
+        GetRecorderList();
 
+       
     }
 
     /// <summary>
@@ -62,6 +69,31 @@ public class CharManager : MonoBehaviour
         }
     }
 
+    void GetRecorderList()
+    {
+        if (recorders.Count == PhotonNetwork.PlayerList.Length)
+        {
+            return;
+        }
+        else
+        {
+            recorders.Clear();
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerRecorder");
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? obj.GetPhotonView().Owner.NickName + " Recorder (My)" : obj.GetPhotonView().Owner.NickName + " Recorder";
+
+                obj.transform.SetParent(total.transform);
+
+                recorders.Add(obj.GetComponent<CharBase>().ActorNumber, obj);
+
+            }
+
+            Debug.LogWarning("已添加记录者");
+        }
+
+    }
+
     /// <summary>
     /// 通过id获取玩家名字
     /// </summary>
@@ -78,29 +110,36 @@ public class CharManager : MonoBehaviour
     /// 通过id使特定玩家升级1级
     /// </summary>
     /// <param name="actorNumber"></param>
-    public void PlayerLevelUp(int actorNumber, int count)
+    public void PlayerLevelUp(object[] args)
     {
-        CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
-        if (charBase == null) { return; }
-
-
-        for (int i = 0; i < count; i++)
+        int actorNumber,count;
+        if (args.Length == 2)
         {
-            charBase.Level += 1;
-            charBase.Attack += 100;
-            charBase.MaxHealth += 1000;
-            charBase.CurrentHealth += 1000;
-            
-            if (charBase.CurrentExp >= charBase.MaxExp)
+            actorNumber = (int)args[0];
+            count = (int)args[1];
+
+            CharBase charBase = FindPlayerByActorNumber(actorNumber, out GameObject playerModel);
+            if (charBase == null) { return; }
+
+
+            for (int i = 0; i < count; i++)
             {
-                charBase.CurrentExp -= charBase.MaxExp;
+                if (charBase.CurrentExp >= charBase.MaxExp)
+                {
+                    charBase.CurrentExp = charBase.CurrentExp -  charBase.MaxExp;
+                }
+                charBase.MaxExp += charBase.Level * 500;
+                charBase.Level += 1;
+                charBase.Attack += 100;
+                charBase.MaxHealth += 1000;
+                charBase.CurrentHealth += 1000;
+
+                
+                charBase.Restore += 10;
             }
 
-            charBase.MaxExp += charBase.Level * 500;
-            charBase.Restore += 10;
+            Log(actorNumber, "level已经提升" + count + "级");
         }
-        
-        Log(actorNumber, "level已经提升"+count+"级");
     }
 
     /// <summary>
@@ -450,12 +489,13 @@ public class CharManager : MonoBehaviour
 
         CharBase charBase;
 
-        foreach (var item in playerModelList)
+        foreach (var recorder in recorders)
         {
-            charBase = item.Value.GetComponent<CharBase>();
+            charBase = recorder.Value.GetComponent<CharBase>();
             if (charBase.ActorNumber == actorNumber)
             {
-                playerModel = item.Value;
+                
+                playerModel = playerModelList[charBase.ActorNumber];
                 return charBase;
             }
             

@@ -245,6 +245,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 currentExp = value;
+                if (currentExp>=maxExp && currentExp!=0)
+                {
+                    
+
+                }
             }
         }}
     public float MaxExp
@@ -277,6 +282,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 level = value;
+
+                GameEventManager.RegisterEvent(GameEventManager.EVENT_ON_PLAYER_LEVEL_CHANGED, OnPlayerLevelChangedCheck);
+
+                
             }
         }
     }
@@ -486,6 +495,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 respawnTime = value;
+                GameEventManager.RegisterEvent(GameEventManager.EVENT_ON_PLAYER_RESPAWN_TIME_CHANGED, OnPlayerRespawnTimeChangedCheck);
             }
         }
     }
@@ -494,6 +504,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         get => respawnCountDown;
         set
         {
+            if (respawnCountDown==RespawnTime)
+            {
+                GameEventManager.RegisterEvent(GameEventManager.EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_START, OnPlayerRespawnCountDownStartCheck);
+            }
+
             if (value < -1f)
             {
                 CharManager.Instance.Log(actorNumber, "重生倒计时不合法");
@@ -502,6 +517,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 respawnCountDown = value;
             }
+
+            if (respawnCountDown == 0)
+            {
+                GameEventManager.RegisterEvent(GameEventManager.EVENT_ON_PLAYER_RESPAWN_COUNTDOWN_END, OnPlayerRespawnCountDownEndCheck);
+            }
         }
     }
     public TeamEnum PlayerTeam { get => playerTeam; set => playerTeam = value; }
@@ -509,11 +529,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
 
     #region Photon Callbacks
-
-    public void OnCharBaseUpdate()
-    {
-        
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -608,6 +623,76 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         
+    }
+
+    #endregion
+
+    #region Event Check
+
+    bool OnPlayerKillCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerLevelChangedCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerKilledCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerDeadCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerRespawnCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerRespawnTimeChangedCheck(out object[] args)
+    {
+        args=null;
+        return true;
+    }
+
+    bool OnPlayerStateChangedCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerRespawnCountDownStartCheck(out object[] args)
+    {
+        args = new object[0];
+        return true;
+    }
+
+    bool OnPlayerRespawnCountDownEndCheck(out object[] args)
+    {
+        args = new object[0];
+        return true;
+    }
+
+    bool OnPlayerRestoreCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerLevelUpCheck(out object[] args)
+    {
+        args = new object[2] { actorNumber, 1 };
+        return true;
     }
 
     #endregion

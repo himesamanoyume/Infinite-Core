@@ -83,7 +83,8 @@ public class DebugConsole : MonoBehaviour
 
         PLAYER_LEVEL_UP_BY_ID = new DebugCommand<int,int>("PlayerLevelUp", "根据id提升玩家特定次数的1级等级", "PlayerLevelUp <id> <count>", (id,count) =>
            {
-               CharManager.Instance.PlayerLevelUp(id, count);
+               object[] args = {id,count};
+               CharManager.Instance.PlayerLevelUp(args);
            });
 
         SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>

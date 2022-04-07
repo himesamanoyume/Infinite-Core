@@ -14,7 +14,6 @@ public class CharSpawnController : MonoBehaviour
     public GameObject solider;
     public GameObject tanker;
     public GameObject recorder;
-    public GameObject total;
 
     public GameObject spawnRedPos1;
     public GameObject spawnRedPos2;
@@ -75,18 +74,14 @@ public class CharSpawnController : MonoBehaviour
 
                     GameObject playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
 
-                    playerRecorder.transform.parent = total.transform;
-
                     GameObject playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), redPosList[Random.Range(0,5)].transform.position, Quaternion.identity);
 
-                    //GameObject playerRecorder = playerModel.transform.Find("PlayerDataRecorder").gameObject;
 
                     playerModel.name = player.NickName + " (My)";
                     playerRecorder.name = player.NickName + " Recorder {My}";
 
                     GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
 
-                    playerRecorder.transform.SetParent(total.transform);
 
                     break;
                 case TeamEnum.Blue:
@@ -95,23 +90,20 @@ public class CharSpawnController : MonoBehaviour
 
                     playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
 
-                    playerRecorder.transform.parent = total.transform;
-
                     playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0,5)].transform.position, Quaternion.identity);
-
-                    //playerRecorder = playerModel.transform.Find("PlayerDataRecorder").gameObject;
 
                     playerModel.name = player.NickName + " (My)";
                     playerRecorder.name = player.NickName + " Recorder {My}";
 
                     GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
 
-                    playerRecorder.transform.SetParent(total.transform);
 
                     break;
             }
         }
     }
+
+
 
     /// <summary>
     /// 生成玩家的复活分支

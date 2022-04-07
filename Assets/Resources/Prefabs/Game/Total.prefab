@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1252089327796656336}
-  - component: {fileID: 5973497463398813803}
   m_Layer: 0
   m_Name: Total
   m_TagString: Untagged
@@ -34,18 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5973497463398813803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252089327796656337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 554dc8cec3a607047bd3c8e83ee7f837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1252089328102079820
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e3414243381e842ae435d527e1581b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  total: {fileID: 1252089327796656337}
 --- !u!1 &1252089328583133769
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +125,6 @@ MonoBehaviour:
   solider: {fileID: 8027300526949257307, guid: 41ccd04ff23bf6440a8b038869022525, type: 3}
   tanker: {fileID: 8027300526949257307, guid: f94f071105f0a474c80dbffbe28bfa07, type: 3}
   recorder: {fileID: 8261284882752522266, guid: 72d90ddc6a08a504b9cc20af83cf1609, type: 3}
-  total: {fileID: 1252089327796656337}
   spawnRedPos1: {fileID: 0}
   spawnRedPos2: {fileID: 0}
   spawnRedPos3: {fileID: 0}

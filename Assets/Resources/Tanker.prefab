@@ -112,7 +112,6 @@ GameObject:
   - component: {fileID: 1259490272339368446}
   - component: {fileID: -5285226530087299361}
   - component: {fileID: 1307905066947866740}
-  - component: {fileID: -4056897152679128056}
   m_Layer: 0
   m_Name: Tanker
   m_TagString: PlayerModel
@@ -285,15 +284,3 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-4056897152679128056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027300526949257307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
