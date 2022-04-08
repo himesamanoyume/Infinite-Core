@@ -14,12 +14,11 @@ public class DebugConsole : MonoBehaviour
 
     //声明命令处
     public static DebugCommand TEST;
-    public static DebugCommand<int> GET_PLAYERNAME_BY_ID;
-    public static DebugCommand<int,int> PLAYER_LEVEL_UP_BY_ID;
-    public static DebugCommand<int, int> SET_PLAYER_HP_BY_ID;
+    public static DebugCommand<int> GET_PLAYER_NAME;
+    public static DebugCommand<int,int> PLAYER_LEVEL_UP;
+    public static DebugCommand<int, int> SET_PLAYER_HP;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_EXP;
     public static DebugCommand<int, int, int> TO_GIVE_PLAYER_MONEY;
-    public static DebugCommand<int, int> TO_GIVE_PLAYER_HP;
 
     public void OnToggleDebug(InputValue value)
     {
@@ -76,52 +75,41 @@ public class DebugConsole : MonoBehaviour
             Debug.Log("Hello World");
         });
 
-        GET_PLAYERNAME_BY_ID = new DebugCommand<int>("GetPlayerNameById", "根据id获取玩家姓名", "GetPlayerNameById <id>", (id) =>
+        GET_PLAYER_NAME = new DebugCommand<int>("GetPlayerName", "根据id获取玩家姓名", "GetPlayerName <id>", (id) =>
         {
-            CharManager.Instance.GetPlayerNameById(id);
+            CharManager.Instance.GetPlayerName(id);
         });
 
-        PLAYER_LEVEL_UP_BY_ID = new DebugCommand<int,int>("PlayerLevelUp", "根据id提升玩家特定次数的1级等级", "PlayerLevelUp <id> <count>", (id,count) =>
+        PLAYER_LEVEL_UP = new DebugCommand<int,int>("PlayerLevelUp", "根据id提升玩家特定次数的1级等级", "PlayerLevelUp <id> <count>", (id,count) =>
            {
-               object[] args = {id,count};
-               CharManager.Instance.PlayerLevelUp(args);
+               CharManager.Instance.SetPlayerLevel(id, count);
            });
 
-        SET_PLAYER_HP_BY_ID = new DebugCommand<int, int>("SetPlayerHpById", "通过id修改玩家当前血量", "SetPlayerHpById <id> <health>", (id, health) =>
+        SET_PLAYER_HP = new DebugCommand<int, int>("SetPlayerHp", "通过id修改玩家当前血量", "SetPlayerHp <id> <health>", (id, health) =>
            {
-               object[] args = { id, health };
-               CharManager.Instance.SetPlayerHealth(args);
+               CharManager.Instance.SetPlayerCurrentHealth(id, health);
            });
 
         TO_GIVE_PLAYER_EXP = new DebugCommand<int, int, int>("ToGivePlayerExp", "通过id给予玩家随机范围内的经验", "ToGivePlayerExp <id> <min> <max>", (id, min, max) =>
           {
-              object[] args = { id, min, max };
-              CharManager.Instance.ExpChange(args);
+              CharManager.Instance.ToGivePlayerCurrentExp(id, min, max);
           });
 
         TO_GIVE_PLAYER_MONEY = new DebugCommand<int, int, int>("ToGivePlayerMoney", "通过id给予玩家随机范围内的经验", "ToGivePlayerMoney <id> <min> <max>", (id, min, max) =>
         {
-            object[] args = { id, min, max };
-            CharManager.Instance.MoneyChange(args);
+            CharManager.Instance.SetPlayerMoney(id, min, max);
         });
-
-        TO_GIVE_PLAYER_HP = new DebugCommand<int, int>("ToGivePlayerHp", "通过id给予或扣除玩家指定血量", "ToGivePlayerHp <id> <health>", (id, health) =>
-           {
-               object[] args = { id, health };
-               CharManager.Instance.HealthChange(args);
-           });
 
         //将命令放进列表 
         //注意最后一个命令后不能有逗号 否则会无法调用
         commandList = new List<object>
         {
             TEST,
-            GET_PLAYERNAME_BY_ID,
-            PLAYER_LEVEL_UP_BY_ID,
-            SET_PLAYER_HP_BY_ID,
+            GET_PLAYER_NAME,
+            PLAYER_LEVEL_UP,
+            SET_PLAYER_HP,
             TO_GIVE_PLAYER_EXP,
-            TO_GIVE_PLAYER_MONEY,
-            TO_GIVE_PLAYER_HP
+            TO_GIVE_PLAYER_MONEY
         };
     }
 

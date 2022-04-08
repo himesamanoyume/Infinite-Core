@@ -13,7 +13,7 @@ public class GameEvent : GameEventBase
 
     protected object[] args;
 
-    public GameEvent(EventName eventName)
+    public GameEvent(EventEnum eventName)
     {
         Name = eventName;
     }

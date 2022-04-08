@@ -15,7 +15,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     #region Private Fields
     private object[] m_args;
 
-    [SerializeField]
+    [SerializeField, Header("基本信息")]
     /// <summary>
     /// 运行时才赋予的独特ID 用于控制器快速为指定ID添加或删除特定效果
     /// </summary>
@@ -30,7 +30,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 队伍
     /// </summary>
     private TeamEnum playerTeam = TeamEnum.Null;
-    [SerializeField]
+    [SerializeField, Header("击杀死亡金币数")]
     /// <summary>
     /// 击杀数
     /// </summary>
@@ -45,7 +45,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 角色所拥有的金币
     /// </summary>
     private int money = 0;
-    [SerializeField]
+    [SerializeField, Header("经验")]
     /// <summary>
     /// 当前经验
     /// </summary>
@@ -55,7 +55,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 所需经验
     /// </summary>
     private float maxExp = 500f;
-    [SerializeField]
+    [SerializeField, Header("当前状态")]
     /// <summary>
     /// 角色状态
     /// </summary>
@@ -65,12 +65,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 当前角色身上所带的buff
     /// </summary>
     private Dictionary<int,BuffEnum> buff;
-    [SerializeField]
+    [SerializeField, Header("职业")]
     /// <summary>
     /// 角色职业
     /// </summary>
     private ProEnum pro;
-    [SerializeField]
+    [SerializeField, Header("角色属性")]
     /// <summary>
     /// 等级
     /// </summary>
@@ -122,6 +122,26 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     private float restore = 10f;
     [SerializeField]
     /// <summary>
+    /// 移动速度
+    /// </summary>
+    private float moveSpeed = 10f;
+    [SerializeField]
+    /// <summary>
+    /// 重生所需时间
+    /// </summary>
+    private float respawnTime = 10f;
+    [SerializeField]
+    /// <summary>
+    /// 重生倒计时
+    /// </summary>
+    private float respawnCountDown = 10f;
+    [SerializeField]
+    /// <summary>
+    /// 攻击范围
+    /// </summary>
+    private float attackRange = 10f;
+    [SerializeField, Header("技能")]
+    /// <summary>
     /// Q技能
     /// </summary>
     private SkillQ skillQ;
@@ -140,7 +160,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// Space技能
     /// </summary>
     private SkillBurst skillBurst;
-    [SerializeField]
+    [SerializeField, Header("装备")]
     /// <summary>
     /// 头盔
     /// </summary>
@@ -170,26 +190,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 鞋子
     /// </summary>
     private EquipBoots bootsID;
-    [SerializeField]
-    /// <summary>
-    /// 移动速度
-    /// </summary>
-    private float moveSpeed = 10f;
-    [SerializeField]
-    /// <summary>
-    /// 攻击范围
-    /// </summary>
-    private float attackRange = 10f;
-    [SerializeField]
-    /// <summary>
-    /// 重生所需时间
-    /// </summary>
-    private float respawnTime = 10f;
-    [SerializeField]
-    /// <summary>
-    /// 重生倒计时
-    /// </summary>
-    private float respawnCountDown = 10f;
+
+
 
     #endregion
 
@@ -204,7 +206,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value<0)
             {
                 m_args = new object[2] { actorNumber, "杀敌数不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "杀敌数不合法");
             }
             else
@@ -212,7 +214,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if (kill == value) return;
 
                 kill = value;
-                GameEventManager.EnableEvent(EventName.onPlayerKill, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerKill, true);
             }
      } }
     public int Death 
@@ -222,7 +224,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value<0)
             {
                 m_args = new object[2] { actorNumber, "死亡数不合法" };
-                GameEventManager.EnableEvent(EventName.onToast,true);
+                GameEventManager.EnableEvent(EventEnum.OnToast,true);
                 //CharManager.Instance.Toast(actorNumber, "死亡数不合法");
             }
             else
@@ -230,7 +232,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(death == value) return;
 
                 death = value;
-                GameEventManager.EnableEvent(EventName.onPlayerKilled, true);
             }
         } }
     public int Money 
@@ -240,7 +241,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value<0 || value > 999999)
             {
                 m_args = new object[2] { actorNumber, "金钱不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "金钱不合法");
             }
             else
@@ -248,7 +249,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(money == value) return;
 
                 money = value;
-                GameEventManager.EnableEvent(EventName.onPlayerMoneyChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerMoneyChanged, true);
             }
     }}
     public float CurrentExp 
@@ -258,7 +259,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value <0)
             {
                 m_args = new object[2] { actorNumber, "经验不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "经验不合法");
             }
             else
@@ -266,15 +267,15 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(currentExp == value) return;
 
                 currentExp = value;
-                if (currentExp>=maxExp && currentExp!=0)
+                if (currentExp>=maxExp || currentExp!=0)
                 {
 
-                    GameEventManager.EnableEvent(EventName.onPlayerLevelUp, true);
+                    GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp, true);
 
                 }
                 else
                 {
-                    GameEventManager.EnableEvent(EventName.onPlayerLevelUp, false);
+                    GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp, false);
                 }
             }
         }}
@@ -286,7 +287,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 m_args = new object[2] { actorNumber, "最大经验值不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "最大经验值不合法");
             }
             else
@@ -294,7 +295,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(maxExp == value) return;
 
                 maxExp = value;
-                GameEventManager.EnableEvent(EventName.onPlayerMaxExpChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerMaxExpChanged, true);
             }
         }
     }
@@ -304,7 +305,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if(state == value) return;
 
             state = value;
-            GameEventManager.EnableEvent(EventName.onPlayerStateChanged, true);
+            GameEventManager.EnableEvent(EventEnum.OnPlayerStateChanged, true);
         }  
     }
     public Dictionary<int,BuffEnum> Buff { 
@@ -313,7 +314,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if(buff == value) return;
 
             buff = value;
-            GameEventManager.EnableEvent(EventName.onPlayerBuffChanged, true);
+            GameEventManager.EnableEvent(EventEnum.OnPlayerBuffChanged, true);
         }  
     }
     public ProEnum Pro { get => pro; set => pro = value; }
@@ -325,7 +326,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 m_args = new object[2] { actorNumber, "等级不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "等级不合法");
             }
             else
@@ -333,7 +334,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(level == value) return;
 
                 level = value;
-                GameEventManager.EnableEvent(EventName.onPlayerLevelChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerLevelChanged, true);
             }
         }
     }
@@ -346,7 +347,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 attack = 0;
                 m_args = new object[2] { actorNumber, "攻击力不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "攻击力不合法");
             }
             else
@@ -354,7 +355,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(attack == value) return;
 
                 attack = value;
-                GameEventManager.EnableEvent(EventName.onPlayerAttackChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerAttackChanged, true);
             }
         }
     }
@@ -367,7 +368,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 shield = 0;
                 m_args = new object[2] { actorNumber, "护盾不合法,已使护盾为0" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "护盾不合法,已使护盾为0");
             }
             else
@@ -375,7 +376,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(shield == value) return;
 
                 shield = value;
-                GameEventManager.EnableEvent(EventName.onPlayerShieldChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerShieldChanged, true);
             }
         }
     }
@@ -386,38 +387,57 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (value <= 0)
             {
+                currentHealth = 0;
+                //Debug.Log("<=0");
                 if (State == StateEnum.Alive)
                 {
-                    if (Buff.TryGetValue((int)BuffEnum.Coreless,out BuffEnum buffEnum))
+                    if (Buff == null)
                     {
-                        GameEventManager.EnableEvent(EventName.onPlayerDead, true);
+                        //Debug.Log("buff null");
+                        
+                        GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, true);
+
+                        m_args = new object[2] { actorNumber, "血量不合法,已使玩家死亡" };
+                        GameEventManager.EnableEvent(EventEnum.OnToast, true);
                     }
                     else
                     {
-                        m_args = new object[2] { actorNumber, "血量不合法,已使玩家死亡" };
+                        //Debug.Log("buff not null");
 
-                        GameEventManager.EnableEvent(EventName.onPlayerKilled, true);
-                        GameEventManager.EnableEvent(EventName.onToast, true);
-                        //CharManager.Instance.Toast(actorNumber, "血量不合法,已使玩家死亡");
+                        if (Buff.TryGetValue((int)BuffEnum.Coreless, out BuffEnum buffEnum))
+                        {
+                            Debug.Log("buff not null and coreless");
+                            GameEventManager.EnableEvent(EventEnum.OnPlayerDead, true);
+                        }
+                        else
+                        {
+                            Debug.Log("buff not null but not coreless");
+                            GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, true);
+
+                            m_args = new object[2] { actorNumber, "血量不合法,已使玩家死亡" };
+                            GameEventManager.EnableEvent(EventEnum.OnToast, true);
+                        }
                     }
+                   
                 }
 
             }
-            else if (value >MaxHealth)
+            else if (value >=MaxHealth)
             {
                 currentHealth = MaxHealth;
                 m_args = new object[2] { actorNumber, "血量不得超过最大血量" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "血量不得超过最大血量");
             }
             else
             {
+                //Debug.Log("0< c <max");
                 if (currentHealth == value) return;
 
                 currentHealth = value;
-                State = StateEnum.Alive;
 
-                GameEventManager.EnableEvent(EventName.onPlayerCurrentHealthChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentHealthChanged, true);
             }
         }
     }
@@ -430,7 +450,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 maxHealth = 1;
                 m_args = new object[2] { actorNumber, "最大血量不合法,已达到最低值" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "最大血量不合法,已达到最低值");
             }
             else
@@ -438,7 +458,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if (maxHealth == value) return;
 
                 maxHealth = value;
-                GameEventManager.EnableEvent(EventName.onPlayerMaxHealthChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerMaxHealthChanged, true);
             }
         }
     }
@@ -450,14 +470,14 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 criticalHit = 0;
-                GameEventManager.EnableEvent(EventName.onPlayerCriticalHitChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerCriticalHitChanged, true);
             }
             else
             {
                 if(criticalHit == value) return;
 
                 criticalHit = value;
-                GameEventManager.EnableEvent(EventName.onPlayerCriticalHitChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerCriticalHitChanged, true);
             }
 
         }
@@ -483,7 +503,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 criticalHitRate = value;
             }
 
-            GameEventManager.EnableEvent(EventName.onPlayerCriticalHitRateChanged, true);
+            GameEventManager.EnableEvent(EventEnum.OnPlayerCriticalHitRateChanged, true);
         }
     }
     public float Defence
@@ -495,7 +515,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 defence = 0;
                 m_args = new object[2] { actorNumber, "防御不合法,已为最低值" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "防御不合法,已为最低值");
             }
             else
@@ -503,7 +523,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(defence == value) return;
 
                 defence = value;
-                GameEventManager.EnableEvent(EventName.onPlayerDefenceChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerDefenceChanged, true);
             }
         }
     }
@@ -516,7 +536,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 attackSpeed = 0.1f;
                 m_args = new object[2] { actorNumber, "攻速不合法,已为最低值" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "攻速不合法,已为最低值");
             }
             else
@@ -524,7 +544,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(attackSpeed == value) return;
 
                 attackSpeed = value;
-                GameEventManager.EnableEvent(EventName.onPlayerAttackSpeedChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerAttackSpeedChanged, true);
             }
         }
     }
@@ -537,15 +557,15 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {
                 restore = 0;
                 m_args = new object[2] { actorNumber, "回血速度不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "回血速度不合法");
             }
             else
             {
                 if(restore == value) return;
-
+                
                 restore = value;
-                GameEventManager.EnableEvent(EventName.onPlayerRestoreChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreChanged, true);
             }
         }
     }
@@ -569,7 +589,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 m_args = new object[2] { actorNumber, "移速不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "移速不合法");
             }
             else
@@ -577,7 +597,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if (moveSpeed == value) return;
 
                 moveSpeed = value;
-                GameEventManager.EnableEvent(EventName.onPlayerMoveSpeedChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerMoveSpeedChanged, true);
             }
         }
     }
@@ -589,7 +609,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 m_args = new object[2] { actorNumber, "攻击范围不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "攻击范围不合法");
             }
             else
@@ -597,7 +617,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 if(attackRange == value) return;
 
                 attackRange = value;
-                GameEventManager.EnableEvent(EventName.onPlayerAttackRangeChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerAttackRangeChanged, true);
             }
         }
     }
@@ -609,20 +629,20 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < 0)
             {
                 m_args = new object[2] { actorNumber, "重生时间不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "重生时间不合法");
             }
             else if (respawnTime+value>60f)
             {
                 respawnTime = 60f;
-                GameEventManager.EnableEvent(EventName.onPlayerRespawnTimeChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnTimeChanged, true);
             }
             else
             {
                 if(respawnTime == value) return;
 
                 respawnTime = value;
-                GameEventManager.EnableEvent(EventName.onPlayerRespawnTimeChanged, true);
+                GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnTimeChanged, true);
             }
         }
     }
@@ -634,7 +654,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             if (value < -1f)
             {
                 m_args = new object[2] { actorNumber, "重生倒计时不合法" };
-                GameEventManager.EnableEvent(EventName.onToast, true);
+                GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 //CharManager.Instance.Toast(actorNumber, "重生倒计时不合法");
             }
             else
@@ -742,29 +762,83 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-        GameEventManager.RegisterEvent(EventName.onPlayerLevelUp, OnPlayerLevelUpCheck);
+        #region Register Event
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUpCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp,false);
 
-        GameEventManager.RegisterEvent(EventName.onToast, OnToastCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnToast, OnToastCheck);
+        GameEventManager.EnableEvent(EventEnum.OnToast, false);
 
-        GameEventManager.RegisterEvent(EventName.onPlayerKill, OnPlayerKillCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerKill, OnPlayerKillCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerKill, false);
 
-        GameEventManager.RegisterEvent(EventName.onPlayerLevelChanged, OnPlayerLevelChangedCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChangedCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerLevelChanged, false);
 
-        GameEventManager.RegisterEvent(EventName.onPlayerRespawnTimeChanged, OnPlayerRespawnTimeChangedCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawn, OnPlayerRespawnCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRespawn, false);
 
-        GameEventManager.RegisterEvent(EventName.onPlayerRespawnCountDownStart, OnPlayerRespawnCountDownStartCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawningCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRespawning, false);
 
-        GameEventManager.RegisterEvent(EventName.onPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEndCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRestoreing, OnPlayerRestoreingCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
 
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerMoneyChanged, OnPlayerMoneyChangedCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerMoneyChanged, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawnTimeChanged, OnPlayerRespawnTimeChangedCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnTimeChanged, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawnCountDownStart, OnPlayerRespawnCountDownStartCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnCountDownStart, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEndCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnCountDownEnd, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerKilled, OnPlayerKilledCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerMaxHealthChanged, OnPlayerMaxHealthChangedCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerMaxHealthChanged, false);
+
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChangedCheck);
+        GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentHealthChanged, false);
+
+        #endregion
     }
 
     #endregion
 
     #region Event Check
 
+    bool OnPlayerCurrentHealthChangedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber };
+        return true;
+    }
+
+    bool OnPlayerMoneyChangedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber };
+        return true;
+    }
+
+    bool OnPlayerMaxHealthChangedCheck(out object[] args)
+    {
+        args = new object[] {ActorNumber};
+        return true;
+    }
+
     bool OnPlayerKillCheck(out object[] args)
     {
         args = null;
+        return true;
+    }
+
+    bool OnPlayerRestoreingCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber};
         return true;
     }
 
@@ -776,25 +850,31 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerKilledCheck(out object[] args)
     {
-        args = null;
+        args = new object[] { ActorNumber};
         return true;
     }
 
     bool OnPlayerDeadCheck(out object[] args)
     {
-        args = null;
+        args = new object[] { ActorNumber };
         return true;
     }
 
     bool OnPlayerRespawnCheck(out object[] args)
     {
-        args = null;
+        args = new object[] { ActorNumber };
         return true;
     }
 
     bool OnPlayerRespawnTimeChangedCheck(out object[] args)
     {
         args=null;
+        return true;
+    }
+
+    bool OnPlayerRespawningCheck(out object[] args)
+    {
+        args =new object[] { ActorNumber } ;
         return true;
     }
 
@@ -806,13 +886,13 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerRespawnCountDownStartCheck(out object[] args)
     {
-        args = new object[0];
+        args = new object[] { ActorNumber};
         return true;
     }
 
     bool OnPlayerRespawnCountDownEndCheck(out object[] args)
     {
-        args = new object[0];
+        args = new object[] { ActorNumber };
         return true;
     }
 
@@ -824,7 +904,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerLevelUpCheck(out object[] args)
     {
-        args = new object[2] { actorNumber, 1 };
+        args = new object[] { actorNumber };
         return true;
     }
 
@@ -836,5 +916,5 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     #endregion
 
-    
+
 }

@@ -11,6 +11,8 @@
 
 ### 高优先级
 
+事件回应里的那次Find可以根据情况删掉
+
 CharManager,CharBase补完注册订阅事件
 
 开始实际运用事件系统
@@ -24,6 +26,8 @@ CharManager,CharBase补完注册订阅事件
 异步加载地图 全部玩家加载完后再跳转
 
 #### bug
+
+复活时位置没有重置
 
 离开房间时会回到连接界面而不是主界面
 
@@ -40,6 +44,8 @@ DebugConsole 改版
 动画控制器记得加入photonView.IsMine的判断
 
 ## Tips
+
+RPC调用适用于使对方某一物体调用其内部函数 而不是用来广播
 
 该事件系统中 RootGroup必须enable为true，且只能在GameEventManager中使用enable修改， 无法使用EnableAllEvents或EnableEvent对EventName.rootGroup进行操作，必须从RootGroup下的第一级事件组当中进行操作 如EventName.playerGroup  
 
@@ -78,6 +84,12 @@ DebugConsole 改版
 如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可
 
 ## Done
+
+### 2022.4.8
+
+重写CharBase(0.5/2) 重写CharManager (9/10)
+
+将CharStateController，CharSpawnController 合并入CharManager
 
 ### 2022.4.7
 

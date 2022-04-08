@@ -12,7 +12,6 @@ public class RecorderController : MonoBehaviour
         
     }
 
-    [PunRPC]
     public void SetParents(GameObject total)
     {
         this.transform.SetParent(total.transform);

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6335478668967977655}
   - component: {fileID: 4600758666631930024}
   - component: {fileID: -7238556250746940338}
-  - component: {fileID: -4766966496747241947}
   m_Layer: 0
   m_Name: PlayerDataRecorder
   m_TagString: PlayerRecorder
@@ -66,6 +65,10 @@ MonoBehaviour:
   defence: 1000
   attackSpeed: 1
   restore: 10
+  moveSpeed: 10
+  respawnTime: 10
+  respawnCountDown: 10
+  attackRange: 10
   skillQ: 0
   skillE: 0
   skillR: 0
@@ -76,10 +79,6 @@ MonoBehaviour:
   kneeID: 0
   trousersID: 0
   bootsID: 0
-  moveSpeed: 10
-  attackRange: 10
-  respawnTime: 10
-  respawnCountDown: 10
 --- !u!114 &4600758666631930024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,17 +112,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e29a1a1b0f5ef04f92898a82ee8bf9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-4766966496747241947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8261284882752522266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c795a39662325b744ba55aad7fba5ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

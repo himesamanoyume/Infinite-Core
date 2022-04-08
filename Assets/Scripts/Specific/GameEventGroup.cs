@@ -7,7 +7,7 @@ public class GameEventGroup : GameEventBase
 
     protected List<GameEventBase> events;
     
-    public GameEventGroup(EventName eventName)
+    public GameEventGroup(EventEnum eventName)
     {
         Name = eventName;
     }
@@ -37,7 +37,7 @@ public class GameEventGroup : GameEventBase
     /// </summary>
     /// <param name="eventName"></param>
     /// <returns></returns>
-    public GameEventBase GetEvent(EventName eventName)
+    public GameEventBase GetEvent(EventEnum eventName)
     {
         Queue<GameEventBase> queue = new Queue<GameEventBase>();
 
@@ -91,7 +91,7 @@ public class GameEventGroup : GameEventBase
     /// ÒÆ³ýÊÂ¼þ
     /// </summary>
     /// <param name="eventName"></param>
-    public void RemoveEvent(EventName eventName)
+    public void RemoveEvent(EventEnum eventName)
     {
         if (events == null) return;
 
