@@ -81,16 +81,18 @@ MonoBehaviour:
   solider: {fileID: 8027300526949257307, guid: 41ccd04ff23bf6440a8b038869022525, type: 3}
   tanker: {fileID: 8027300526949257307, guid: f94f071105f0a474c80dbffbe28bfa07, type: 3}
   recorder: {fileID: 8261284882752522266, guid: 72d90ddc6a08a504b9cc20af83cf1609, type: 3}
-  spawnRedPos1: {fileID: 3252102411591467172, guid: d336866466d60864892753254ec6a500, type: 3}
-  spawnRedPos2: {fileID: 4721754434326905466, guid: 183561710acd2884b9183f9c6630684f, type: 3}
-  spawnRedPos3: {fileID: 4235999451169003743, guid: 10bd5cbda34f79c49bc43cf422ccdbc8, type: 3}
-  spawnRedPos4: {fileID: 5533967972672707638, guid: 55e649cd95d923c47a49f5ce7135f653, type: 3}
-  spawnRedPos5: {fileID: 2042423601124435310, guid: b5f3fc4292891764f97baa67f7bb4dd9, type: 3}
-  spawnBluePos1: {fileID: 2455425617929908679, guid: c6e82e97c710deb409fbfe4426b586d1, type: 3}
-  spawnBluePos2: {fileID: 4994405190356337676, guid: bff8de6eef7be1d4cb2adc31fb3b045f, type: 3}
-  spawnBluePos3: {fileID: 6401715508793631926, guid: 8392fc20ae0fd37439aeb4d9eb2bc24e, type: 3}
-  spawnBluePos4: {fileID: 4596454784815554246, guid: 241cc3f9576ab3e499e0bc85aba92504, type: 3}
-  spawnBluePos5: {fileID: 5196317553483471859, guid: d54bb5ab2979d0549b0d161e97a192fa, type: 3}
+  redPosList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bluePosList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &7145714854119937179
 GameObject:
   m_ObjectHideFlags: 0

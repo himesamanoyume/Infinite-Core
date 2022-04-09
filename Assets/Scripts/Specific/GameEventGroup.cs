@@ -76,13 +76,20 @@ public class GameEventGroup : GameEventBase
             {
                 //如果是事件组 则启用事件组内所有事件
                 (eventItem as GameEventGroup).EnableAllEvents(enable);
-                //Debug.Log(eventItem.Name + " " + enable);
+                if (eventItem.Name != EventEnum.OnToast)
+                {
+                    Debug.Log(eventItem.Name + " " + enable);
+                }
+                
             }
             else
             {
                 //如果是单个事件 则启动其事件
                 eventItem.Enable = enable;
-                //Debug.Log(eventItem.Name + " " + enable);
+                if (eventItem.Name != EventEnum.OnToast)
+                {
+                    Debug.Log(eventItem.Name + " " + enable);
+                }
             }
         }
     }

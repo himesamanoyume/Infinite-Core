@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\Misc\LauncherSelect.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
+    <Compile Include="Assets\Scripts\Enum\EventEnum.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\Base\EquipBase.cs" />
     <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
-    <Compile Include="Assets\Scripts\Enum\EventEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

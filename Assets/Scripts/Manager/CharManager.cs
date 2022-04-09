@@ -19,20 +19,20 @@ public class CharManager : MonoBehaviour
     public GameObject tanker;
     public GameObject recorder;
 
-    public GameObject spawnRedPos1;
-    public GameObject spawnRedPos2;
-    public GameObject spawnRedPos3;
-    public GameObject spawnRedPos4;
-    public GameObject spawnRedPos5;
+    //public GameObject spawnRedPos1;
+    //public GameObject spawnRedPos2;
+    //public GameObject spawnRedPos3;
+    //public GameObject spawnRedPos4;
+    //public GameObject spawnRedPos5;
 
-    public GameObject spawnBluePos1;
-    public GameObject spawnBluePos2;
-    public GameObject spawnBluePos3;
-    public GameObject spawnBluePos4;
-    public GameObject spawnBluePos5;
+    //public GameObject spawnBluePos1;
+    //public GameObject spawnBluePos2;
+    //public GameObject spawnBluePos3;
+    //public GameObject spawnBluePos4;
+    //public GameObject spawnBluePos5;
 
-    List<GameObject> redPosList;
-    List<GameObject> bluePosList;
+    public GameObject[] redPosList = new GameObject[5];
+    public GameObject[] bluePosList = new GameObject[5];
 
     public Dictionary<int, GameObject> playerModelList;
     public Dictionary<int, GameObject> recorders;
@@ -51,21 +51,8 @@ public class CharManager : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         playerModelList = new Dictionary<int, GameObject>();
         recorders = new Dictionary<int, GameObject>();
-        redPosList = new List<GameObject>();
-        bluePosList = new List<GameObject>();
-        redPosList.Add(spawnRedPos1);
-        redPosList.Add(spawnRedPos2);
-        redPosList.Add(spawnRedPos3);
-        redPosList.Add(spawnRedPos4);
-        redPosList.Add(spawnRedPos5);
-        bluePosList.Add(spawnBluePos1);
-        bluePosList.Add(spawnBluePos2);
-        bluePosList.Add(spawnBluePos3);
-        bluePosList.Add(spawnBluePos4);
-        bluePosList.Add(spawnBluePos5);
 
-
-        SpawnPlayer(PhotonNetwork.LocalPlayer);
+        SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
 
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUp);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
@@ -76,7 +63,8 @@ public class CharManager : MonoBehaviour
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEnd);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawn,OnPlayerRespawn);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreing, OnPlayerRestoreing);
-        
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreChanged, OnPlayerRestoreChanged);
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChanged);
     }
 
     private void Update()
@@ -91,62 +79,73 @@ public class CharManager : MonoBehaviour
     /// 首次生成玩家
     /// </summary>
     /// <param name="player"></param>
-    public void SpawnPlayer(Player player)
+    public void SpawnPlayer(int actorNumber)
     {
         //player只能是自己
-
-        if (player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team))
+        
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if ((TeamEnum)team == TeamEnum.Null) return;
-
-            object pro;
-            switch ((TeamEnum)team)
+            if(player.ActorNumber == actorNumber)
             {
-                case TeamEnum.Red:
+                if (player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team))
+                {
+                    if ((TeamEnum)team == TeamEnum.Null) return;
 
-                    player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
+                    object pro;
 
-                    GameObject playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+                    switch ((TeamEnum)team)
+                    {
+                        case TeamEnum.Red:
 
-                    GameObject playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), redPosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
+                            player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
 
+                            if (recorders.TryGetValue(player.ActorNumber, out GameObject playerRecorder))
+                            {
 
-                    playerModel.name = player.NickName + " (My)";
-                    playerRecorder.name = player.NickName + " Recorder {My}";
+                            }
+                            else
+                            {
+                                playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+                            }
 
-                    GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
-
-
-                    break;
-                case TeamEnum.Blue:
-
-                    player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
-
-                    playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
-
-                    playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
-
-                    playerModel.name = player.NickName + " (My)";
-                    playerRecorder.name = player.NickName + " Recorder {My}";
-
-                    GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+                            GameObject playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), redPosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
 
 
-                    break;
+                            playerModel.name = player.NickName + " (My)";
+                            playerRecorder.name = player.NickName + " Recorder {My}";
+
+                            GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+
+
+                            break;
+                        case TeamEnum.Blue:
+
+                            player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
+
+                            if (recorders.TryGetValue(player.ActorNumber, out playerRecorder))
+                            {
+
+                            }
+                            else
+                            {
+                                playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+                            }
+
+                            playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
+
+                            playerModel.name = player.NickName + " (My)";
+                            playerRecorder.name = player.NickName + " Recorder {My}";
+
+                            GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+
+
+                            break;
+                    }
+                }
             }
         }
-    }
-
-    /// <summary>
-    /// 生成玩家的复活分支
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    public void OnRespawnPlayer(int actorNumber)
-    {
         
-
     }
-
 
     /// <summary>
     /// 根据玩家属性获取所有信息
@@ -275,7 +274,19 @@ public class CharManager : MonoBehaviour
         }
         else
         {
+            int alivePlayerCount = 0;
+            foreach (var recorder in recorders)
+            {
+                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
+                {
+                    alivePlayerCount++;
+                }
+            }
+
+            if(alivePlayerCount == playerModelList.Count) return;
+
             playerModelList.Clear();
+
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerModel");
             foreach (Player p in PhotonNetwork.PlayerList)
             {
@@ -291,7 +302,15 @@ public class CharManager : MonoBehaviour
                 }
 
             }
-            Debug.LogError("添加完成");
+            if (alivePlayerCount == playerModelList.Count)
+            {
+                Debug.LogWarning("已添加完成全部存活的玩家模型");
+            }
+            else
+            {
+                Debug.LogError("人数不足");
+            }
+
         }
     }
 
@@ -329,13 +348,37 @@ public class CharManager : MonoBehaviour
     /// <param name="actorNumber"></param>
     public void GetPlayerName(int actorNumber)
     {
-        CharBase charBase = FindPlayerRecorder(actorNumber,out GameObject recorder);
-        if (charBase == null) { return; }
+        FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
 
         FindPlayerModel(actorNumber, out GameObject playerModel);
         if (playerModel == null) { return; }
 
         Toast(new object[2] { actorNumber, "名为" + charBase.PlayerName });
+    }
+
+    #region 事件回应
+
+    /// <summary>
+    /// 【事件回应】当玩家等级变动时再进行一次检测
+    /// </summary>
+    /// <param name="args"></param>
+    public void OnPlayerLevelChanged(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null)  return; 
+
+            if (charBase.CurrentExp >= charBase.MaxExp)
+            {
+                GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp, true);
+            }
+            GameEventManager.EnableEvent(EventEnum.OnPlayerLevelChanged, false);
+        }
     }
 
     /// <summary>
@@ -349,8 +392,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
            
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             if (charBase.CurrentExp >= charBase.MaxExp)
             {
@@ -361,30 +404,12 @@ public class CharManager : MonoBehaviour
             charBase.Attack += 100;
             charBase.MaxHealth += 1000;
             charBase.CurrentHealth += 1000;
-
-                
-            charBase.Restore += 10;
+            charBase.RespawnTime += 5;   
+            charBase.Restore += 5;
             
             GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp, false);
             Toast(new object[2] { actorNumber, "level已经提升1级" });
         }
-    }
-
-    /// <summary>
-    /// 【非事件回应】通过id使玩家强制立即【彻底死亡 】
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    public void SetPlayerDead(int actorNumber)
-    {
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        charBase.CurrentHealth = 0;
-        charBase.State = StateEnum.Dead;
-
-        GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
-        Toast(new object[2] { actorNumber, "彻底死亡" });
-        
     }
 
     /// <summary>
@@ -399,16 +424,20 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
-
-            charBase.Death++;
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             FindPlayerModel(actorNumber,out GameObject playerModel);
             if (playerModel == null) { return; }
 
-            playerModel.SetActive(false);
+            charBase.Death++;
 
+
+
+            //recorder.GetComponent<PhotonView>().RPC("DestroyPlayerModel", RpcTarget.All, actorNumber );
+
+            playerModelList.Remove(actorNumber);
+            PhotonNetwork.Destroy(playerModel);
 
             Toast(new object[2] { actorNumber, "被击杀" });
             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
@@ -417,7 +446,7 @@ public class CharManager : MonoBehaviour
 
     }
 
-    /// <summary>
+/// <summary>
     /// 【事件回应】玩家达成了击杀 根据击杀者id增加一次杀敌数
     /// </summary>
     /// <param name="args"></param>
@@ -428,8 +457,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             charBase.Kill++;
 
@@ -450,18 +479,23 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             charBase.CurrentHealth += charBase.Restore * Time.deltaTime;
 
-            //---
-            Toast(new object[2] { actorNumber, "正在回血" });
-            //---
+            
 
             if (charBase.CurrentHealth == charBase.MaxHealth)
             {
                 GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
+                Toast(new object[2] { actorNumber, "回血停止" });
+            }
+            else
+            {
+                //---
+                Toast(new object[2] { actorNumber, "正在回血" });
+                //---
             }
         }     
     }
@@ -478,12 +512,12 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             Toast(new object[2] { actorNumber, "回复值改变" });
 
-            GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
+            GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreChanged, false);
         }
     }
 
@@ -498,8 +532,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             FindPlayerModel(actorNumber, out GameObject playerModel);
             if(playerModel == null) { return; }
@@ -523,8 +557,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber= (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             charBase.State = StateEnum.Respawning;
             charBase.RespawnCountDown = charBase.RespawnTime;
@@ -548,8 +582,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             if (charBase.State == StateEnum.Respawning)
             {
@@ -581,8 +615,8 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             charBase.RespawnCountDown = 0;
             charBase.State = StateEnum.Alive;
@@ -605,27 +639,16 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
-            FindPlayerModel(actorNumber, out GameObject playerModel);
-            if(playerModel == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             charBase.State = StateEnum.Alive;
-            charBase.RespawnTime += 5f;
-
-            playerModel.SetActive(true);
 
             charBase.CurrentHealth = charBase.MaxHealth;
 
-            if (charBase.PlayerTeam == TeamEnum.Red)
-            {
-                playerModel.transform.position = redPosList[Random.Range(0, 5)].transform.position;
-            }
-            else if (charBase.PlayerTeam == TeamEnum.Blue)
-            {
-                playerModel.transform.position = bluePosList[Random.Range(0, 5)].transform.position;
-            }
+            SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
 
             Toast(new object[] { actorNumber, "已复活" });
             GameEventManager.EnableEvent(EventEnum.OnPlayerRespawn, false);
@@ -644,185 +667,13 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
 
             Toast(new object[] { actorNumber, "当前经验已改变" });
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentExpChanged, false);
-        }
-    }
-
-    /// <summary>
-    /// 【非事件回应】给玩家经验
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="minExp"></param>
-    /// <param name="maxExp"></param>
-    public void ToGivePlayerCurrentExp(int actorNumber, int minExp, int maxExp)
-    {
-        if (minExp < 0 || maxExp < 0)
-        {
-            Toast(new object[2] { actorNumber, "的经验值变动不能为负数" });
-            return;
-        }
-
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        float current = ToGivePlayerSomething(new object[] {minExp,maxExp });
-        charBase.CurrentExp += current;
-
-        GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentExpChanged, false);
-        Toast(new object[2] { actorNumber, "获得了" + current + "经验" });
-        
-    }
-
-    /// <summary>
-    /// 【非事件回应】设置玩家升级数
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="count"></param>
-    public void SetPlayerLevel(int actorNumber,int count)
-    {
-        if (count<0)
-        {
-            Toast(new object[2] { actorNumber, "等级变动不能为负数" });
-            return;
-        }
-
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        charBase.Level= count;
-        Toast(new object[2] { actorNumber, "等级设置为了"+count+"级" });
-    }
-
-    /// <summary>
-    /// 【非事件回应】设置玩家金钱
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="minMoney"></param>
-    /// <param name="maxMoney"></param>
-    public void SetPlayerMoney(int actorNumber, int minMoney, int maxMoney)
-    {
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        
-        int current = ToGivePlayerSomething(new object[] {minMoney,maxMoney });
-        charBase.Money += current;
-
-        if (current >= 0)
-        {
-            Toast(new object[2] { actorNumber, "获得了" + current + "金钱" });
-        }
-        else
-        {
-            Toast(new object[2] { actorNumber, "扣除了" + current + "金钱" });
-        }
-    }
-
-    /// <summary>
-    /// 【事件回应】当玩家金钱变化时
-    /// </summary>
-    /// <param name="args"></param>
-    public void OnPlayerMoneyChanged(object[] args)
-    {
-        int actorNumber;
-
-        if( args.Length == 1)
-        {
-            actorNumber = (int)args[0];
-            
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
-
-            GameEventManager.EnableEvent(EventEnum.OnPlayerMoneyChanged, false);
-            Toast(new object[2] { actorNumber, "金钱改变了"});
-        }
-
-    }
-
-    /// <summary>
-    /// 【非事件回应】设置玩家当前血量
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="minHealth"></param>
-    /// <param name="maxHealth"></param>
-    public void SetPlayerCurrentHealth(int actorNumber, int currentHealth)
-    {
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        charBase.CurrentHealth = currentHealth;
-
-        Toast(new object[2] { actorNumber, "设置了血量为" + currentHealth });
-    }
-
-    /// <summary>
-    /// 【事件回应】当玩家当前血量改变时
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="health"></param>
-    public void OnPlayerCurrentHealthChanged(object[] args)
-    {
-        int actorNumber;
-
-        if(args.Length == 1)
-        {
-            actorNumber = (int)args[0];
-
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
-
-            GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentHealthChanged, false);
-            Toast(new object[2] { actorNumber, "血量改变了" });
-           
-        }
-    }
-
-    /// <summary>
-    /// 【事件回应】当玩家最大血量变化时
-    /// </summary>
-    /// <param name="args"></param>
-    public void OnPlayerMaxHealthChanged(object[] args)
-    {
-        int actorNumber;
-        if(args.Length == 1)
-        {
-            actorNumber = (int)args[0];
-
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
-
-            GameEventManager.EnableEvent(EventEnum.OnPlayerMaxHealthChanged, false);
-            Toast(new object[2] { actorNumber, "最大血量改变了"  });
-        }
-    }
-
-    /// <summary>
-    /// 【非事件回应】给与/扣除玩家最大血量 数值可为负数
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="minMaxHealth"></param>
-    /// <param name="maxMaxHealth"></param>
-    public void SetPlayerMaxHealth(int actorNumber, int minMaxHealth, int maxMaxHealth)
-    {
-
-        CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-        if (charBase == null) { return; }
-
-        int current = ToGivePlayerSomething(new object[]{ minMaxHealth,maxMaxHealth});
-        charBase.MaxHealth += current;
-        if (current >= 0)
-        {
-            Toast(new object[2] { actorNumber, "提高了" + current + "的最大生命值" });
-        }
-        else
-        {
-            Toast(new object[2] { actorNumber, "扣除了" + current + "的最大生命值" });
         }
     }
 
@@ -834,18 +685,18 @@ public class CharManager : MonoBehaviour
     {
         int actorNumber;
 
-        if(args.Length == 1)
+        if (args.Length == 1)
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerShieldChanged, false);
 
             Toast(new object[2] { actorNumber, "盾值变化了" });
 
-        } 
+        }
     }
 
     /// <summary>
@@ -856,12 +707,12 @@ public class CharManager : MonoBehaviour
     {
         int actorNumber;
 
-        if(args.Length == 1)
+        if (args.Length == 1)
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerCriticalHitChanged, false);
 
@@ -881,14 +732,12 @@ public class CharManager : MonoBehaviour
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerCriticalHitRateChanged, false);
             Toast(new object[2] { actorNumber, "的暴击率变化了" });
         }
-
-
     }
 
     /// <summary>
@@ -899,12 +748,12 @@ public class CharManager : MonoBehaviour
     {
         int actorNumber;
 
-        if(args.Length == 1)
+        if (args.Length == 1)
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerMoveSpeedChanged, false);
@@ -921,18 +770,228 @@ public class CharManager : MonoBehaviour
     {
         int actorNumber;
 
-        if(args.Length == 1)
+        if (args.Length == 1)
         {
             actorNumber = (int)args[0];
 
-            CharBase charBase = FindPlayerRecorder(actorNumber, out GameObject recorder);
-            if (charBase == null) { return; }
+            FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
 
             Toast(new object[2] { actorNumber, "的攻速变化了" });
         }
 
     }
- /// <summary>
+
+    /// <summary>
+    /// 【事件回应】当玩家金钱变化时
+    /// </summary>
+    /// <param name="args"></param>
+    public void OnPlayerMoneyChanged(object[] args)
+    {
+        int actorNumber;
+
+        if( args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+            
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
+
+            GameEventManager.EnableEvent(EventEnum.OnPlayerMoneyChanged, false);
+            Toast(new object[2] { actorNumber, "金钱改变了"});
+        }
+
+    }
+
+    /// <summary>
+    /// 【事件回应】当玩家当前血量改变时
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="health"></param>
+    public void OnPlayerCurrentHealthChanged(object[] args)
+    {
+        int actorNumber;
+
+        if(args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
+
+            GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentHealthChanged, false);
+            Toast(new object[2] { actorNumber, "血量改变了" });
+           
+        }
+    }
+
+    /// <summary>
+    /// 【事件回应】当玩家最大血量变化时
+    /// </summary>
+    /// <param name="args"></param>
+    public void OnPlayerMaxHealthChanged(object[] args)
+    {
+        int actorNumber;
+        if(args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+            if (charBase == null || recorder == null) { return; }
+
+            GameEventManager.EnableEvent(EventEnum.OnPlayerMaxHealthChanged, false);
+            Toast(new object[2] { actorNumber, "最大血量改变了"  });
+        }
+    }
+
+    #endregion
+
+    #region 非事件回应
+
+    /// <summary>
+    /// 【非事件回应】给玩家经验
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="minExp"></param>
+    /// <param name="maxExp"></param>
+    public void ToGivePlayerCurrentExp(int actorNumber, int minExp, int maxExp)
+    {
+        if (minExp < 0 || maxExp < 0)
+        {
+            Toast(new object[2] { actorNumber, "的经验值变动不能为负数" });
+            return;
+        }
+
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        float current = ToGivePlayerSomething(new object[] { minExp, maxExp });
+        charBase.CurrentExp += current;
+
+        GameEventManager.EnableEvent(EventEnum.OnPlayerCurrentExpChanged, false);
+        Toast(new object[2] { actorNumber, "获得了" + current + "经验" });
+
+    }
+
+    /// <summary>
+    /// 【非事件回应】设置玩家升级数
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="count"></param>
+    public void SetPlayerLevel(int actorNumber, int count)
+    {
+        if (count < 0)
+        {
+            Toast(new object[2] { actorNumber, "等级变动不能为负数" });
+            return;
+        }
+
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        for (int i = 0; i < count; i++)
+        {
+            if (charBase.CurrentExp >= charBase.MaxExp)
+            {
+                charBase.CurrentExp -= charBase.MaxExp;
+            }
+            charBase.MaxExp += charBase.Level * 500;
+            charBase.Level += 1;
+            charBase.Attack += 100;
+            charBase.MaxHealth += 1000;
+            charBase.CurrentHealth += 1000;
+
+            charBase.Restore += 5;
+        }
+        
+        
+        Toast(new object[2] { actorNumber, "等级设置为了" + count + "级" });
+    }
+
+    /// <summary>
+    /// 【非事件回应】设置玩家金钱
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="minMoney"></param>
+    /// <param name="maxMoney"></param>
+    public void SetPlayerMoney(int actorNumber, int minMoney, int maxMoney)
+    {
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+
+        int current = ToGivePlayerSomething(new object[] { minMoney, maxMoney });
+        charBase.Money += current;
+
+        if (current >= 0)
+        {
+            Toast(new object[2] { actorNumber, "获得了" + current + "金钱" });
+        }
+        else
+        {
+            Toast(new object[2] { actorNumber, "扣除了" + current + "金钱" });
+        }
+    }
+
+   /// <summary>
+    /// 【非事件回应】给与/扣除玩家最大血量 数值可为负数
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="minMaxHealth"></param>
+    /// <param name="maxMaxHealth"></param>
+    public void SetPlayerMaxHealth(int actorNumber, int minMaxHealth, int maxMaxHealth)
+    {
+
+        FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        int current = ToGivePlayerSomething(new object[]{ minMaxHealth,maxMaxHealth});
+        charBase.MaxHealth += current;
+        if (current >= 0)
+        {
+            Toast(new object[2] { actorNumber, "提高了" + current + "的最大生命值" });
+        }
+        else
+        {
+            Toast(new object[2] { actorNumber, "扣除了" + current + "的最大生命值" });
+        }
+    }
+
+    /// <summary>
+    /// 【非事件回应】设置玩家当前血量
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="minHealth"></param>
+    /// <param name="maxHealth"></param>
+    public void SetPlayerCurrentHealth(int actorNumber, int currentHealth)
+    {
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        charBase.CurrentHealth = currentHealth;
+
+        Toast(new object[2] { actorNumber, "设置了血量为" + currentHealth });
+    }
+
+    /// <summary>
+    /// 【非事件回应】通过id使玩家强制立即【彻底死亡 】
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    public void SetPlayerDead(int actorNumber)
+    {
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        charBase.CurrentHealth = 0;
+        charBase.State = StateEnum.Dead;
+
+        GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
+        Toast(new object[2] { actorNumber, "彻底死亡" });
+
+    }
+
+    #endregion
+    /// <summary>
     /// (int)玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
     /// </summary>
     /// <param name="actorNumber"></param>
@@ -983,37 +1042,39 @@ public class CharManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 通过ActorNumber获取特定玩家的组件,适用于将要进行特定属性进行修改时
+    /// 通过ActorNumber获取特定玩家的记录器,适用于将要进行特定属性进行修改时
     /// </summary>
     /// <param name="actorNumber"></param>
-    /// <returns></returns>
-    public CharBase FindPlayerRecorder(int actorNumber,out GameObject playerRecorder)
+    public void FindPlayerRecorder(int actorNumber,out GameObject playerRecorder, out CharBase charBase)
     {
 
-        CharBase charBase;
         if (recorders == null)
         {
             Toast(new object[2] { actorNumber, "玩家记录器获取失败, recorders" });
             playerRecorder = null;
-            return null;
+            charBase = null;
         }
 
         if(recorders.TryGetValue(actorNumber, out GameObject recorder))
         {
             charBase = recorder.GetComponent<CharBase>();
-            Toast(new object[2] { actorNumber, "玩家记录器获取成功" });
             playerRecorder = recorder;
-            return charBase;
+            Toast(new object[2] { actorNumber, "玩家记录器获取成功" });
         }
         else
         {
             Toast(new object[2] { actorNumber, "玩家记录器获取失败" });
+            charBase = null;
             playerRecorder = null;
-            return null;
         }
         
     }
 
+    /// <summary>
+    /// 获取对应玩家模型
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="playerModel"></param>
     public void FindPlayerModel(int actorNumber, out GameObject playerModel)
     {
         if (playerModelList == null)
@@ -1102,6 +1163,8 @@ public class CharManager : MonoBehaviour
     }
 
     #region PUN Callbacks
+
+
 
     #endregion
 }

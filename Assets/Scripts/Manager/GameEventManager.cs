@@ -22,8 +22,10 @@ public class GameEventManager
         //于此处控制事件组和事件的初始状态
         RootGroup.Enable = true;
 
-        EnableAllEvents(EventEnum.PlayerGroup, true);
-        EnableAllEvents(EventEnum.SystemGroup, true);
+        EnableEvent(EventEnum.PlayerGroup, true);
+        EnableEvent(EventEnum.PlayerMgrGroup, true);
+        EnableEvent(EventEnum.SystemGroup, true);
+
     }
 
     private static void Init()
@@ -195,6 +197,11 @@ public class GameEventManager
         if (target != null)
         {
             target.Enable = enable;
+            if (target.Name != EventEnum.OnToast)
+            {
+                Debug.Log(target.Name + " " + enable);
+            }
+            
         }
     }
 
