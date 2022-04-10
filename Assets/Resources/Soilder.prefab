@@ -173,6 +173,8 @@ GameObject:
   - component: {fileID: 6868653752567902197}
   - component: {fileID: 4631187400361970722}
   - component: {fileID: 227847424631895185}
+  - component: {fileID: 1292342947892957753}
+  - component: {fileID: 2193949807901309421}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -244,6 +246,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1292342947892957753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737929497430468621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 2193949807901309421}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &2193949807901309421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737929497430468621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8027300526949257307
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd2f8bcd516d4a40845a55186a21cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  m_moveSpeed: 8
   gravity: -19.8
   groundCheck: {fileID: 7773691860614865273}
   layerMask:
@@ -404,10 +445,10 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
-  - {fileID: 1307905066947866740}
   - {fileID: -5285226530087299361}
+  - {fileID: 1307905066947866740}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

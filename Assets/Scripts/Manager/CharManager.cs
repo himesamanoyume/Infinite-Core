@@ -1157,6 +1157,20 @@ public class CharManager : MonoBehaviourPunCallbacks
 
     }
 
+    /// <summary>
+    /// 【非事件回应】通过id修改玩家移动速度
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="moveSpeed"></param>
+    public void SetPlayerMoveSpeed(int actorNumber, int moveSpeed)
+    {
+        FindPlayerRecorder(actorNumber, out GameObject recorder, out CharBase charBase);
+        if (charBase == null || recorder == null) { return; }
+
+        charBase.MoveSpeed = moveSpeed;
+
+        Toast(new object[2] { actorNumber, "设置了移速为" + moveSpeed });
+    }
     #endregion
     
     #region PUN Callbacks

@@ -16,50 +16,57 @@ public enum EventEnum
     #region PlayerGroup
     PlayerGroup,
 
-    #region PlayerGroup -> PlayerMgrGroup
-    PlayerMgrGroup,
+        #region PlayerGroup -> PlayerMgrGroup
+            PlayerMgrGroup,
 
-    OnPlayerActorNumberChanged,
-    OnPlayerNameChanged,
-    OnPlayerTeamChanged,
-    OnPlayerKill,
-    OnPlayerKilled,
-    OnPlayerDead,
-    OnPlayerRespawn,
-    OnPlayerRespawning,
-    OnPlayerMoneyChanged,
-    OnPlayerCurrentExpChanged,
-    OnPlayerMaxExpChanged,
-    OnPlayerStateChanged,
-    OnPlayerBuffChanged,
-    OnPlayerLevelChanged,
-    OnPlayerLevelUp,
-    OnPlayerAttackChanged,
-    OnPlayerShieldChanged,
-    OnPlayerMaxHealthChanged,
-    OnPlayerCurrentHealthChanged,
-    OnPlayerCriticalHitChanged,
-    OnPlayerCriticalHitRateChanged,
-    OnPlayerDefenceChanged,
-    OnPlayerAttackSpeedChanged,
-    OnPlayerRestoreChanged,
-    OnPlayerRestoreing,
+            OnPlayerActorNumberChanged,
+            OnPlayerNameChanged,
+            OnPlayerTeamChanged,
+            OnPlayerKill,
+            OnPlayerKilled,
+            OnPlayerDead,
+            OnPlayerRespawn,
+            OnPlayerRespawning,
+            OnPlayerMoneyChanged,
+            OnPlayerCurrentExpChanged,
+            OnPlayerMaxExpChanged,
+            OnPlayerStateChanged,
+            OnPlayerBuffChanged,
+            OnPlayerLevelChanged,
+            OnPlayerLevelUp,
+            OnPlayerAttackChanged,
+            OnPlayerShieldChanged,
+            OnPlayerMaxHealthChanged,
+            OnPlayerCurrentHealthChanged,
+            OnPlayerCriticalHitChanged,
+            OnPlayerCriticalHitRateChanged,
+            OnPlayerDefenceChanged,
+            OnPlayerAttackSpeedChanged,
+            OnPlayerRestoreChanged,
+            OnPlayerRestoreing,
+            OnPlayerMoveSpeedChanged,
+            OnPlayerAttackRangeChanged,
+            OnPlayerRespawnTimeChanged,
+            OnPlayerRespawnCountDownStart,
+            OnPlayerRespawnCountDownEnd,
 
-    #region PlayerGroup -> PlayerMgrGroup -> SkillGroup
-    PlayerSkillGroup,
-    #endregion
+            #region PlayerGroup -> PlayerMgrGroup -> SkillGroup
+                PlayerSkillGroup,
+            #endregion
 
-    #region PlayerGroup -> PlayerMgrGroup -> EquipGroup
-    PlayerEquipGroup,
-    #endregion
+            #region PlayerGroup -> PlayerMgrGroup -> EquipGroup
+                PlayerEquipGroup,
+            #endregion
 
-    OnPlayerMoveSpeedChanged,
-    OnPlayerAttackRangeChanged,
-    OnPlayerRespawnTimeChanged,
-    OnPlayerRespawnCountDownStart,
-    OnPlayerRespawnCountDownEnd
+        #endregion
 
-    #endregion
+        #region PlayerGroup -> PlayerControlGroup
+            PlayerControlGroup,
+
+            SendPlayerMoveSpeed,
+
+
+        #endregion
     #endregion
 
 }

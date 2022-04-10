@@ -15,6 +15,7 @@ public class DebugConsole : MonoBehaviour
     //声明命令处
     public static DebugCommand TEST;
     public static DebugCommand<int> GET_NAME;
+    public static DebugCommand<int,int> SET_MOVESPEED;
     public static DebugCommand<int,int> LEVEL_UP;
     public static DebugCommand<int, int> SET_HP;
     public static DebugCommand<int, int, int> GIVE_EXP;
@@ -100,6 +101,11 @@ public class DebugConsole : MonoBehaviour
             CharManager.Instance.SetPlayerMoney(id, min, max);
         });
 
+        SET_MOVESPEED = new DebugCommand<int, int>("SetMoveSpeed", "通过id设置移动速度", "SetMoveSpeed <id> <speed>", (id, speed) =>
+          {
+              CharManager.Instance.SetPlayerMoveSpeed(id, speed);
+          });
+
         //将命令放进列表 
         //注意最后一个命令后不能有逗号 否则会无法调用
         commandList = new List<object>
@@ -109,7 +115,8 @@ public class DebugConsole : MonoBehaviour
             LEVEL_UP,
             SET_HP,
             GIVE_EXP,
-            GIVE_MONEY
+            GIVE_MONEY,
+            SET_MOVESPEED
         };
     }
 

@@ -22,9 +22,11 @@ public class GameEventManager
         //于此处控制事件组和事件的初始状态
         RootGroup.Enable = true;
 
+        EnableEvent(EventEnum.SystemGroup, true);
         EnableEvent(EventEnum.PlayerGroup, true);
         EnableEvent(EventEnum.PlayerMgrGroup, true);
-        EnableEvent(EventEnum.SystemGroup, true);
+        EnableAllEvents(EventEnum.PlayerControlGroup, true);
+        
 
     }
 
@@ -48,6 +50,7 @@ public class GameEventManager
 
         GameEventGroup playerMgrGroup = new GameEventGroup(EventEnum.PlayerMgrGroup);
         playerGroup.AddEvent(playerMgrGroup);
+
         #region PlayerGroup -> PlayerMgrGroup
 
         GameEvent OnPlayerActorNumberChanged = new GameEvent(EventEnum.OnPlayerActorNumberChanged);
@@ -151,6 +154,16 @@ public class GameEventManager
 
         GameEvent OnPlayerRespawnCountDownEnd = new GameEvent(EventEnum.OnPlayerRespawnCountDownEnd);
         playerMgrGroup.AddEvent(OnPlayerRespawnCountDownEnd);
+
+        #endregion
+
+        GameEventGroup playerControlGroup = new GameEventGroup(EventEnum.PlayerControlGroup);
+        playerGroup.AddEvent(playerControlGroup);
+
+        #region PlayerGroup -> PlayerControlGroup
+
+        GameEvent sendPlayerMoveSpeed = new GameEvent(EventEnum.SendPlayerMoveSpeed);
+        playerControlGroup.AddEvent(sendPlayerMoveSpeed);
 
         #endregion
 

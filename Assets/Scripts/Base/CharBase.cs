@@ -124,7 +124,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 移动速度
     /// </summary>
-    private float moveSpeed = 10f;
+    private float moveSpeed = 8f;
     [SerializeField]
     /// <summary>
     /// 重生所需时间
@@ -748,6 +748,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 moveSpeed = value;
                 if (photonView.IsMine)
                 {
+                    GameEventManager.EnableEvent(EventEnum.SendPlayerMoveSpeed, true);
                     GameEventManager.EnableEvent(EventEnum.OnPlayerMoveSpeedChanged, true);
 
                 }
@@ -829,7 +830,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     GameEventManager.EnableEvent(EventEnum.OnToast, true);
                 }
-
 
             }
             else
@@ -955,8 +955,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         #region Register Event
+
         if (photonView.IsMine)
         {
+
             GameEventManager.RegisterEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUpCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnToast, OnToastCheck);
@@ -984,6 +986,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             GameEventManager.RegisterEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChangedCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChangedCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeedCheck);
+            //GameEventManager.EnableEvent(EventEnum.SendPlayerMoveSpeed, true);
+
         }
         
         #endregion
@@ -992,6 +998,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
 
     #region Event Check
+
+    bool SendPlayerMoveSpeedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber, MoveSpeed };
+        return true;
+    }
 
     bool OnPlayerLevelChangedCheck(out object[] args)
     {
@@ -1096,6 +1108,5 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     #endregion
-
 
 }

@@ -41,6 +41,8 @@ DebugConsole 改版
 
 ## Tips
 
+发现调用事件怎么都启动不了时 检查一下GameEventManager对应实例化的位置 此Event是否被错误的实例化为了EventGroup
+
 **注册事件时一定要添加isMine判断** 在开启事件时一般也要添加isMine判断 关闭事件时基本不用管
 
 MasterClient是只要当你是房主时 你看到的任何物体都是master 但不代表isMine
@@ -88,6 +90,10 @@ RPC调用适用于使对方某一物体调用其内部函数 而不是用来广�
 如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可
 
 ## Done
+
+### 2022.4.11
+
+重做玩家模型并新增移速同步
 
 ### 2022.4.10
 

@@ -7,8 +7,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {
     private CharacterController controller;
     GameObject playerModel;
-    float moveSpeed = 8f;
-    float gravity = -19.8f;
+    [SerializeField]
+    float m_moveSpeed;
+    [SerializeField]
+    float gravity;
     public Transform groundCheck;
     public LayerMask layerMask;
     float checkRadius = 0.2f;
@@ -18,8 +20,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
 
         controller = transform.GetComponent<CharacterController>();
-
         playerModel = CharManager.Instance.FindChildObjWithTag("Player", this.gameObject);
+        m_moveSpeed = 8f;
+        gravity = -19.8f;
+        GameEventManager.SubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
     }
 
     void Update()
@@ -37,7 +41,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PlayerToward();
         PlayerGravity();
 
+
+
     }
+    #region Player Control
 
     private void PlayerMove()
     {
@@ -46,7 +53,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         Vector3 direction = new Vector3(hor, 0, ver).normalized;
 
-        Vector3 move = direction * moveSpeed * Time.deltaTime;
+        Vector3 move = direction * m_moveSpeed * Time.deltaTime;
         controller.Move(move);
     }
 
@@ -66,44 +73,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             velocity.y = 0;
         }
-        //else
-        //{
-            velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
-        //}
 
-        //if (controller.isGrounded)
-        //{
-        //    Debug.Log("isGrounded");
-        //    velocity = Vector3.zero;
-        //}
-        //else
-        //{
-        //    velocity.y += gravity * Time.deltaTime;
-        //    controller.Move(velocity * Time.deltaTime);
-        //}
-
-        //Vector3 modelButtom = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        // Physics.Raycast(modelButtom, Vector3.down,out RaycastHit hit, 0.1f);
-
-        //try
-        //{
-        //    if (hit.collider.CompareTag("Ground"))
-        //    {
-        //        velocity = Vector3.zero;
-        //    }
-        //    else
-        //    {
-        //        velocity.y += gravity * Time.deltaTime;
-        //        controller.Move(velocity * Time.deltaTime);
-        //    }
-        //}
-        //catch (System.Exception)
-        //{
-        //    velocity.y += gravity * Time.deltaTime;
-        //    controller.Move(velocity * Time.deltaTime);
-
-        //}
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
 
     }
+
+    #endregion
+
+    #region Event Response
+
+    /// <summary>
+    /// 接收记录器的移动速度
+    /// </summary>
+    /// <param name="args"></param>
+    public void SendPlayerMoveSpeed(object[] args)
+    {
+        
+        int actorNumber;
+        float moveSpeed;
+        if (args.Length == 2)
+        {
+            actorNumber = (int)args[0];
+            moveSpeed = (float)args[1];
+            m_moveSpeed = moveSpeed;
+
+            GameEventManager.EnableEvent(EventEnum.SendPlayerMoveSpeed, false);
+        }
+    }
+
+    #endregion
 }
