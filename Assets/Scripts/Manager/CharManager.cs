@@ -8,7 +8,7 @@ using Photon.Realtime;
 /// <summary>
 /// 提供对角色数值的控制函数 不附加在玩家物体上
 /// </summary>
-public class CharManager : MonoBehaviour
+public class CharManager : MonoBehaviourPunCallbacks
 {
 
     public GameObject total;
@@ -19,18 +19,6 @@ public class CharManager : MonoBehaviour
     public GameObject tanker;
     public GameObject recorder;
 
-    //public GameObject spawnRedPos1;
-    //public GameObject spawnRedPos2;
-    //public GameObject spawnRedPos3;
-    //public GameObject spawnRedPos4;
-    //public GameObject spawnRedPos5;
-
-    //public GameObject spawnBluePos1;
-    //public GameObject spawnBluePos2;
-    //public GameObject spawnBluePos3;
-    //public GameObject spawnBluePos4;
-    //public GameObject spawnBluePos5;
-
     public GameObject[] redPosList = new GameObject[5];
     public GameObject[] bluePosList = new GameObject[5];
 
@@ -39,7 +27,7 @@ public class CharManager : MonoBehaviour
 
     public static CharManager Instance;
 
-    private PhotonView photonView;
+    
 
     private void Awake()
     {
@@ -48,7 +36,7 @@ public class CharManager : MonoBehaviour
 
     private void Start()
     {
-        photonView = GetComponent<PhotonView>();
+        PhotonView photonView = GetComponent<PhotonView>();
         playerModelList = new Dictionary<int, GameObject>();
         recorders = new Dictionary<int, GameObject>();
 
@@ -59,12 +47,15 @@ public class CharManager : MonoBehaviour
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
         GameEventManager.SubscribeEvent(EventEnum.OnToast, Toast);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownStart, OnPlayerRespawnCountDownStart);
-        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawning);  
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawning);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEnd);
-        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawn,OnPlayerRespawn);
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawn, OnPlayerRespawn);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreing, OnPlayerRestoreing);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreChanged, OnPlayerRestoreChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChanged);
+
+        
+
     }
 
     private void Update()
@@ -74,6 +65,8 @@ public class CharManager : MonoBehaviour
 
        
     }
+
+    #region Misc Functions
 
     /// <summary>
     /// 首次生成玩家
@@ -357,7 +350,181 @@ public class CharManager : MonoBehaviour
         Toast(new object[2] { actorNumber, "名为" + charBase.PlayerName });
     }
 
-    #region 事件回应
+    /// <summary>
+    /// (int)玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="lowerLimit"></param>
+    /// <param name="upperLimit"></param>
+    /// <returns>返回值用于给装备显示词条数值</returns>
+    public int ToGivePlayerSomething(object[] args)
+    {
+        int lowerLimit, upperLimit;
+
+        if (args.Length == 2)
+        {
+            lowerLimit = (int)args[0];
+            upperLimit = (int)args[1];
+
+            int value = Random.Range(lowerLimit, upperLimit);
+            return value;
+        }
+        else
+        {
+            Toast(new object[1] { "随机数值参数错误" });
+            return 0;
+        }
+
+    }
+
+    /// <summary>
+    /// 吐丝
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="text"></param>
+    public void Toast(object[] args)
+    {
+        int actorNumber;
+        string text;
+        if (args.Length == 2)
+        {
+            actorNumber = (int)args[0];
+            text = args[1].ToString();
+            Debug.Log("ActorNumber为" + actorNumber + "的玩家" + text);
+        }
+        if (args.Length == 1)
+        {
+            text = args[0].ToString();
+            Debug.Log(text);
+        }
+        GameEventManager.EnableEvent(EventEnum.OnToast, false);
+    }
+
+    /// <summary>
+    /// 通过ActorNumber获取特定玩家的记录器,适用于将要进行特定属性进行修改时
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    public void FindPlayerRecorder(int actorNumber, out GameObject playerRecorder, out CharBase charBase)
+    {
+
+        if (recorders == null)
+        {
+            Toast(new object[2] { actorNumber, "玩家记录器获取失败, recorders" });
+            playerRecorder = null;
+            charBase = null;
+        }
+
+        if (recorders.TryGetValue(actorNumber, out GameObject recorder))
+        {
+            charBase = recorder.GetComponent<CharBase>();
+            playerRecorder = recorder;
+            Toast(new object[2] { actorNumber, "玩家记录器获取成功" });
+        }
+        else
+        {
+            Toast(new object[2] { actorNumber, "玩家记录器获取失败" });
+            charBase = null;
+            playerRecorder = null;
+        }
+
+    }
+
+    /// <summary>
+    /// 获取对应玩家模型
+    /// </summary>
+    /// <param name="actorNumber"></param>
+    /// <param name="playerModel"></param>
+    public void FindPlayerModel(int actorNumber, out GameObject playerModel)
+    {
+        if (playerModelList == null)
+        {
+            Toast(new object[2] { actorNumber, "玩家模型获取失败, playerModelList为空" });
+
+            playerModel = null;
+        }
+
+        if (playerModelList.TryGetValue(actorNumber, out GameObject model))
+        {
+
+            Toast(new object[2] { actorNumber, "玩家模型获取成功" });
+            playerModel = model;
+        }
+        else
+        {
+            Toast(new object[2] { actorNumber, "玩家模型获取失败" });
+            playerModel = null;
+        }
+
+    }
+
+    /// <summary>
+    /// 通过tag找父物体的某个单个子物体
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public GameObject FindChildObjWithTag(string tag, GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            if (child.CompareTag(tag))
+            {
+                return child.gameObject;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 根据CharBase组件获取所有信息
+    /// </summary>
+    /// <param name="needTarget"></param>
+    /// <param name="provider"></param>
+    /// <returns></returns>
+    public void GetPlayerInfo(CharBase needTarget, CharBase provider)
+    {
+
+        needTarget.ActorNumber = provider.ActorNumber;
+        needTarget.PlayerName = provider.PlayerName;
+        needTarget.Kill = provider.Kill;
+        needTarget.Death = provider.Death;
+        needTarget.Money = provider.Money;
+        needTarget.CurrentExp = provider.CurrentExp;
+        needTarget.MaxExp = provider.MaxExp;
+        needTarget.State = provider.State;
+        //needTarget.Buff = provider.Buff;
+        needTarget.Pro = provider.Pro;
+        needTarget.Level = provider.Level;
+        needTarget.Attack = provider.Attack;
+        needTarget.MaxHealth = provider.MaxHealth;
+        needTarget.CurrentHealth = provider.CurrentHealth;
+        needTarget.CriticalHit = provider.CriticalHit;
+        needTarget.CriticalHitRate = provider.CriticalHitRate;
+        needTarget.Defence = provider.Defence;
+        needTarget.AttackSpeed = provider.AttackSpeed;
+        needTarget.Restore = provider.Restore;
+        needTarget.SkillQ = provider.SkillQ;
+        needTarget.SkillE = provider.SkillE;
+        needTarget.SkillR = provider.SkillR;
+        needTarget.SkillBurst = provider.SkillBurst;
+        needTarget.HeadID = provider.HeadID;
+        needTarget.ArmorID = provider.ArmorID;
+        needTarget.HeadID = provider.HeadID;
+        needTarget.KneeID = provider.KneeID;
+        needTarget.TrousersID = provider.TrousersID;
+        needTarget.BootsID = provider.BootsID;
+        needTarget.MoveSpeed = provider.MoveSpeed;
+        needTarget.AttackRange = provider.AttackRange;
+        needTarget.RespawnTime = provider.RespawnTime;
+        needTarget.RespawnCountDown = provider.RespawnCountDown;
+
+        return;
+    }
+
+
+    #endregion
+
+    #region Event Response
 
     /// <summary>
     /// 【事件回应】当玩家等级变动时再进行一次检测
@@ -399,13 +566,13 @@ public class CharManager : MonoBehaviour
             {
                 charBase.CurrentExp -=  charBase.MaxExp;
             }
-            charBase.MaxExp += charBase.Level * 500;
+            charBase.MaxExp += charBase.Level * 50;
             charBase.Level += 1;
             charBase.Attack += 100;
             charBase.MaxHealth += 1000;
             charBase.CurrentHealth += 1000;
             charBase.RespawnTime += 5;   
-            charBase.Restore += 5;
+            charBase.Restore += 2;
             
             GameEventManager.EnableEvent(EventEnum.OnPlayerLevelUp, false);
             Toast(new object[2] { actorNumber, "level已经提升1级" });
@@ -435,9 +602,9 @@ public class CharManager : MonoBehaviour
 
 
             //recorder.GetComponent<PhotonView>().RPC("DestroyPlayerModel", RpcTarget.All, actorNumber );
-
-            playerModelList.Remove(actorNumber);
             PhotonNetwork.Destroy(playerModel);
+            playerModelList.Remove(actorNumber);
+            
 
             Toast(new object[2] { actorNumber, "被击杀" });
             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
@@ -846,7 +1013,7 @@ public class CharManager : MonoBehaviour
 
     #endregion
 
-    #region 非事件回应
+    #region Non Event Response
 
     /// <summary>
     /// 【非事件回应】给玩家经验
@@ -895,13 +1062,13 @@ public class CharManager : MonoBehaviour
             {
                 charBase.CurrentExp -= charBase.MaxExp;
             }
-            charBase.MaxExp += charBase.Level * 500;
+            charBase.MaxExp += charBase.Level * 50;
             charBase.Level += 1;
             charBase.Attack += 100;
             charBase.MaxHealth += 1000;
             charBase.CurrentHealth += 1000;
-
-            charBase.Restore += 5;
+            charBase.RespawnTime += 5;
+            charBase.Restore += 2;
         }
         
         
@@ -991,180 +1158,16 @@ public class CharManager : MonoBehaviour
     }
 
     #endregion
-    /// <summary>
-    /// (int)玩家获取经验,或通过装备随机词条数值等获得加成时的通用函数
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="lowerLimit"></param>
-    /// <param name="upperLimit"></param>
-    /// <returns>返回值用于给装备显示词条数值</returns>
-    public int ToGivePlayerSomething(object[] args)
-    {
-        int lowerLimit, upperLimit;
-
-        if(args.Length == 2)
-        {
-            lowerLimit = (int)args[0];
-            upperLimit = (int)args[1];
-
-            int value = Random.Range(lowerLimit, upperLimit);
-            return value;
-        }
-        else
-        {
-            Toast(new object[1] { "随机数值参数错误" });
-            return 0;
-        }
-        
-    }
-
-    /// <summary>
-    /// 吐丝
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="text"></param>
-    public void Toast(object[] args)
-    {
-        int actorNumber;
-        string text;
-        if (args.Length == 2)
-        {
-            actorNumber = (int)args[0];
-            text = args[1].ToString();
-            Debug.Log("ActorNumber为" + actorNumber + "的玩家" + text);
-        }
-        if (args.Length == 1)
-        {
-            text = args[0].ToString();
-            Debug.Log(text);
-        }
-        GameEventManager.EnableEvent(EventEnum.OnToast, false);
-    }
-
-    /// <summary>
-    /// 通过ActorNumber获取特定玩家的记录器,适用于将要进行特定属性进行修改时
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    public void FindPlayerRecorder(int actorNumber,out GameObject playerRecorder, out CharBase charBase)
-    {
-
-        if (recorders == null)
-        {
-            Toast(new object[2] { actorNumber, "玩家记录器获取失败, recorders" });
-            playerRecorder = null;
-            charBase = null;
-        }
-
-        if(recorders.TryGetValue(actorNumber, out GameObject recorder))
-        {
-            charBase = recorder.GetComponent<CharBase>();
-            playerRecorder = recorder;
-            Toast(new object[2] { actorNumber, "玩家记录器获取成功" });
-        }
-        else
-        {
-            Toast(new object[2] { actorNumber, "玩家记录器获取失败" });
-            charBase = null;
-            playerRecorder = null;
-        }
-        
-    }
-
-    /// <summary>
-    /// 获取对应玩家模型
-    /// </summary>
-    /// <param name="actorNumber"></param>
-    /// <param name="playerModel"></param>
-    public void FindPlayerModel(int actorNumber, out GameObject playerModel)
-    {
-        if (playerModelList == null)
-        {
-            Toast(new object[2] { actorNumber, "玩家模型获取失败, playerModelList为空" });
-
-            playerModel = null;
-        }
-
-        if (playerModelList.TryGetValue(actorNumber, out GameObject model))
-        {
-            
-            Toast(new object[2] { actorNumber, "玩家模型获取成功" });
-            playerModel = model;
-        }
-        else
-        {
-            Toast(new object[2] { actorNumber, "玩家模型获取失败" });
-            playerModel = null;
-        }
-
-    }
-
-    /// <summary>
-    /// 通过tag找父物体的某个单个子物体
-    /// </summary>
-    /// <param name="tag"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public GameObject FindChildObjWithTag(string tag,GameObject parent)
-    {
-        foreach (Transform child in parent.transform)
-        {
-            if (child.CompareTag(tag))
-            {
-                return child.gameObject;
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// 根据CharBase组件获取所有信息
-    /// </summary>
-    /// <param name="needTarget"></param>
-    /// <param name="provider"></param>
-    /// <returns></returns>
-    public void GetPlayerInfo(CharBase needTarget,CharBase provider)
-    {
-
-        needTarget.ActorNumber = provider.ActorNumber;
-        needTarget.PlayerName = provider.PlayerName;
-        needTarget.Kill = provider.Kill;
-        needTarget.Death = provider.Death;
-        needTarget.Money = provider.Money;
-        needTarget.CurrentExp = provider.CurrentExp;
-        needTarget.MaxExp = provider.MaxExp;
-        needTarget.State = provider.State;
-        //needTarget.Buff = provider.Buff;
-        needTarget.Pro = provider.Pro;
-        needTarget.Level = provider.Level;
-        needTarget.Attack = provider.Attack;
-        needTarget.MaxHealth = provider.MaxHealth;
-        needTarget.CurrentHealth = provider.CurrentHealth;
-        needTarget.CriticalHit = provider.CriticalHit;
-        needTarget.CriticalHitRate = provider.CriticalHitRate;
-        needTarget.Defence = provider.Defence;
-        needTarget.AttackSpeed = provider.AttackSpeed;
-        needTarget.Restore = provider.Restore;
-        needTarget.SkillQ = provider.SkillQ;
-        needTarget.SkillE = provider.SkillE;
-        needTarget.SkillR = provider.SkillR;
-        needTarget.SkillBurst = provider.SkillBurst;
-        needTarget.HeadID = provider.HeadID;
-        needTarget.ArmorID = provider.ArmorID;
-        needTarget.HeadID = provider.HeadID;
-        needTarget.KneeID = provider.KneeID;
-        needTarget.TrousersID = provider.TrousersID;
-        needTarget.BootsID = provider.BootsID;
-        needTarget.MoveSpeed = provider.MoveSpeed;
-        needTarget.AttackRange = provider.AttackRange;
-        needTarget.RespawnTime = provider.RespawnTime;
-        needTarget.RespawnCountDown = provider.RespawnCountDown;
-
-        return;
-    }
-
+    
     #region PUN Callbacks
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        FindPlayerRecorder(otherPlayer.ActorNumber,out GameObject recorder,out CharBase charBase);
 
+        recorders.Remove(otherPlayer.ActorNumber);
+        Destroy(recorder);
+    }
 
     #endregion
 }

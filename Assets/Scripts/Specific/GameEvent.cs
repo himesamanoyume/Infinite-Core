@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Photon.Pun;
+
 public class GameEvent : GameEventBase
 {
     public delegate void ResponseHandle(params object[] args);
@@ -28,6 +30,7 @@ public class GameEvent : GameEventBase
         if (checkHandle!=null && checkHandle(out args))
         {
             if (response != null) response(args);
+
         }
     }
 

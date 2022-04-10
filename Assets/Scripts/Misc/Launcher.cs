@@ -294,7 +294,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             SetActiveMenu(mainMenu.name);
             TextInputField.text = "Player " + Random.Range(1000, 10000);
             isConnecting = false;
-            Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
+            Debug.Log("OnConnectedToMaster");
         }
     }
 

@@ -89,7 +89,7 @@
     <Compile Include="Assets\Scripts\DebugConsole\DebugCommandBase.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Enum\EquipEnum.cs" />
-    <Compile Include="Assets\Scripts\Controller\PlayerMoveController.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\DebugConsole\DebugCommand.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\Scripts\Enum\SkillEnum.cs" />
