@@ -22,19 +22,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    //public void LoadArena()
-    //{
-    //    if (!PhotonNetwork.IsMasterClient)
-    //    {
-    //        Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
-    //    }
-    //    else
-    //    {
-    //        PhotonNetwork.LoadLevel("Test");
-    //        Debug.LogFormat("PhotonNetwork : Loading Level : Test");
-    //    }
-    //}
-
     public void StartGame()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -45,6 +32,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
+
     }
     #endregion
 
@@ -60,6 +48,41 @@ public class GameManager : MonoBehaviourPunCallbacks
         GameEventManager.Update();
     }
 
+    private void Start()
+    {
+        #region Register Event
+        //if (photonView.IsMine)
+        //{
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerMove, PlayerMoveCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerAttack, PlayerAttackCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChangedCheck);
+        //}
+        #endregion
+    }
+
+    #endregion
+
+    #region Event Check
+
+    bool PlayerMoveCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool PlayerAttackCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool PlayerTowardChangedCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
     #endregion
 
     #region Photon Callbacks
@@ -76,5 +99,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         Application.Quit();
     }
 
-
+    
 }

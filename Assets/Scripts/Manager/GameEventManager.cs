@@ -162,8 +162,20 @@ public class GameEventManager
 
         #region PlayerGroup -> PlayerControlGroup
 
+        GameEvent allowPlayerTowardChanged = new GameEvent(EventEnum.AllowPlayerTowardChanged);
+        playerControlGroup.AddEvent(allowPlayerTowardChanged);
+
+        GameEvent allowPlayerMove = new GameEvent(EventEnum.AllowPlayerMove);
+        playerControlGroup.AddEvent(allowPlayerMove);
+
         GameEvent sendPlayerMoveSpeed = new GameEvent(EventEnum.SendPlayerMoveSpeed);
         playerControlGroup.AddEvent(sendPlayerMoveSpeed);
+
+        GameEvent onPlayerDamaged = new GameEvent(EventEnum.OnPlayerDamaged);
+        playerControlGroup.AddEvent(onPlayerDamaged);
+
+        GameEvent allowPlayerAttack = new GameEvent(EventEnum.AllowPlayerAttack);
+        playerControlGroup.AddEvent(allowPlayerAttack);
 
         #endregion
 

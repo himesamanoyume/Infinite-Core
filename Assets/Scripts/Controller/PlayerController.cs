@@ -6,24 +6,61 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviourPunCallbacks
 {
     private CharacterController controller;
+
+    Animator animator;
+
     GameObject playerModel;
+
+    new PhotonView photonView;
+
     [SerializeField]
     float m_moveSpeed;
+
     [SerializeField]
     float gravity;
+
     public Transform groundCheck;
+
     public LayerMask layerMask;
+
     float checkRadius = 0.2f;
+
     bool isGround;
+
     Vector3 velocity = Vector3.zero;
+
     void Start()
     {
 
         controller = transform.GetComponent<CharacterController>();
+        photonView = GetComponent<PhotonView>();
+        animator = GetComponent<Animator>();
         playerModel = CharManager.Instance.FindChildObjWithTag("Player", this.gameObject);
         m_moveSpeed = 8f;
         gravity = -19.8f;
+
+        #region Subscribe Event
+
         GameEventManager.SubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
+
+        GameEventManager.SubscribeEvent(EventEnum.AllowPlayerMove, PlayerMove);
+
+        GameEventManager.SubscribeEvent(EventEnum.AllowPlayerAttack, PlayerAttack);
+
+        GameEventManager.SubscribeEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChanged);
+
+        #endregion
+
+        #region Register Event
+
+        if (photonView.IsMine)
+        {
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerDamaged, OnPlayerDamagedCheck);
+
+            
+        }
+
+        #endregion
     }
 
     void Update()
@@ -37,19 +74,34 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             return;
         }
-        PlayerMove();
-        PlayerToward();
+        //PlayerMove();
+        //PlayerToward();
         PlayerGravity();
+
 
 
 
     }
     #region Player Control
 
-    private void PlayerMove()
+    void PlayerAnimationControl()
+    {
+
+    }
+
+    private void PlayerMove(object[] args)
     {
         var hor = Input.GetAxis("Horizontal");
         var ver = Input.GetAxis("Vertical");
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        {
+            animator.SetBool("isMove", true);
+        }
+        else
+        {
+            animator.SetBool("isMove", false);
+        }
+
 
         Vector3 direction = new Vector3(hor, 0, ver).normalized;
 
@@ -57,7 +109,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         controller.Move(move);
     }
 
-    private void PlayerToward()
+    private void PlayerTowardChanged(object[] args)
     {
 
         var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
@@ -77,6 +129,20 @@ public class PlayerController : MonoBehaviourPunCallbacks
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+    }
+
+    public void PlayerAttack(object[] args)
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            animator.SetTrigger("isAttack");
+        }
+        
+    }
+
+    public void AnimationEventOnPlayerAttack()
+    {
+        Debug.LogWarning("Attack Release");
     }
 
     #endregion
@@ -100,6 +166,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GameEventManager.EnableEvent(EventEnum.SendPlayerMoveSpeed, false);
         }
+    }
+
+    #endregion
+
+    #region Event Check
+
+    bool OnPlayerDamagedCheck(out object[] args)
+    {
+        args = null;
+        return true;
     }
 
     #endregion

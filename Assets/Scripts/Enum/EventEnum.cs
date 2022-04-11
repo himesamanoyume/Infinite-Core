@@ -49,13 +49,14 @@ public enum EventEnum
             OnPlayerRespawnTimeChanged,
             OnPlayerRespawnCountDownStart,
             OnPlayerRespawnCountDownEnd,
+            OnPlayerDamaged,
 
             #region PlayerGroup -> PlayerMgrGroup -> SkillGroup
-                PlayerSkillGroup,
+            PlayerSkillGroup,
             #endregion
 
             #region PlayerGroup -> PlayerMgrGroup -> EquipGroup
-                PlayerEquipGroup,
+            PlayerEquipGroup,
             #endregion
 
         #endregion
@@ -63,8 +64,11 @@ public enum EventEnum
         #region PlayerGroup -> PlayerControlGroup
             PlayerControlGroup,
 
+            AllowPlayerTowardChanged,
             SendPlayerMoveSpeed,
-
+            OnPlayerNormalAttack,
+            AllowPlayerAttack,
+            AllowPlayerMove,
 
         #endregion
     #endregion
