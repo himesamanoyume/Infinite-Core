@@ -61,44 +61,33 @@
     <Compile Include="Assets\Scripts\Specific\GameEventGroup.cs" />
     <Compile Include="Assets\Scripts\Misc\LauncherSelect.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
     <Compile Include="Assets\Scripts\Enum\EventEnum.cs" />
     <Compile Include="Assets\3rd\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\Scripts\Base\EquipBase.cs" />
     <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
     <Compile Include="Assets\Scripts\Specific\Skill.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
     <Compile Include="Assets\Scripts\Manager\CharManager.cs" />
     <Compile Include="Assets\Scripts\Specific\Equip.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
     <Compile Include="Assets\Scripts\Misc\Launcher.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
     <Compile Include="Assets\Scripts\Base\SkillBase.cs" />
     <Compile Include="Assets\Scripts\Specific\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Manager\GameEventManager.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\IgnoreUiRaycastWhenInactive.cs" />
     <Compile Include="Assets\Scripts\DebugConsole\DebugConsole.cs" />
     <Compile Include="Assets\Scripts\Controller\RecorderController.cs" />
     <Compile Include="Assets\Scripts\Enum\CharEnum.cs" />
     <Compile Include="Assets\Scripts\Misc\PlayerInfo.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
     <Compile Include="Assets\Scripts\Base\GameEventBase.cs" />
     <Compile Include="Assets\Scripts\Misc\PlayerNameInputField.cs" />
     <Compile Include="Assets\Scripts\Misc\CameraWork.cs" />
     <Compile Include="Assets\Scripts\DebugConsole\DebugCommandBase.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Enum\EquipEnum.cs" />
     <Compile Include="Assets\Scripts\Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\DebugConsole\DebugCommand.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\Scripts\Enum\SkillEnum.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\TextToggleIsOnTransition.cs" />
     <Compile Include="Assets\Scripts\Base\ModelBase.cs" />
     <Compile Include="Assets\Scripts\InfiniteCoreGame.cs" />
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
-    <Compile Include="Assets\3rd\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -740,10 +729,6 @@
     <ProjectReference Include="PhotonUnityNetworking.csproj">
       <Project>{0AF68F85-1451-9F90-3F57-1DF977E98DFB}</Project>
       <Name>PhotonUnityNetworking</Name>
-    </ProjectReference>
-    <ProjectReference Include="PhotonChat.csproj">
-      <Project>{9C4996E7-5B28-FDA8-3866-6DB165D226EE}</Project>
-      <Name>PhotonChat</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Demos.csproj">
       <Project>{88B40698-22F5-B74D-80D4-001AAB68A1DE}</Project>

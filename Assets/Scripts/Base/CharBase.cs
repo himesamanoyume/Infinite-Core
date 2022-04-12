@@ -989,15 +989,39 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
             GameEventManager.RegisterEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeedCheck);
             //GameEventManager.EnableEvent(EventEnum.SendPlayerMoveSpeed, true);
+            
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerMove, PlayerMoveCheck);
 
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerAttack, PlayerAttackCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChangedCheck);
+            
         }
-        
+
         #endregion
     }
 
     #endregion
 
     #region Event Check
+
+    bool PlayerMoveCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool PlayerAttackCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool PlayerTowardChangedCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
 
     bool SendPlayerMoveSpeedCheck(out object[] args)
     {

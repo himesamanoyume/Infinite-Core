@@ -50,39 +50,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        #region Register Event
-        //if (photonView.IsMine)
-        //{
-            GameEventManager.RegisterEvent(EventEnum.AllowPlayerMove, PlayerMoveCheck);
 
-            GameEventManager.RegisterEvent(EventEnum.AllowPlayerAttack, PlayerAttackCheck);
-
-            GameEventManager.RegisterEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChangedCheck);
-        //}
-        #endregion
     }
 
-    #endregion
-
-    #region Event Check
-
-    bool PlayerMoveCheck(out object[] args)
-    {
-        args = null;
-        return true;
-    }
-
-    bool PlayerAttackCheck(out object[] args)
-    {
-        args = null;
-        return true;
-    }
-
-    bool PlayerTowardChangedCheck(out object[] args)
-    {
-        args = null;
-        return true;
-    }
     #endregion
 
     #region Photon Callbacks

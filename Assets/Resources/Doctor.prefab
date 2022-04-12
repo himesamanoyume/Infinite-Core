@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: -5285226530087299361}
   - component: {fileID: 1307905066947866740}
   - component: {fileID: -2588786748352845729}
+  - component: {fileID: 1162445596391529753}
   m_Layer: 0
   m_Name: Doctor
   m_TagString: PlayerModel
@@ -452,6 +453,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1307905066947866740}
   - {fileID: -5285226530087299361}
+  - {fileID: 1162445596391529753}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -493,7 +495,7 @@ Animator:
   m_GameObject: {fileID: 8027300526949257307}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fdcd05eedbe4b2f4fa0ebd1cedba843a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 580cf66fd382ed74ea5de26d25bdeba5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -502,6 +504,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1162445596391529753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027300526949257307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: isAttack
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
 --- !u!1001 &6078449146284625739
 PrefabInstance:
   m_ObjectHideFlags: 0
