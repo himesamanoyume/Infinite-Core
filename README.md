@@ -11,13 +11,15 @@
 
 ### 高优先级
 
-任何攻击生成一个透明立方体 攻击开始时生成 攻击结束时消失
+[增加判定,完善变化函数]通过PunRPC 让所有人本地的Instantiate生成一个透明立方体 攻击开始时生成 攻击结束时消失 再获取这个物体的组件 将对应数据传入来达成特定的效果或伤害
+
+BUFF
 
 UI
 
 ---
 
-BUFF，技能，装备
+技能，装备
 
 运用事件系统控制(UI,玩家运动，玩家动画)
 
@@ -40,6 +42,8 @@ DebugConsole 改版
 动画控制器记得加入photonView.IsMine的判断
 
 ## Tips
+
+Exception: Write failed. Custom type not found:老老实实用回基础类型吧
 
 发现调用事件怎么都启动不了时 检查一下GameEventManager对应实例化的位置 此Event是否被错误的实例化为了EventGroup
 
@@ -92,6 +96,8 @@ RPC调用适用于使对方某一物体调用其内部函数 而不是用来广�
 ## Done
 
 ### 2022.4.12
+
+完善攻击相关(1.7/2)
 
 修复攻击相关Bug
 

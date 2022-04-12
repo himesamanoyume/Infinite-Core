@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd2f8bcd516d4a40845a55186a21cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackCubePrefab: {fileID: 5012474347994624960, guid: a4950170e01918b48bbc5229ccef38a6, type: 3}
   m_moveSpeed: 0
   gravity: -19.8
   groundCheck: {fileID: 2389308881658130341}

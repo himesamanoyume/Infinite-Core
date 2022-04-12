@@ -16,14 +16,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
 
-        }
-        else
-        {
-
-        }
     }
 
     void Awake()

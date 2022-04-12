@@ -38,6 +38,7 @@ namespace Photon.Realtime
             PhotonPeer.RegisterType(typeof(Vector2), (byte) 'W', SerializeVector2, DeserializeVector2);
             PhotonPeer.RegisterType(typeof(Vector3), (byte) 'V', SerializeVector3, DeserializeVector3);
             PhotonPeer.RegisterType(typeof(Quaternion), (byte) 'Q', SerializeQuaternion, DeserializeQuaternion);
+            
         }
 
 

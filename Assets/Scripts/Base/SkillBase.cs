@@ -42,7 +42,7 @@ public class SkillBase : MonoBehaviour
 
    
 
-    Dictionary<int, SkillData> data;
+    Dictionary<int, AttackCubeData> data;
         //次序，相对坐标，大小，倍率，
 
     /// <summary>
@@ -53,7 +53,7 @@ public class SkillBase : MonoBehaviour
     /// <param name="level">等级 建议为1</param>
     /// <param name="cd">冷却时间</param>
     /// <param name="data">技能施放数据</param>
-    public SkillBase(SkillType type, string skillName, int level, float cd,Dictionary<int,SkillData> data)
+    public SkillBase(SkillType type, string skillName, int level, float cd,Dictionary<int,AttackCubeData> data)
     {
         this.type = type;
         this.skillName = skillName;
@@ -102,7 +102,7 @@ public class SkillBase : MonoBehaviour
         }
     }
 
-    public Dictionary<int, SkillData> Data
+    public Dictionary<int, AttackCubeData> Data
     {
         get => data;
         set => data = value;
@@ -113,48 +113,4 @@ public class SkillBase : MonoBehaviour
     public bool IsRelease { get; set; }
 }
 
-public class SkillData
-{
-    /// <summary>
-    /// 初始碰撞体 center
-    /// </summary>
-    Vector3 initCenter;
-    /// <summary>
-    /// 初始碰撞体 size
-    /// </summary>
-    Vector3 initSize;
-    /// <summary>
-    /// 最终碰撞体 center
-    /// </summary>
-    Vector3 finalCenter;
-    /// <summary>
-    /// 最终碰撞体 size
-    /// </summary>
-    Vector3 finalSize;
-    /// <summary>
-    /// 变化时间
-    /// </summary>
-    float initToFinalTime;
-    /// <summary>
-    /// 攻击力倍率
-    /// </summary>
-    float ratio;
 
-    public Vector3 InitCenter { get; set; }
-    public Vector3 InitSize { get; set; }
-    public Vector3 FinalCenter { get; set; }
-    public Vector3 FinalSize { get; set; }
-    public float InitToFinalTime { get; set; }
-    public float Ratio { get; set; }
-
-    public SkillData(Vector3 initCenter, Vector3 initSize, Vector3 finalCenter, Vector3 finalSize, float initToFinalTime, float ratio) 
-    {
-        this.initCenter = initCenter;
-        this.initSize = initSize;
-        this.finalCenter = finalCenter;
-        this.finalSize = finalSize;
-        this.initToFinalTime = initToFinalTime;
-        this.ratio = ratio;
-
-    }
-}

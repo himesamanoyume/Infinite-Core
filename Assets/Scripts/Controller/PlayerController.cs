@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     GameObject playerModel;
 
+    public GameObject attackCubePrefab;
+
     new PhotonView photonView;
 
     [SerializeField]
@@ -34,9 +36,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
 
-        controller = this.transform.GetComponent<CharacterController>();
-        photonView = this.gameObject.GetComponent<PhotonView>();
-        animator = this.gameObject.GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
+        photonView = GetComponent<PhotonView>();
+        animator = GetComponent<Animator>();
         playerModel = CharManager.Instance.FindChildObjWithTag("Player", this.gameObject);
         m_moveSpeed = 8f;
         gravity = -19.8f;
@@ -107,35 +109,36 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private void PlayerTowardChanged(object[] args)
     {
-        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
+        if (photonView.IsMine)
+        {
 
-        var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        var point = Input.mousePosition - playerScreenPoint;
-        var angle = Mathf.Atan2(point.x, point.y) * Mathf.Rad2Deg;
-        playerModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
-        
+            var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+            var point = Input.mousePosition - playerScreenPoint;
+            var angle = Mathf.Atan2(point.x, point.y) * Mathf.Rad2Deg;
+            playerModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
+        }
         
     }
 
     private void PlayerGravity()
     {
-        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
-
-        isGround = Physics.CheckSphere(groundCheck.position, checkRadius, layerMask);
-        if (isGround && velocity.y < 0)
+        if (photonView.IsMine)
         {
-            velocity.y = 0;
-        }
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-        
+            isGround = Physics.CheckSphere(groundCheck.position, checkRadius, layerMask);
+            if (isGround && velocity.y < 0)
+            {
+                velocity.y = 0;
+            }
+
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
 
     }
 
     public void PlayerAttack(object[] args)
     {
-        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
 
         if (photonView.IsMine)
         {
@@ -150,18 +153,47 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     public void AnimationEventOnPlayerAttackEnd()
     {
-        if (photonView.IsMine)
-        {
-            //animator.SetBool("isAttack", false);
-        }
+        //if (photonView.IsMine)
+        //{
+        //    PhotonNetwork.Destroy(attackCube);
+        //}
     }
+
+    
 
     public void AnimationEventOnPlayerAttack()
     {
         if (photonView.IsMine)
         {
-            Debug.LogWarning("Attack Release");
+            if (this.photonView.CreatorActorNr != PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                return;
+            }
+
+            Vector3 selfPos = playerModel.transform.position;
+            Quaternion modelRotation = playerModel.transform.rotation;
+
+            //适合Archer
+            Vector3[] attackCubeData = new Vector3[] { modelRotation * Vector3.forward , Vector3.one, modelRotation * Vector3.forward * 8, Vector3.one };
+
+            float[] attackCubeData2 = new float[] { 0.5f, 1, 0, 0.5f };
+            //
+
+            photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+
         }
+    }
+    
+    [PunRPC]
+    public void SpawnAttackCube(Vector3 position, Quaternion rotation, Vector3[] attackCubeData, float[] attackCubeData2, PhotonMessageInfo info)
+    {
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+
+        GameObject attackCube = Instantiate(attackCubePrefab, position, Quaternion.identity);
+
+        //传入的attackCubeData应该为碰撞体的信息
+        attackCube.GetComponent<AttackCube>().InitAttackCube(photonView.Owner, rotation * Vector3.forward, Mathf.Abs(lag), attackCubeData, attackCubeData2);
+
     }
 
     #endregion
