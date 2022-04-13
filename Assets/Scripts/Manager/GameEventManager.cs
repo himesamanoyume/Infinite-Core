@@ -53,6 +53,9 @@ public class GameEventManager
 
         #region PlayerGroup -> PlayerMgrGroup
 
+        GameEvent OnPlayerFinalDamageChanged = new GameEvent(EventEnum.OnPlayerFinalDamageChanged);
+        playerMgrGroup.AddEvent(OnPlayerFinalDamageChanged);
+
         GameEvent OnPlayerActorNumberChanged = new GameEvent(EventEnum.OnPlayerActorNumberChanged);
         playerMgrGroup.AddEvent(OnPlayerActorNumberChanged);
 

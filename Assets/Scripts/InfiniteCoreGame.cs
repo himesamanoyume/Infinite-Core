@@ -53,4 +53,5 @@ public class InfiniteCoreGame : MonoBehaviour
     public const string PLAYER_ATTACK_RANGE = "PlayerAttackRange";
     //public const string PLAYER_RESPAWN_TIME = "PlayerRespawnTime";
     //public const string PLAYER_RESPAWN_COUNTDOWN = "PlayerRespawnCountDown";
+    public const string PLAYER_FINAL_DAMAGE = "PlayerFinalDamage";
 }

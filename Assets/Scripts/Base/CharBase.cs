@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
-
-using Photon.Realtime;
 using Photon.Pun;
+using Photon.Realtime;
+using System.Collections.Generic;
+using ExitGames.Client.Photon;
+
 
 public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -140,6 +139,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 攻击范围
     /// </summary>
     private float attackRange = 10f;
+    /// <summary>
+    /// 最终伤害倍率
+    /// </summary>
+    private float finalDamage = 1f;
     [SerializeField, Header("技能")]
     /// <summary>
     /// Q技能
@@ -431,6 +434,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 attack = value;
                 if (photonView.IsMine)
                 {
+                    
                     GameEventManager.EnableEvent(EventEnum.OnPlayerAttackChanged, true);
                 }
 
@@ -582,6 +586,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (value < 0)
             {
+                if (criticalHit == value) return;
+
                 criticalHit = 0;
                 if (photonView.IsMine)
                 {
@@ -840,7 +846,27 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
     public TeamEnum PlayerTeam { get => playerTeam; set => playerTeam = value; }
+    public float FinalDamage
+    {
+        get => FinalDamage;
+        set
+        {
+            if (value<=1f)
+            {
+                return;
+            }
+            else
+            {
+                if (finalDamage == value) return;
 
+                finalDamage = value;
+                if (photonView.IsMine)
+                {
+                    GameEventManager.EnableEvent(EventEnum.OnPlayerFinalDamageChanged, true);
+                }
+            }
+        }
+    }
     #endregion
 
     #region Photon Callbacks
@@ -958,6 +984,13 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerFinalDamageChanged, OnPlayerFinalDamageChangedCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerCriticalHitRateChanged, OnPlayerCriticalHitRateChangedCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerCriticalHitChanged, OnPlayerCriticalHitChangedCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerAttackRangeChanged, OnPlayerAttackRangeChangedCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUpCheck);
 
@@ -995,15 +1028,60 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             GameEventManager.RegisterEvent(EventEnum.AllowPlayerAttack, PlayerAttackCheck);
 
             GameEventManager.RegisterEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChangedCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerAttackChanged, OnPlayerAttackChangedCheck);
             
         }
 
         #endregion
     }
 
+    void UpdateFloatProps(string key, float value)
+    {
+        Hashtable props = new Hashtable()
+        {
+            {key, value }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
+
     #endregion
 
     #region Event Check
+
+    bool OnPlayerFinalDamageChangedCheck(out object[] args)
+    {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_FINAL_DAMAGE, FinalDamage);
+
+        args = new object[] { ActorNumber, FinalDamage };
+        return true;
+    }
+
+    bool OnPlayerCriticalHitRateChangedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber, CriticalHitRate };
+        return true;
+    }
+
+    bool OnPlayerCriticalHitChangedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber, CriticalHit };
+        return true;
+    }
+
+    bool OnPlayerAttackRangeChangedCheck(out object[] args)
+    {
+        args = new object[] { ActorNumber, AttackRange };
+        return true;
+    }
+
+    bool OnPlayerAttackChangedCheck(out object[] args)
+    {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_ATTACK, Attack);
+
+        args = new object[] { ActorNumber, Attack};
+        return true;
+    }
 
     bool PlayerMoveCheck(out object[] args)
     {

@@ -8,7 +8,6 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Cinemachine;
 using Photon.Pun;
 using UnityEngine;
 

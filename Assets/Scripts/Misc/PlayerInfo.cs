@@ -163,7 +163,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             {InfiniteCoreGame.PLAYER_ATTACK_RANGE, c.AttackRange},
             //{InfiniteCoreGame.PLAYER_RESPAWN_TIME, c.RespawnTime},
             //{InfiniteCoreGame.PLAYER_RESPAWN_COUNTDOWN, c.RespawnCountDown}
-
+            {InfiniteCoreGame.PLAYER_FINAL_DAMAGE, c.FinalDamage}
         };
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);

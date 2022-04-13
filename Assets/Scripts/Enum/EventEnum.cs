@@ -19,6 +19,7 @@ public enum EventEnum
         #region PlayerGroup -> PlayerMgrGroup
             PlayerMgrGroup,
 
+            OnPlayerFinalDamageChanged,
             OnPlayerActorNumberChanged,
             OnPlayerNameChanged,
             OnPlayerTeamChanged,
@@ -50,6 +51,7 @@ public enum EventEnum
             OnPlayerRespawnCountDownStart,
             OnPlayerRespawnCountDownEnd,
             OnPlayerDamaged,
+            
 
             #region PlayerGroup -> PlayerMgrGroup -> SkillGroup
             PlayerSkillGroup,
