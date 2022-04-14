@@ -35,7 +35,7 @@ public class AttackCube : MonoBehaviour
     /// <summary>
     /// 设置Cube销毁时间
     /// </summary>
-    float destory;
+    //float destory;
     /// <summary>
     /// 延迟 可能会用到
     /// </summary>
@@ -43,22 +43,13 @@ public class AttackCube : MonoBehaviour
     /// <summary>
     /// 计算完爆伤后的攻击力
     /// </summary>
+    [SerializeField]
     float finalAttack;
     /// <summary>
     /// 最终伤害倍率
     /// </summary>
+    [SerializeField]
     float finalDamage;
-
-    //public Player Owner { get; private set; }
-    //public Vector3 InitOffset { get; set; }
-    //public Vector3 InitScale { get; set; }
-    //public Vector3 FinalOffset { get; set; }
-    //public Vector3 FinalScale { get; set; }
-    //public float InitToFinalTime { get; set; }
-    //public float Ratio { get; set; }
-    //public float ActiveTime { get; set; }
-    //public float Destory { get; set; }
-    //public float Lag { get; set; }
 
     BoxCollider boxCollider;
 
@@ -85,18 +76,20 @@ public class AttackCube : MonoBehaviour
         initToFinalTime = attackCubeData2[0];
         finalDamage = attackCubeData2[1];
         activeTime = attackCubeData2[2];
-        destory = attackCubeData2[3];
-        finalAttack = attackCubeData2[4];
+        finalAttack = attackCubeData2[3];
         
         this.lag = lag;
         
+        owner.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team);
+        //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team);
 
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team);
         m_team = (TeamEnum)team;
+
+        Debug.LogWarning(m_team);
 
         switch (m_team)
         {
-            //
+            //控制cube颜色
         }
 
         StartCoroutine("SetActiveBox");
@@ -114,14 +107,28 @@ public class AttackCube : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
+        
+        if (!other.CompareTag("PlayerModel")) return;
 
-        int actorNumber = other.gameObject.GetPhotonView().OwnerActorNr;
+        PhotonView photonView = other.gameObject.GetPhotonView();
+
+        int actorNumber = photonView.OwnerActorNr;
+
+        if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
+        Debug.LogWarning(other.name+ " " + actorNumber + " Enter");
+
+        //---
         CharManager.Instance.recorders.TryGetValue(actorNumber, out GameObject recorder);
+        //---
 
         if (recorder.GetComponent<CharBase>().PlayerTeam == m_team) return;
 
-        other.GetComponent<PlayerController>().PlayerDamaged(finalAttack , finalDamage);
+        Debug.LogWarning(other.name + " " + actorNumber + " Enter2");
+
+        photonView.RPC("PlayerDamaged",RpcTarget.AllViaServer, actorNumber, finalAttack, finalDamage);
+
+        //other.GetComponent<PlayerController>().PlayerDamaged(PhotonNetwork.LocalPlayer.ActorNumber, finalAttack , finalDamage);
     }
 
     private IEnumerator SetActiveBox()
@@ -130,7 +137,6 @@ public class AttackCube : MonoBehaviour
         boxCollider.enabled = true;
     }
 
-
     private void FixedUpdate()
     {
         CubeSizeChange();
@@ -138,11 +144,10 @@ public class AttackCube : MonoBehaviour
 
     private void Start()
     {
-        //Debug.LogWarning("Start");
         boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = false;
 
-        Destroy(gameObject, destory);
+        Destroy(gameObject, initToFinalTime);
     }
 
 }

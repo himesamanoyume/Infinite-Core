@@ -158,6 +158,9 @@ public class GameEventManager
         GameEvent OnPlayerRespawnCountDownEnd = new GameEvent(EventEnum.OnPlayerRespawnCountDownEnd);
         playerMgrGroup.AddEvent(OnPlayerRespawnCountDownEnd);
 
+        GameEvent onPlayerDamaged = new GameEvent(EventEnum.OnPlayerDamaged);
+        playerMgrGroup.AddEvent(onPlayerDamaged);
+
         #endregion
 
         GameEventGroup playerControlGroup = new GameEventGroup(EventEnum.PlayerControlGroup);
@@ -173,9 +176,6 @@ public class GameEventManager
 
         GameEvent sendPlayerMoveSpeed = new GameEvent(EventEnum.SendPlayerMoveSpeed);
         playerControlGroup.AddEvent(sendPlayerMoveSpeed);
-
-        GameEvent onPlayerDamaged = new GameEvent(EventEnum.OnPlayerDamaged);
-        playerControlGroup.AddEvent(onPlayerDamaged);
 
         GameEvent allowPlayerAttack = new GameEvent(EventEnum.AllowPlayerAttack);
         playerControlGroup.AddEvent(allowPlayerAttack);

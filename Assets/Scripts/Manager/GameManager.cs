@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
+        GameEventManager.EnableEvent(EventEnum.PlayerGroup, false);
         PhotonNetwork.LeaveRoom();
     }
 
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        PhotonNetwork.LocalPlayer.CustomProperties.Clear();
         SceneManager.LoadScene(0);
     }
 

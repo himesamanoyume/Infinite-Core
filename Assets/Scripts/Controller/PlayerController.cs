@@ -5,7 +5,9 @@ using Photon.Pun;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
-    private CharacterController controller;
+    #region Various
+
+    CharacterController controller;
 
     Animator animator;
 
@@ -47,15 +49,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     float receiveFinalDamage;
 
+    bool isAttack = false;
+
+    #endregion
+
+    #region Unity Functions
+
     void Start()
     {
+        #region Init
 
         controller = GetComponent<CharacterController>();
         photonView = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
         playerModel = CharManager.Instance.FindChildObjWithTag("Player", this.gameObject);
+
         m_moveSpeed = 8f;
         gravity = -19.8f;
+
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out object pro);
         m_pro = (ProEnum)pro;
 
@@ -73,6 +84,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_FINAL_DAMAGE, out object finalDamage);
         m_finalDamage = (float)finalDamage;
+
+        #endregion
 
         #region Subscribe Event
 
@@ -99,16 +112,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             GameEventManager.RegisterEvent(EventEnum.OnPlayerDamaged, OnPlayerDamagedCheck);
-
             
+
         }
 
         #endregion
-    }
-
-    void Update()
-    {
-       
     }
 
     private void FixedUpdate()
@@ -117,18 +125,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         PlayerGravity();
     }
+
+    #endregion
+
     #region Player Control
 
-    void PlayerAnimationControl()
-    {
-
-    }
-
-    /// <summary>
-    /// 玩家移动
-    /// </summary>
-    /// <param name="args"></param>
-    private void PlayerMove(object[] args)
+    void PlayerMove(object[] args)
     {
         if (photonView.IsMine)
         {
@@ -143,11 +145,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
     
-    /// <summary>
-    /// 玩家转向
-    /// </summary>
-    /// <param name="args"></param>
-    private void PlayerTowardChanged(object[] args)
+    void PlayerTowardChanged(object[] args)
     {
         if (photonView.IsMine)
         {
@@ -160,10 +158,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
     }
 
-    /// <summary>
-    /// 玩家重力
-    /// </summary>
-    private void PlayerGravity()
+    void PlayerGravity()
     {
         if (photonView.IsMine)
         {
@@ -188,8 +183,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 animator.SetTrigger("isAttack");
-                //animator.SetBool("isAttack", true);
-                //isAttack = true;
+                isAttack = true;
             }
         }
     }
@@ -197,9 +191,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     float GetFinalAttack(float t_attack, float t_criticalHit, float t_criticalHitRate, float t_ratio)
     {
         if (t_criticalHitRate == 1) return t_attack * 0.5f * t_criticalHit * t_ratio;
+
         if (Random.Range(0,1f)<=t_criticalHitRate)
         {
-            return t_attack * 0.5f * t_criticalHit * t_ratio;
+            return t_attack * 0.5f * (1 + t_criticalHit) * t_ratio;
         }
         else
         {
@@ -208,131 +203,182 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     }
 
+    /// <summary>
+    /// 创建float数组传递AttackCube的生成数据
+    /// </summary>
+    /// <param name="initToFinalTime">销毁时间 时间结束时自动销毁</param>
+    /// <param name="finalDamage">最终伤害倍率</param>
+    /// <param name="activeTime">设置Cube生效时间 为0即为立刻生效</param>
+    /// <param name="finalAttack">计算完爆伤后的攻击力</param>
+    /// <returns></returns>
+    float[] SetAttackCubeData2(float initToFinalTime,float finalDamage, float activeTime, float finalAttack)
+    {
+        float[] data = new float[4]
+        {
+            initToFinalTime,
+            finalDamage,
+            activeTime,
+            finalAttack
+        };
+
+        return data;
+    }
+
+    /// <summary>
+    /// 创建Vector3数组传递AttackCube的生成数据
+    /// </summary>
+    /// <param name="initOffset">初始Cube 坐标偏移</param>
+    /// <param name="initScale">初始Cube 大小</param>
+    /// <param name="finalOffset">最终Cube 坐标偏移</param>
+    /// <param name="finalScale">最终Cube 大小</param>
+    /// <returns></returns>
+    Vector3[] SetAttackCubeData(Vector3 initOffset, Vector3 initScale, Vector3 finalOffset, Vector3 finalScale)
+    {
+        Vector3[] data = new Vector3[4]
+        {
+            initOffset,
+            initScale,
+            finalOffset,
+            finalScale
+        };
+        return data;
+    }
+
+    void InitSoilderNormalAttack(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
+    {
+        Vector3[] attackCubeData = SetAttackCubeData(
+                        modelRotation * Vector3.forward,
+                        new Vector3(1.5f, 1.5f, 3) * m_attackRange * 0.1f,
+                        modelRotation * Vector3.forward,
+                        new Vector3(1.5f, 1.5f, 3.5f) * m_attackRange * 0.1f
+                        );
+
+        float[] attackCubeData2 = SetAttackCubeData2(
+            0.3f,
+            m_finalDamage,
+            0,
+            finalAttack
+            );
+
+        photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+    }
+
+    void InitArcherNormalAttack(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
+    {
+        Vector3[] attackCubeData = SetAttackCubeData(
+                        modelRotation * Vector3.forward,
+                        Vector3.one * m_attackRange * 0.1f,
+                        modelRotation * Vector3.forward * 10,
+                        Vector3.one * m_attackRange * 0.1f
+                        );
+
+        float[] attackCubeData2 = SetAttackCubeData2(
+            0.5f,
+            m_finalDamage,
+            0,
+            finalAttack
+            );
+
+        photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+    }
+
+    void InitDoctorNormalAttack(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
+    {
+        Vector3[] attackCubeData = SetAttackCubeData(
+                        modelRotation * Vector3.forward * 3,
+                        new Vector3(3, 3, 3) * m_attackRange * 0.1f,
+                        modelRotation * Vector3.forward * 3,
+                        new Vector3(3, 3, 3) * m_attackRange * 0.1f
+                        );
+
+        float[] attackCubeData2 = SetAttackCubeData2(
+            0.6f,
+            m_finalDamage,
+            0.3f,
+            finalAttack
+            );
+
+        photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+    }
+
+    void InitTankerNormalAttack(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
+    {
+        Vector3[] attackCubeData = SetAttackCubeData(
+                        modelRotation * Vector3.forward,
+                        new Vector3(1, 1, 2.5f) * m_attackRange * 0.1f,
+                        modelRotation * Vector3.forward,
+                        new Vector3(1, 1, 2.5f) * m_attackRange * 0.1f
+                        );
+
+        float[] attackCubeData2 = SetAttackCubeData2(
+            0.3f,
+            m_finalDamage,
+            0,
+            finalAttack
+            );
+
+        photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+    }
+
     public void AnimationEventOnPlayerAttackEnd()
     {
-
+        isAttack = false;
     }
     
     public void AnimationEventOnPlayerAttack()
     {
         if (photonView.IsMine)
         {
-            if (this.photonView.CreatorActorNr != PhotonNetwork.LocalPlayer.ActorNumber)
-            {
-                return;
-            }
+            if (this.photonView.CreatorActorNr != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
             Vector3 selfPos = playerModel.transform.position;
             Quaternion modelRotation = playerModel.transform.rotation;
-            Vector3[] attackCubeData;
-            float[] attackCubeData2;
+
             GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, false);
 
             float finalAttack = GetFinalAttack(m_attack, m_criticalHit, m_criticalHitRate, 1);
 
             switch (m_pro)
             {
-                //Vector3 : initOffset initScale finalOffset finalScale
-                //float : initToFinalTime finalDamage activeTime destory finalAttack
                 case ProEnum.Soilder:
-
-                    attackCubeData = new Vector3[] 
-                    { 
-                        modelRotation * Vector3.forward,
-                        new Vector3(1.5f,1.5f,3) * m_attackRange * 0.1f, 
-                        modelRotation * Vector3.forward,
-                        new Vector3(1.5f, 1.5f, 3.5f) * m_attackRange * 0.1f
-                    };
-
-                    attackCubeData2 = new float[] 
-                    {   
-                        0.5f,
-                        m_finalDamage,
-                        0,
-                        0.3f,
-                        finalAttack
-                    };
-
-                    photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+                    InitSoilderNormalAttack(selfPos, modelRotation, finalAttack);
                     break;
-
                 case ProEnum.Archer:
-
-                    attackCubeData = new Vector3[] 
-                    { 
-                        modelRotation * Vector3.forward,
-                        Vector3.one * m_attackRange * 0.1f,
-                        modelRotation * Vector3.forward,
-                        Vector3.one  * m_attackRange * 0.1f
-                    };
-
-                    attackCubeData2 = new float[] 
-                    { 
-                        0.5f,
-                        m_finalDamage,
-                        0,
-                        0.5f ,
-                        finalAttack
-                    };
-
-                    photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+                    InitArcherNormalAttack(selfPos, modelRotation, finalAttack);
                     break;
-
                 case ProEnum.Doctor:
-
-                    attackCubeData = new Vector3[] 
-                    { 
-                        modelRotation * Vector3.forward * 3,
-                        new Vector3(3, 3, 3) * m_attackRange * 0.1f,
-                        modelRotation * Vector3.forward * 3,
-                        new Vector3(3, 3, 3)  * m_attackRange * 0.1f
-                    };
-
-                    attackCubeData2 = new float[] 
-                    { 
-                        0.5f,
-                        m_finalDamage,
-                        0.3f,
-                        0.6f,
-                        finalAttack
-                    };
-
-                    photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+                    InitDoctorNormalAttack(selfPos, modelRotation, finalAttack);
                     break;
-
                 case ProEnum.Tanker:
-                    
-                    attackCubeData = new Vector3[] 
-                    { 
-                        modelRotation * Vector3.forward, 
-                        new Vector3(1, 1, 2.5f) * m_attackRange * 0.1f,
-                        modelRotation * Vector3.forward,
-                        new Vector3(1, 1, 2.5f) * m_attackRange * 0.1f
-                    };
-
-                    attackCubeData2 = new float[] 
-                    { 
-                        0.5f,
-                        m_finalDamage,
-                        0,
-                        0.3f ,
-                        finalAttack
-                    };
-
-                    photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+                    InitTankerNormalAttack(selfPos, modelRotation, finalAttack);
                     break;
             }
-            
         }
     }
 
+    #endregion
 
+    #region PUN Functions
 
-    public void PlayerDamaged(float finalAttack, float finalDamage)
+    /// <summary>
+    /// 用于被敌方Cube碰撞后调用的接收伤害函数
+    /// </summary>
+    /// <param name="finalAttack"></param>
+    /// <param name="finalDamage"></param>
+    [PunRPC]
+    public void PlayerDamaged(int actorNumber, float finalAttack, float finalDamage)
     {
+        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber) return;
+
+        Debug.LogWarning(actorNumber + " Damaged");
+
         receiveFinalAttack = finalAttack;
         receiveFinalDamage = finalDamage;
-        GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, true);
+
+        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, true);
+        }
     }
 
     [PunRPC]
@@ -346,8 +392,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         attackCube.GetComponent<AttackCube>().InitAttackCube(photonView.Owner, rotation * Vector3.forward, Mathf.Abs(lag), attackCubeData, attackCubeData2);
 
         yield return new WaitForSeconds(0.5f);
-        GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, true);
+
+        if (!isAttack)
+        {
+            GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, true);
+        }
+        
     }
+
 
     #endregion
 
@@ -438,15 +490,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     #region Event Check
 
-    bool OnPlayerDamagedeCheck(out object[] args)
-    {
-        args = new object[] { receiveFinalAttack, receiveFinalDamage };
-        return true;
-    }
-
     bool OnPlayerDamagedCheck(out object[] args)
     {
-        args = null;
+        args = new object[] { receiveFinalAttack, receiveFinalDamage };
         return true;
     }
 

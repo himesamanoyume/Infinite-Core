@@ -54,7 +54,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     #endregion
 
-
     #region Private Fields
 
 
@@ -90,7 +89,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
 
     #region Public Methods
 

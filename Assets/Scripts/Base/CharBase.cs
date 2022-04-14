@@ -848,7 +848,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     public TeamEnum PlayerTeam { get => playerTeam; set => playerTeam = value; }
     public float FinalDamage
     {
-        get => FinalDamage;
+        get => finalDamage;
         set
         {
             if (value<=1f)
@@ -1034,6 +1034,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         #endregion
+
+        #region Subscribe Event
+
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerDamaged, OnPlayerDamaged);
+
+        #endregion
     }
 
     void UpdateFloatProps(string key, float value)
@@ -1043,6 +1049,48 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             {key, value }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
+
+    #endregion
+
+    #region Event Response
+
+    public void OnPlayerDamaged(object[] args)
+    {
+        float rFinalAttack, rFinalDamage;
+        if (args.Length == 2)
+        {
+            rFinalAttack = (float)args[0];
+            rFinalDamage = (float)args[1];
+
+            Debug.LogWarning("rFinalAttack: "+ rFinalAttack);
+
+            float hurt = rFinalAttack * (1 - Defence * 0.00001f) * rFinalDamage;
+
+            Debug.LogWarning("hurt: " + hurt);
+
+            //如果有护盾
+            if (Shield>0)
+            {
+                //如果伤害大于护盾值 护盾清0 再对当前生命造成伤害
+                if (hurt>Shield)
+                {
+                    Shield = 0;
+                    CurrentHealth -= (hurt - Shield);
+                }
+                else
+                {
+                    //如果盾值大于伤害 只减少盾值
+                    Shield -= hurt;
+                }
+            }
+            else
+            {
+                //无盾 直接扣血
+                CurrentHealth -= hurt;
+            }
+            GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, false);
+        }
     }
 
     #endregion
