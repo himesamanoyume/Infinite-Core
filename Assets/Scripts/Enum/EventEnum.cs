@@ -18,6 +18,7 @@ public enum EventEnum
 
     AllowGetPlayerModelList,
     AllowGetRecorderList,
+    AllowGetPlayerInfoBarList,
 
 
     #endregion

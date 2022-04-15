@@ -10,7 +10,6 @@ using Photon.Realtime;
 /// </summary>
 public class CharManager : MonoBehaviourPunCallbacks
 {
-
     public GameObject total;
 
     public GameObject archer;
@@ -18,20 +17,21 @@ public class CharManager : MonoBehaviourPunCallbacks
     public GameObject solider;
     public GameObject tanker;
     public GameObject recorder;
+    public GameObject playerInfoBarPrefab;
+    public Transform playerInfoCanvas;
 
     public GameObject[] redPosList = new GameObject[5];
     public GameObject[] bluePosList = new GameObject[5];
 
     public Dictionary<int, GameObject> playerModelList;
     public Dictionary<int, GameObject> recorders;
+    public Dictionary<int, GameObject> playerInfoBarList;
 
     public static CharManager Instance;
 
-    
-
     private void Awake()
     {
-        if (Instance == null)
+        if (!Instance)
         {
             Instance = this;
         }
@@ -41,10 +41,9 @@ public class CharManager : MonoBehaviourPunCallbacks
     {
         playerModelList = new Dictionary<int, GameObject>();
         recorders = new Dictionary<int, GameObject>();
+        playerInfoBarList = new Dictionary<int, GameObject>();
 
         SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
-
-        
 
         #region Subscribe Event
 
@@ -65,13 +64,44 @@ public class CharManager : MonoBehaviourPunCallbacks
         #endregion
     }
 
-    private void Update()
+    #region Misc Functions
+
+    delegate void SpawnPlayerDelegate(ProEnum pro, out GameObject playerModel);
+    SpawnPlayerDelegate spawnPlayerDelegate;
+
+    void SpawnPosRed(ProEnum pro, out GameObject playerModel)
     {
-        //GetPlayerModelList(new object[] { });
-        //GetRecorderList(new object[] { });       
+        playerModel = PhotonNetwork.Instantiate(pro.ToString(), redPosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
     }
 
-    #region Misc Functions
+    void SpawnPosBlue(ProEnum pro, out GameObject playerModel)
+    {
+        playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
+    }
+
+    void SpawnPlayerChild(Player player, SpawnPlayerDelegate spawnPlayerDelegate)
+    {
+        object pro;
+        player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
+
+        if (recorders.TryGetValue(player.ActorNumber, out GameObject playerRecorder))
+        {
+
+        }
+        else
+        {
+            playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+        }
+
+        spawnPlayerDelegate((ProEnum)pro, out GameObject playerModel);
+
+        playerModel.name = player.NickName + " (My)";
+        playerRecorder.name = player.NickName + " Recorder {My}";
+
+        GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
+
+        
+    }
 
     /// <summary>
     /// 首次生成玩家
@@ -89,60 +119,22 @@ public class CharManager : MonoBehaviourPunCallbacks
                 {
                     if ((TeamEnum)team == TeamEnum.Null) return;
 
-                    object pro;
-
                     switch ((TeamEnum)team)
                     {
                         case TeamEnum.Red:
 
-                            player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
-
-                            if (recorders.TryGetValue(player.ActorNumber, out GameObject playerRecorder))
-                            {
-
-                            }
-                            else
-                            {
-                                playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
-                            }
-
-                            GameObject playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), redPosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
-
-
-                            playerModel.name = player.NickName + " (My)";
-                            playerRecorder.name = player.NickName + " Recorder {My}";
-
-                            GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
-
-
+                            spawnPlayerDelegate = SpawnPosRed;
+                            SpawnPlayerChild(player, spawnPlayerDelegate);
                             break;
                         case TeamEnum.Blue:
 
-                            player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out pro);
-
-                            if (recorders.TryGetValue(player.ActorNumber, out playerRecorder))
-                            {
-
-                            }
-                            else
-                            {
-                                playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
-                            }
-
-                            playerModel = PhotonNetwork.Instantiate(((ProEnum)pro).ToString(), bluePosList[Random.Range(0, 5)].transform.position, Quaternion.identity);
-
-                            playerModel.name = player.NickName + " (My)";
-                            playerRecorder.name = player.NickName + " Recorder {My}";
-
-                            GetPlayerInfo(playerRecorder.GetComponent<CharBase>(), player);
-
-
+                            spawnPlayerDelegate = SpawnPosBlue;
+                            SpawnPlayerChild(player, spawnPlayerDelegate);
                             break;
                     }
                 }
             }
         }
-        
     }
 
     /// <summary>
@@ -382,6 +374,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         }
 
     }
+    
 
     /// <summary>
     /// 通过tag找父物体的某个单个子物体
@@ -447,12 +440,63 @@ public class CharManager : MonoBehaviourPunCallbacks
         return;
     }
 
-
     #endregion
 
-    
-
     #region Event Response
+
+    public void GetPlayerInfoBarList(object[] args)
+    {
+        if (PhotonNetwork.PlayerList.Length == playerInfoBarList.Count)
+        {
+            return;
+        }
+        else
+        {
+            int alivePlayerCount = 0;
+            foreach (var recorder in recorders)
+            {
+                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
+                {
+                    alivePlayerCount++;
+                }
+            }
+
+            if (alivePlayerCount == playerInfoBarList.Count) return;
+
+            playerInfoBarList.Clear();
+
+            //GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerInfoBar");
+
+            //注册订阅该事件 完善场上已有血条相关的销毁逻辑
+
+            foreach (Player p in PhotonNetwork.PlayerList)
+            {
+                if (p.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) continue;
+
+                foreach (GameObject obj in playerModelList.Values)
+                {
+
+                    if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
+                    {
+                        FindPlayerRecorder(p.ActorNumber, out GameObject playerRecorder, out CharBase charBase);
+                        FindPlayerModel(p.ActorNumber, out GameObject playerModel);
+
+                        GameObject t_playerInfoBar = Instantiate(playerInfoBarPrefab);
+                        t_playerInfoBar.transform.SetParent(playerInfoCanvas);
+                        t_playerInfoBar.GetComponent<PlayerInfoBar>().InitPlayerInfoBar(playerRecorder, playerModel);
+                        
+
+                        t_playerInfoBar.name = (t_playerInfoBar.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? p.NickName + " InfoBar (My)" : p.NickName + " InfoBar";
+
+                        playerInfoBarList.Add(p.ActorNumber, t_playerInfoBar);
+                        break;
+                    }
+                }
+
+            }
+
+        }
+    }
 
     /// <summary>
     /// 获取场内所有玩家模型

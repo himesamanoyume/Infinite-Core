@@ -49,6 +49,9 @@ public class GameEventManager
         RootGroup.AddEvent(charMgrGroup);
         #region CharMgrGroup
 
+        GameEvent AllowGetPlayerInfoBarList = new GameEvent(EventEnum.AllowGetPlayerInfoBarList);
+        charMgrGroup.AddEvent(AllowGetPlayerInfoBarList);
+
         GameEvent AllowGetPlayerModelList = new GameEvent(EventEnum.AllowGetPlayerModelList);
         charMgrGroup.AddEvent(AllowGetPlayerModelList);
 

@@ -81,6 +81,8 @@ MonoBehaviour:
   solider: {fileID: 8027300526949257307, guid: 41ccd04ff23bf6440a8b038869022525, type: 3}
   tanker: {fileID: 8027300526949257307, guid: f94f071105f0a474c80dbffbe28bfa07, type: 3}
   recorder: {fileID: 8261284882752522266, guid: 72d90ddc6a08a504b9cc20af83cf1609, type: 3}
+  playerInfoBarPrefab: {fileID: 5015258106457713884, guid: 95992447bd1fa6e43895da31cc458bc1, type: 3}
+  playerInfoCanvas: {fileID: 0}
   redPosList:
   - {fileID: 0}
   - {fileID: 0}
@@ -137,3 +139,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitMenu: {fileID: 0}
+  isExitMenuActive: 0

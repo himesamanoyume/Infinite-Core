@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Base\EquipBase.cs" />
     <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
     <Compile Include="Assets\Scripts\Specific\Skill.cs" />
+    <Compile Include="Assets\Scripts\Controller\ButtonController.cs" />
     <Compile Include="Assets\Scripts\Manager\CharManager.cs" />
     <Compile Include="Assets\Scripts\Specific\Equip.cs" />
     <Compile Include="Assets\Scripts\Misc\Launcher.cs" />
@@ -91,7 +92,7 @@
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
-    <Compile Include="Assets\Scripts\Controller\ButtonController.cs" />
+    <Compile Include="Assets\Scripts\Misc\PlayerInfoBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

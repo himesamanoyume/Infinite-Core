@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     Image image;
-    bool isLerp = false;
     Color targetColor;
     Color pointerHover = new Color(70, 70, 70, 0.6f);
     Color pointerExit = new Color(70, 70, 70, 0);
