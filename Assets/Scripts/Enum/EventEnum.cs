@@ -13,6 +13,15 @@ public enum EventEnum
 
     #endregion
 
+    #region CharMgrGroup
+    CharMgrGroup,
+
+    AllowGetPlayerModelList,
+    AllowGetRecorderList,
+
+
+    #endregion
+
     #region PlayerGroup
     PlayerGroup,
 

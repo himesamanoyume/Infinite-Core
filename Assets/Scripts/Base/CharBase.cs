@@ -486,6 +486,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                         
                         if (photonView.IsMine)
                         {
+                            
                             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, true);
                             GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
                             m_args = new object[2] { actorNumber, "血量不合法,已使玩家死亡" };
@@ -502,6 +503,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                             
                             if (photonView.IsMine)
                             {
+                                
                                 GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
                                 GameEventManager.EnableEvent(EventEnum.OnPlayerDead, true);
                             }
@@ -512,6 +514,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                             
                             if (photonView.IsMine)
                             {
+                                
                                 GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, true);
                                 GameEventManager.EnableEvent(EventEnum.OnPlayerRestoreing, false);
                                 m_args = new object[2] { actorNumber, "血量不合法,已使玩家死亡" };
@@ -956,16 +959,15 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyPlayerModel(int actorNumber)
     {
-        //if (photonView == PhotonNetwork.IsMasterClient)
-        //{
-            CharManager.Instance.FindPlayerModel(actorNumber, out GameObject playerModel);
-            if (playerModel == null) { return; }
+        
+        CharManager.Instance.FindPlayerModel(actorNumber, out GameObject playerModel);
+        if (playerModel == null) { return; }
             
-            Debug.LogWarning(playerModel.name+"已网络销毁玩家模型");
+        Debug.LogWarning(playerModel.name+"已网络销毁玩家模型");
 
-            CharManager.Instance.playerModelList.Remove(actorNumber);
-            PhotonNetwork.Destroy(playerModel);
-        //}
+        CharManager.Instance.playerModelList.Remove(actorNumber);
+        PhotonNetwork.Destroy(playerModel);
+        
 
     }
 

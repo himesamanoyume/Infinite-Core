@@ -105,6 +105,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerFinalDamageChanged, OnPlayerFinalDamageChanged);
 
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
+
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerDead, OnPlayerDead);
+
         #endregion
 
         #region Register Event
@@ -404,6 +408,72 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #endregion
 
     #region Event Response
+
+    public void OnPlayerKilled(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
+            GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerMove, PlayerMove);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerAttack, PlayerAttack);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerAttackRangeChanged, OnPlayerAttackRangeChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerCriticalHitChanged, OnPlayerCriticalHitChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerCriticalHitRateChanged, OnPlayerCriticalHitRateChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerFinalDamageChanged, OnPlayerFinalDamageChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerDead, OnPlayerDead);
+            
+        }
+    }
+
+    public void OnPlayerDead(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
+            GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerMove, PlayerMove);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerAttack, PlayerAttack);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerAttackRangeChanged, OnPlayerAttackRangeChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerCriticalHitChanged, OnPlayerCriticalHitChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerCriticalHitRateChanged, OnPlayerCriticalHitRateChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerFinalDamageChanged, OnPlayerFinalDamageChanged);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
+
+            GameEventManager.UnsubscribeEvent(EventEnum.OnPlayerDead, OnPlayerDead);
+
+        }
+    }
 
     public void OnPlayerFinalDamageChanged(object[] args)
     {

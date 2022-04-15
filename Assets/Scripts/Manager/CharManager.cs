@@ -31,16 +31,22 @@ public class CharManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     private void Start()
     {
-        PhotonView photonView = GetComponent<PhotonView>();
         playerModelList = new Dictionary<int, GameObject>();
         recorders = new Dictionary<int, GameObject>();
 
         SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+
+        
+
+        #region Subscribe Event
 
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUp);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
@@ -53,17 +59,16 @@ public class CharManager : MonoBehaviourPunCallbacks
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreing, OnPlayerRestoreing);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRestoreChanged, OnPlayerRestoreChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChanged);
+        GameEventManager.SubscribeEvent(EventEnum.AllowGetPlayerModelList, GetPlayerModelList);
+        GameEventManager.SubscribeEvent(EventEnum.AllowGetRecorderList, GetRecorderList);
 
-        
-
+        #endregion
     }
 
     private void Update()
     {
-        GetPlayerModelList();
-        GetRecorderList();
-
-       
+        //GetPlayerModelList(new object[] { });
+        //GetRecorderList(new object[] { });       
     }
 
     #region Misc Functions
@@ -257,85 +262,6 @@ public class CharManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// 获取场内所有玩家模型
-    /// </summary>
-    void GetPlayerModelList()
-    {
-        if (PhotonNetwork.PlayerList.Length == playerModelList.Count)
-        {
-            return;
-        }
-        else
-        {
-            int alivePlayerCount = 0;
-            foreach (var recorder in recorders)
-            {
-                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
-                {
-                    alivePlayerCount++;
-                }
-            }
-
-            if(alivePlayerCount == playerModelList.Count) return;
-
-            playerModelList.Clear();
-
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerModel");
-            foreach (Player p in PhotonNetwork.PlayerList)
-            {
-                foreach (GameObject obj in gameObjects)
-                {
-
-                    if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
-                    {
-                        obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)?p.NickName + " (My)": p.NickName;
-                        playerModelList.Add(p.ActorNumber, obj);
-                        break;
-                    }
-                }
-
-            }
-            if (alivePlayerCount == playerModelList.Count)
-            {
-                Debug.LogWarning("已添加完成全部存活的玩家模型");
-            }
-            else
-            {
-                Debug.LogError("人数不足");
-            }
-
-        }
-    }
-
-    /// <summary>
-    /// 获取场内所有玩家记录器
-    /// </summary>
-    void GetRecorderList()
-    {
-        if (recorders.Count == PhotonNetwork.PlayerList.Length)
-        {
-            return;
-        }
-        else
-        {
-            recorders.Clear();
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerRecorder");
-            foreach (GameObject obj in gameObjects)
-            {
-                obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? obj.GetPhotonView().Owner.NickName + " Recorder (My)" : obj.GetPhotonView().Owner.NickName + " Recorder";
-
-                obj.transform.SetParent(total.transform);
-
-                recorders.Add(obj.GetComponent<CharBase>().ActorNumber, obj);
-
-            }
-
-            Debug.LogWarning("已添加记录者");
-        }
-
-    }
-
-    /// <summary>
     /// 通过id获取玩家名字
     /// </summary>
     /// <param name="actorNumber"></param>
@@ -524,7 +450,88 @@ public class CharManager : MonoBehaviourPunCallbacks
 
     #endregion
 
+    
+
     #region Event Response
+
+    /// <summary>
+    /// 获取场内所有玩家模型
+    /// </summary>
+    public void GetPlayerModelList(object[] args)
+    {
+        if (PhotonNetwork.PlayerList.Length == playerModelList.Count)
+        {
+            return;
+        }
+        else
+        {
+            int alivePlayerCount = 0;
+            foreach (var recorder in recorders)
+            {
+                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
+                {
+                    alivePlayerCount++;
+                }
+            }
+
+            if (alivePlayerCount == playerModelList.Count) return;
+
+            playerModelList.Clear();
+
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerModel");
+            foreach (Player p in PhotonNetwork.PlayerList)
+            {
+                foreach (GameObject obj in gameObjects)
+                {
+
+                    if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
+                    {
+                        obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? p.NickName + " (My)" : p.NickName;
+                        playerModelList.Add(p.ActorNumber, obj);
+                        break;
+                    }
+                }
+
+            }
+            if (alivePlayerCount == playerModelList.Count)
+            {
+                Debug.LogWarning("已添加完成全部存活的玩家模型");
+            }
+            else
+            {
+                Debug.LogWarning("人数不足");
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// 获取场内所有玩家记录器
+    /// </summary>
+    public void GetRecorderList(object[] args)
+    {
+        if (recorders.Count == PhotonNetwork.PlayerList.Length)
+        {
+            return;
+        }
+        else
+        {
+            recorders.Clear();
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerRecorder");
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? obj.GetPhotonView().Owner.NickName + " Recorder (My)" : obj.GetPhotonView().Owner.NickName + " Recorder";
+
+                obj.transform.SetParent(total.transform);
+
+                recorders.Add(obj.GetComponent<CharBase>().ActorNumber, obj);
+
+            }
+
+            Debug.LogWarning("已添加记录者");
+        }
+
+    }
 
     /// <summary>
     /// 【事件回应】当玩家等级变动时再进行一次检测
@@ -607,6 +614,7 @@ public class CharManager : MonoBehaviourPunCallbacks
             
 
             Toast(new object[2] { actorNumber, "被击杀" });
+            GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
             GameEventManager.EnableEvent(EventEnum.OnPlayerRespawnCountDownStart, true);
         }     
@@ -708,6 +716,8 @@ public class CharManager : MonoBehaviourPunCallbacks
             playerModel.SetActive(false);
 
             charBase.State = StateEnum.Dead;
+            GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
+
             GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
             Toast(new object[2] { actorNumber, "彻底死亡" });
         }
@@ -818,6 +828,9 @@ public class CharManager : MonoBehaviourPunCallbacks
             SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
 
             Toast(new object[] { actorNumber, "已复活" });
+
+            GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, true);
+
             GameEventManager.EnableEvent(EventEnum.OnPlayerRespawn, false);
         }
        

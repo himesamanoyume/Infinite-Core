@@ -25,6 +25,7 @@ public class GameEventManager
         EnableEvent(EventEnum.SystemGroup, true);
         EnableEvent(EventEnum.PlayerGroup, true);
         EnableEvent(EventEnum.PlayerMgrGroup, true);
+        EnableAllEvents(EventEnum.CharMgrGroup, true);
         EnableAllEvents(EventEnum.PlayerControlGroup, true);
         
 
@@ -42,6 +43,18 @@ public class GameEventManager
 
         GameEvent onToast = new GameEvent(EventEnum.OnToast);
         systemGroup.AddEvent(onToast);
+        #endregion
+
+        GameEventGroup charMgrGroup = new GameEventGroup(EventEnum.CharMgrGroup);
+        RootGroup.AddEvent(charMgrGroup);
+        #region CharMgrGroup
+
+        GameEvent AllowGetPlayerModelList = new GameEvent(EventEnum.AllowGetPlayerModelList);
+        charMgrGroup.AddEvent(AllowGetPlayerModelList);
+
+        GameEvent AllowGetRecorderList = new GameEvent (EventEnum.AllowGetRecorderList);
+        charMgrGroup.AddEvent(AllowGetRecorderList);
+
         #endregion
 
         GameEventGroup playerGroup = new GameEventGroup(EventEnum.PlayerGroup);
@@ -210,6 +223,20 @@ public class GameEventManager
         if (target != null && target is GameEvent temp)
         {
             temp.AddResponse(response);
+        }
+    }
+
+    /// <summary>
+    /// 取消订阅事件
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="response"></param>
+    public static void UnsubscribeEvent(EventEnum eventName, GameEvent.ResponseHandle response)
+    {
+        var target = RootGroup.GetEvent(eventName);
+        if (target != null && target is GameEvent temp)
+        {
+            temp.RemoveResponse(response);
         }
     }
 
