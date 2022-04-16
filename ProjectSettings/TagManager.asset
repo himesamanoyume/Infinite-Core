@@ -9,6 +9,7 @@ TagManager:
   - Total
   - Ground
   - GroundCheck
+  - PlayerInfoBar
   layers:
   - Default
   - TransparentFX

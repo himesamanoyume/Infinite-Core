@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager
+public class GameEventManager : MonoBehaviour
 {
     /// <summary>
     /// Root组 管理全部事件
@@ -33,6 +33,7 @@ public class GameEventManager
 
     private static void Init()
     {
+        Debug.LogWarning("GameEventManager Init");
         RootGroup = new GameEventGroup(EventEnum.rootGroup);
 
         //于此处添加事件组和事件 事件组命名最后必须有Group
@@ -40,6 +41,9 @@ public class GameEventManager
         #region SystemGroup
         GameEventGroup systemGroup = new GameEventGroup(EventEnum.SystemGroup);
         RootGroup.AddEvent(systemGroup);
+
+        GameEvent onPlayerLeftRoom = new GameEvent(EventEnum.OnPlayerLeftRoom);
+        systemGroup.AddEvent(onPlayerLeftRoom);
 
         GameEvent onToast = new GameEvent(EventEnum.OnToast);
         systemGroup.AddEvent(onToast);

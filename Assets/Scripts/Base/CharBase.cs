@@ -959,13 +959,13 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyPlayerModel(int actorNumber)
     {
-        
-        CharManager.Instance.FindPlayerModel(actorNumber, out GameObject playerModel);
+        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+        charManager.FindPlayerModel(actorNumber, out GameObject playerModel);
         if (playerModel == null) { return; }
             
         Debug.LogWarning(playerModel.name+"已网络销毁玩家模型");
 
-        CharManager.Instance.playerModelList.Remove(actorNumber);
+        charManager.playerModelList.Remove(actorNumber);
         PhotonNetwork.Destroy(playerModel);
         
 
@@ -986,6 +986,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
+            //Debug.LogWarning("CharBase注册事件");
             GameEventManager.RegisterEvent(EventEnum.OnPlayerFinalDamageChanged, OnPlayerFinalDamageChangedCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerCriticalHitRateChanged, OnPlayerCriticalHitRateChangedCheck);

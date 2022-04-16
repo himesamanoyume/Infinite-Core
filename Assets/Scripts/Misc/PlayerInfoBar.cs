@@ -9,13 +9,11 @@ public class PlayerInfoBar : MonoBehaviour
     public Slider healthSlider;
     public Slider shieldSlider;
 
-    [SerializeField]
-    int m_actorNumber;
+    
+    public int actorNumber;
 
-    float m_maxHealth;
-    float m_currentHealth;
     float m_maxShield;
-    float m_currentShield;
+    bool isInit = false;
 
     GameObject m_recorder = null;
     GameObject m_playerModel = null;
@@ -29,7 +27,7 @@ public class PlayerInfoBar : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (m_recorder && charBase)
         {
@@ -47,9 +45,17 @@ public class PlayerInfoBar : MonoBehaviour
                 m_maxShield = 0;
             }
 
-            gameObject.transform.position = new Vector3(m_playerModel.transform.position.x, m_playerModel.transform.position.y + 2.5f, m_playerModel.transform.position.z);
+            if (m_playerModel)
+            {
+                Vector3 worldInfoBarPos = new Vector3(m_playerModel.transform.position.x, m_playerModel.transform.position.y + 2.5f, m_playerModel.transform.position.z);
 
-            gameObject.transform.LookAt(m_camera.transform);
+                gameObject.transform.position = m_camera.WorldToScreenPoint(worldInfoBarPos);
+            }
+
+            if (charBase.CurrentHealth == 0 && isInit)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -59,11 +65,12 @@ public class PlayerInfoBar : MonoBehaviour
         m_recorder = recorder;
         charBase = m_recorder.GetComponent<CharBase>();
         m_playerModel = playerModel;
-        m_actorNumber = charBase.ActorNumber;
+        actorNumber = charBase.ActorNumber;
         playerName.text = charBase.PlayerName;
         healthSlider.maxValue = charBase.MaxHealth;
         healthSlider.value = charBase.CurrentHealth;
         shieldSlider.maxValue = charBase.Shield;
         shieldSlider.value = charBase.Shield;
+        isInit = true;
     }
 }

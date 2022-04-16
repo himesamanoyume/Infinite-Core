@@ -75,7 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e3414243381e842ae435d527e1581b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  total: {fileID: 1252089327796656337}
   archer: {fileID: 8027300526949257307, guid: a2ea4ef737afee14e896318cce18cf19, type: 3}
   doctor: {fileID: 8027300526949257307, guid: ac9511f7ea2a7614881058c80de5e33e, type: 3}
   solider: {fileID: 8027300526949257307, guid: 41ccd04ff23bf6440a8b038869022525, type: 3}

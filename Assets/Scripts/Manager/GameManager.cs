@@ -16,8 +16,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Public Methods
 
+    /// <summary>
+    /// 在比赛中调用
+    /// </summary>
     public void LeaveRoom()
     {
+        GameEventManager.EnableEvent(EventEnum.OnPlayerLeftRoom, true);
+        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+        //PhotonNetwork.Destroy(charManager.recorders[PhotonNetwork.LocalPlayer.ActorNumber]);
+        charManager.recorders.Clear();
+        charManager.playerModelList.Clear();
+        charManager.playerInfoBarList.Clear();
         GameEventManager.EnableEvent(EventEnum.CharMgrGroup, false);
         GameEventManager.EnableEvent(EventEnum.PlayerGroup, false);
         PhotonNetwork.LeaveRoom();
@@ -58,9 +67,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         //{
         GameEventManager.RegisterEvent(EventEnum.AllowGetPlayerModelList, GetPlayerModelListCheck);
         GameEventManager.RegisterEvent(EventEnum.AllowGetRecorderList, GetRecorderListCheck);
-
+        GameEventManager.RegisterEvent(EventEnum.AllowGetPlayerInfoBarList, GetPlayerInfoBarListCheck);
+        GameEventManager.RegisterEvent(EventEnum.OnPlayerLeftRoom, OnPlayerLeftRoomCheck);
         //}
         #endregion
+
+        GameEventManager.EnableEvent(EventEnum.OnPlayerLeftRoom, false);
     }
 
     #endregion
@@ -97,8 +109,20 @@ public class GameManager : MonoBehaviourPunCallbacks
         return true;
     }
 
+    bool GetPlayerInfoBarListCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
+    bool OnPlayerLeftRoomCheck(out object[] args)
+    {
+        args = null;
+        return true;
+    }
+
     #endregion
 
-    
+
 
 }

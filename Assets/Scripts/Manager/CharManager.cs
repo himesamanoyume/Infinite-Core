@@ -10,8 +10,6 @@ using Photon.Realtime;
 /// </summary>
 public class CharManager : MonoBehaviourPunCallbacks
 {
-    public GameObject total;
-
     public GameObject archer;
     public GameObject doctor;
     public GameObject solider;
@@ -27,14 +25,15 @@ public class CharManager : MonoBehaviourPunCallbacks
     public Dictionary<int, GameObject> recorders;
     public Dictionary<int, GameObject> playerInfoBarList;
 
-    public static CharManager Instance;
+    //public static CharManager Instance;
 
     private void Awake()
     {
-        if (!Instance)
-        {
-            Instance = this;
-        }
+        //if (!Instance)
+        //{
+        //    Instance = this;
+        //}
+        
     }
 
     private void Start()
@@ -45,8 +44,13 @@ public class CharManager : MonoBehaviourPunCallbacks
 
         SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
 
+        GameEventManager.EnableEvent(EventEnum.CharMgrGroup, true);
+        GameEventManager.EnableEvent(EventEnum.PlayerGroup, true);
+        GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, true);
+
         #region Subscribe Event
 
+        //Debug.LogWarning("CharManager监听事件");
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUp);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
@@ -60,6 +64,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelChanged, OnPlayerLevelChanged);
         GameEventManager.SubscribeEvent(EventEnum.AllowGetPlayerModelList, GetPlayerModelList);
         GameEventManager.SubscribeEvent(EventEnum.AllowGetRecorderList, GetRecorderList);
+        GameEventManager.SubscribeEvent(EventEnum.AllowGetPlayerInfoBarList, GetPlayerInfoBarList);
 
         #endregion
     }
@@ -91,6 +96,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         else
         {
             playerRecorder = PhotonNetwork.Instantiate("PlayerDataRecorder", new Vector3(100, 100, 100), Quaternion.identity);
+            Debug.LogWarning(player.ActorNumber + " 记录器已生成");
         }
 
         spawnPlayerDelegate((ProEnum)pro, out GameObject playerModel);
@@ -327,7 +333,7 @@ public class CharManager : MonoBehaviourPunCallbacks
 
         if (recorders == null)
         {
-            Toast(new object[2] { actorNumber, "玩家记录器获取失败, recorders" });
+            Toast(new object[2] { actorNumber, "玩家记录器获取失败, recorders为空" });
             playerRecorder = null;
             charBase = null;
         }
@@ -374,7 +380,27 @@ public class CharManager : MonoBehaviourPunCallbacks
         }
 
     }
-    
+
+    public void FindPlayerInfoBar(int actorNumber, out GameObject playerInfoBar)
+    {
+        if (playerInfoBarList == null)
+        {
+            Toast(new object[2] { actorNumber, "玩家信息条获取失败, playerInfoBarList为空" });
+            playerInfoBar = null;
+        }
+
+        if (playerInfoBarList.TryGetValue(actorNumber, out GameObject infoBar))
+        {
+            playerInfoBar = infoBar;
+            Toast(new object[2] { actorNumber, "玩家信息条获取成功" });
+        }
+        else
+        {
+            playerInfoBar = null;
+            Toast(new object[2] { actorNumber, "玩家信息条获取失败" });
+        }
+    }
+
 
     /// <summary>
     /// 通过tag找父物体的某个单个子物体
@@ -446,56 +472,98 @@ public class CharManager : MonoBehaviourPunCallbacks
 
     public void GetPlayerInfoBarList(object[] args)
     {
-        if (PhotonNetwork.PlayerList.Length == playerInfoBarList.Count)
+        GameObject[] infoBars = GameObject.FindGameObjectsWithTag("PlayerInfoBar");
+
+        if (infoBars.Length == playerModelList.Count - 1) return;
+
+
+        foreach (var recorder in recorders)
         {
-            return;
-        }
-        else
-        {
-            int alivePlayerCount = 0;
-            foreach (var recorder in recorders)
+            //对每个记录器获取charBase
+            CharBase charBase = recorder.Value.GetComponent<CharBase>();
+            //如果ActorNumber为自身时 跳过此次循环
+            if (charBase.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) continue;
+            //为其他玩家的记录器时 如果状态为存活 查找表中是否已有生成过的信息条
+            if (charBase.State == StateEnum.Alive)
             {
-                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
+                FindPlayerInfoBar(charBase.ActorNumber, out GameObject t_playerInfoBar);
+                //如果为空 则拿去对应的Recorder和PlayerModel 进行Init
+                if (t_playerInfoBar == null)
                 {
-                    alivePlayerCount++;
-                }
-            }
+                    playerInfoBarList.Remove(charBase.ActorNumber);
+                    Debug.LogWarning(charBase.ActorNumber + "没有信息条 正在生成");
+                    FindPlayerRecorder(charBase.ActorNumber, out GameObject playerRecorder, out CharBase t_charBase);
 
-            if (alivePlayerCount == playerInfoBarList.Count) return;
+                    FindPlayerModel(charBase.ActorNumber, out GameObject obj);
 
-            playerInfoBarList.Clear();
+                    t_playerInfoBar = Instantiate(playerInfoBarPrefab);
+                    t_playerInfoBar.transform.SetParent(playerInfoCanvas);
+                    t_playerInfoBar.GetComponent<PlayerInfoBar>().InitPlayerInfoBar(playerRecorder, obj);
 
-            //GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerInfoBar");
+                    t_playerInfoBar.name = charBase.PlayerName + " InfoBar";
 
-            //注册订阅该事件 完善场上已有血条相关的销毁逻辑
-
-            foreach (Player p in PhotonNetwork.PlayerList)
-            {
-                if (p.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) continue;
-
-                foreach (GameObject obj in playerModelList.Values)
-                {
-
-                    if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
-                    {
-                        FindPlayerRecorder(p.ActorNumber, out GameObject playerRecorder, out CharBase charBase);
-                        FindPlayerModel(p.ActorNumber, out GameObject playerModel);
-
-                        GameObject t_playerInfoBar = Instantiate(playerInfoBarPrefab);
-                        t_playerInfoBar.transform.SetParent(playerInfoCanvas);
-                        t_playerInfoBar.GetComponent<PlayerInfoBar>().InitPlayerInfoBar(playerRecorder, playerModel);
-                        
-
-                        t_playerInfoBar.name = (t_playerInfoBar.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? p.NickName + " InfoBar (My)" : p.NickName + " InfoBar";
-
-                        playerInfoBarList.Add(p.ActorNumber, t_playerInfoBar);
-                        break;
-                    }
+                    //对生成过的玩家的信息条添加记录进字典
+                    playerInfoBarList.Add(charBase.ActorNumber, t_playerInfoBar);
                 }
 
             }
-
+            else
+            {
+                playerInfoBarList.Remove(charBase.ActorNumber);
+                Debug.LogWarning(charBase.ActorNumber + "死亡 已Remove该Key");
+            }
         }
+
+        //最后再全场搜寻信息条数量
+        //GameObject[] infoBars2 = GameObject.FindGameObjectsWithTag("PlayerInfoBar");
+        ////如果信息条数量与字典数量则打印完成信息
+        //if (infoBars2.Length == playerInfoBarList.Count)
+        //{
+        //    Debug.LogWarning("已添加信息条");
+        //}
+        //else
+        //{
+        //    //如果不满则清空字典
+        //    playerInfoBarList.Clear();
+        //}
+        
+        
+
+        
+        //if (alivePlayerCount == playerInfoBarList.Count + 1) return;
+
+        //playerInfoBarList.Clear();
+
+        //foreach (Player p in PhotonNetwork.PlayerList)
+        //{
+        //    if (p.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) continue;
+
+        //    foreach (GameObject obj in gameObjects)
+        //    {
+        //        if (!obj) return;
+
+        //        if (obj.GetComponent<PlayerInfoBar>().actorNumber == p.ActorNumber)
+        //        {
+        //            FindPlayerRecorder(p.ActorNumber, out GameObject playerRecorder, out CharBase charBase);
+
+        //            FindPlayerInfoBar(p.ActorNumber, out GameObject t_playerInfoBar);
+
+        //            if (t_playerInfoBar == null)
+        //            {
+        //                t_playerInfoBar = Instantiate(playerInfoBarPrefab);
+        //                t_playerInfoBar.transform.SetParent(playerInfoCanvas);
+        //                t_playerInfoBar.GetComponent<PlayerInfoBar>().InitPlayerInfoBar(playerRecorder, obj);
+
+        //                t_playerInfoBar.name = p.NickName + " InfoBar";
+
+        //                playerInfoBarList.Add(p.ActorNumber, t_playerInfoBar);
+        //            }
+
+        //            break;
+        //        }
+        //    }
+        //}
+
     }
 
     /// <summary>
@@ -503,31 +571,34 @@ public class CharManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void GetPlayerModelList(object[] args)
     {
+        int alivePlayerCount = 0;
+        if (recorders == null) return;
+        foreach (var recorder in recorders)
+        {
+            Debug.LogWarning(recorder.Value.name + " is Try");
+
+            if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
+            {
+                alivePlayerCount++;
+            }
+        }
+        //Debug.Log(alivePlayerCount);
+
+        if (alivePlayerCount == playerModelList.Count) return;
+
+        playerModelList.Clear();
+
         if (PhotonNetwork.PlayerList.Length == playerModelList.Count)
         {
             return;
         }
         else
         {
-            int alivePlayerCount = 0;
-            foreach (var recorder in recorders)
-            {
-                if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
-                {
-                    alivePlayerCount++;
-                }
-            }
-
-            if (alivePlayerCount == playerModelList.Count) return;
-
-            playerModelList.Clear();
-
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("PlayerModel");
             foreach (Player p in PhotonNetwork.PlayerList)
             {
                 foreach (GameObject obj in gameObjects)
                 {
-
                     if (obj.GetPhotonView().OwnerActorNr == p.ActorNumber)
                     {
                         obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? p.NickName + " (My)" : p.NickName;
@@ -554,6 +625,7 @@ public class CharManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void GetRecorderList(object[] args)
     {
+        //Debug.Log("有在执行GetRecorderList");
         if (recorders.Count == PhotonNetwork.PlayerList.Length)
         {
             return;
@@ -566,10 +638,9 @@ public class CharManager : MonoBehaviourPunCallbacks
             {
                 obj.name = (obj.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber) ? obj.GetPhotonView().Owner.NickName + " Recorder (My)" : obj.GetPhotonView().Owner.NickName + " Recorder";
 
-                obj.transform.SetParent(total.transform);
+                //obj.GetComponent<RecorderController>().SetParents(transform.parent.gameObject);
 
                 recorders.Add(obj.GetComponent<CharBase>().ActorNumber, obj);
-
             }
 
             Debug.LogWarning("已添加记录者");
@@ -648,14 +719,20 @@ public class CharManager : MonoBehaviourPunCallbacks
             FindPlayerModel(actorNumber,out GameObject playerModel);
             if (playerModel == null) { return; }
 
+            //if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+            //{
+            //    FindPlayerInfoBar(actorNumber, out GameObject playerInfoBar);
+            //    if (playerInfoBar == null) { return; }
+            //    Debug.LogWarning(playerInfoBar.name);
+            //    Destroy(playerInfoBar);
+            //    playerInfoBarList.Remove(actorNumber);
+            //}
+
             charBase.Death++;
 
-
-
-            //recorder.GetComponent<PhotonView>().RPC("DestroyPlayerModel", RpcTarget.All, actorNumber );
             PhotonNetwork.Destroy(playerModel);
             playerModelList.Remove(actorNumber);
-            
+            playerInfoBarList.Remove(actorNumber);
 
             Toast(new object[2] { actorNumber, "被击杀" });
             GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
@@ -757,7 +834,20 @@ public class CharManager : MonoBehaviourPunCallbacks
             FindPlayerModel(actorNumber, out GameObject playerModel);
             if(playerModel == null) { return; }
 
-            playerModel.SetActive(false);
+            //if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+            //{
+            //    FindPlayerInfoBar(actorNumber, out GameObject playerInfoBar);
+            //    if (playerInfoBar == null) { return; }
+
+            //    Destroy(playerInfoBar);
+            //    playerInfoBarList.Remove(actorNumber);
+            //}
+
+            charBase.Death++;
+
+            PhotonNetwork.Destroy(playerModel);
+            playerModelList.Remove(actorNumber);
+            playerInfoBarList.Remove(actorNumber);
 
             charBase.State = StateEnum.Dead;
             GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
@@ -1237,6 +1327,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         FindPlayerRecorder(otherPlayer.ActorNumber,out GameObject recorder,out CharBase charBase);
 
         recorders.Remove(otherPlayer.ActorNumber);
+        Debug.LogWarning(recorder.name + " is Destroy");
         Destroy(recorder);
     }
 

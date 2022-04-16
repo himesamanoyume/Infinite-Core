@@ -119,7 +119,8 @@ public class AttackCube : MonoBehaviour
         Debug.LogWarning(other.name+ " " + actorNumber + " Enter");
 
         //---
-        CharManager.Instance.recorders.TryGetValue(actorNumber, out GameObject recorder);
+        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+        charManager.recorders.TryGetValue(actorNumber, out GameObject recorder);
         //---
 
         if (recorder.GetComponent<CharBase>().PlayerTeam == m_team) return;

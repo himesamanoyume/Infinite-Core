@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     bool isAttack = false;
 
+    Camera m_camera;
+
     #endregion
 
     #region Unity Functions
@@ -62,7 +64,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         controller = GetComponent<CharacterController>();
         photonView = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
-        playerModel = CharManager.Instance.FindChildObjWithTag("Player", this.gameObject);
+        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+        m_camera = Camera.main;
+        playerModel = charManager.FindChildObjWithTag("Player", this.gameObject);
 
         m_moveSpeed = 8f;
         gravity = -19.8f;
@@ -109,6 +113,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerDead, OnPlayerDead);
 
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerLeftRoom, OnPlayerLeftRoom);
+
         #endregion
 
         #region Register Event
@@ -154,7 +160,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
 
-            var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+            var playerScreenPoint = m_camera.WorldToScreenPoint(this.transform.position);
             var point = Input.mousePosition - playerScreenPoint;
             var angle = Mathf.Atan2(point.x, point.y) * Mathf.Rad2Deg;
             playerModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
@@ -409,6 +415,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     #region Event Response
 
+    public void OnPlayerLeftRoom(object[] args)
+    {
+        GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChanged);
+        GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerMove, PlayerMove);
+        GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerAttack, PlayerAttack);
+
+        GameEventManager.EnableEvent(EventEnum.OnPlayerLeftRoom, false);
+    }
+
     public void OnPlayerKilled(object[] args)
     {
         int actorNumber;
@@ -418,7 +433,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
 
-            GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
             GameEventManager.UnsubscribeEvent(EventEnum.SendPlayerMoveSpeed, SendPlayerMoveSpeed);
 
             GameEventManager.UnsubscribeEvent(EventEnum.AllowPlayerMove, PlayerMove);

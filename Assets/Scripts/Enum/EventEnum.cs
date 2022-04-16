@@ -10,6 +10,7 @@ public enum EventEnum
     SystemGroup,
 
     OnToast,
+    OnPlayerLeftRoom,
 
     #endregion
 

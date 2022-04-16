@@ -69,7 +69,7 @@ public class DebugConsole : MonoBehaviour
     private void Awake()
     {
         //实现命令处
-
+        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
         //测试
         TEST = new DebugCommand("Test", "输出Hello World", "Test", () =>
         {
@@ -78,32 +78,32 @@ public class DebugConsole : MonoBehaviour
 
         GET_NAME = new DebugCommand<int>("GetName", "根据id获取玩家姓名", "GetName <id>", (id) =>
         {
-            CharManager.Instance.GetPlayerName(id);
+            charManager.GetPlayerName(id);
         });
 
         LEVEL_UP = new DebugCommand<int,int>("LevelUp", "根据id提升玩家特定次数的1级等级", "LevelUp <id> <count>", (id,count) =>
            {
-               CharManager.Instance.SetPlayerLevel(id, count);
+               charManager.SetPlayerLevel(id, count);
            });
 
         SET_HP = new DebugCommand<int, int>("SetHp", "通过id修改玩家当前血量", "SetHp <id> <health>", (id, health) =>
            {
-               CharManager.Instance.SetPlayerCurrentHealth(id, health);
+               charManager.SetPlayerCurrentHealth(id, health);
            });
 
         GIVE_EXP = new DebugCommand<int, int, int>("GiveExp", "通过id给予玩家随机范围内的经验", "GiveExp <id> <min> <max>", (id, min, max) =>
           {
-              CharManager.Instance.ToGivePlayerCurrentExp(id, min, max);
+              charManager.ToGivePlayerCurrentExp(id, min, max);
           });
 
         GIVE_MONEY = new DebugCommand<int, int, int>("GiveMoney", "通过id给予玩家随机范围内的经验", "GiveMoney <id> <min> <max>", (id, min, max) =>
         {
-            CharManager.Instance.SetPlayerMoney(id, min, max);
+            charManager.SetPlayerMoney(id, min, max);
         });
 
         SET_MOVESPEED = new DebugCommand<int, int>("SetMoveSpeed", "通过id设置移动速度", "SetMoveSpeed <id> <speed>", (id, speed) =>
           {
-              CharManager.Instance.SetPlayerMoveSpeed(id, speed);
+              charManager.SetPlayerMoveSpeed(id, speed);
           });
 
         //将命令放进列表 
