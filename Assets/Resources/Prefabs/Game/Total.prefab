@@ -139,3 +139,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitMenu: {fileID: 0}
   isExitMenuActive: 0
+  tabMenu: {fileID: 0}
+  playerTabItemPrefab: {fileID: 8085726234527467013, guid: adfbeb3d95bb7e747be80dad5235e010, type: 3}
+  myselfInfoMenu: {fileID: 0}
+  healthSlider: {fileID: 0}
+  shieldSlider: {fileID: 0}
+  expSlider: {fileID: 0}
+  skillQCountDown: {fileID: 0}
+  skillECountDown: {fileID: 0}
+  skillRCountDown: {fileID: 0}
+  skillBrustCountDown: {fileID: 0}
+  headItem: {fileID: 0}
+  armorItem: {fileID: 0}
+  handItem: {fileID: 0}
+  trousersItem: {fileID: 0}
+  kneeItem: {fileID: 0}
+  bootsItem: {fileID: 0}
+  importantInfoPanel: {fileID: 0}
+  importantInfo: {fileID: 0}
+  iptInfoList: []
+  healthText: {fileID: 0}

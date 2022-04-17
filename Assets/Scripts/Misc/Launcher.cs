@@ -74,6 +74,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         redButton.GetComponent<Button>().onClick.AddListener(OnRedButtonClicked);
         blueButton.GetComponent<Button>().onClick.AddListener(OnBlueButtonClicked);
         startButton.GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartGame);
+
     }
 
     /// <summary>

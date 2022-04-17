@@ -8,8 +8,7 @@ public class PlayerInfoBar : MonoBehaviour
     public Text playerName;
     public Slider healthSlider;
     public Slider shieldSlider;
-
-    
+        
     public int actorNumber;
 
     float m_maxShield;
@@ -19,6 +18,11 @@ public class PlayerInfoBar : MonoBehaviour
     GameObject m_playerModel = null;
     CharBase charBase = null;
     Camera m_camera = null;
+
+    public Image fill;
+
+    Color redHp = new Color(1, 0, 0.2f, 1);
+    Color blueHp = new Color(0.21f, 0.38f, 0.62f, 1);
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +75,14 @@ public class PlayerInfoBar : MonoBehaviour
         healthSlider.value = charBase.CurrentHealth;
         shieldSlider.maxValue = charBase.Shield;
         shieldSlider.value = charBase.Shield;
+        if (charBase.PlayerTeam == TeamEnum.Red)
+        {
+            fill.color = redHp;
+        }
+        else if (charBase.PlayerTeam == TeamEnum.Blue)
+        {
+            fill.color = blueHp;
+        }
         isInit = true;
     }
 }

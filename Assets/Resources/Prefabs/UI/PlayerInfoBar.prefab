@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.1988306, a: 0.49019608}
+  m_Color: {r: 0.19607843, g: 0.34935355, b: 0.60784316, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -468,6 +468,7 @@ MonoBehaviour:
   healthSlider: {fileID: 3995552612573972370}
   shieldSlider: {fileID: 826264365405152770}
   actorNumber: 0
+  fill: {fileID: 485263879261156161}
 --- !u!1 &5289139005512722168
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +617,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0899, y: -10.52}
-  m_SizeDelta: {x: 129.419, y: 2.0113}
+  m_SizeDelta: {x: 130, y: 2.0113}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &826264365405152770
 MonoBehaviour:
@@ -781,7 +782,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0899, y: -17.8}
-  m_SizeDelta: {x: 129.419, y: 12.5171}
+  m_SizeDelta: {x: 130, y: 12.5171}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3995552612573972370
 MonoBehaviour:

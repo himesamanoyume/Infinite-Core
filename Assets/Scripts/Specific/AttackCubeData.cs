@@ -52,34 +52,7 @@ public class AttackCubeData
     public float Destory { get; set; }
     public float Lag { get; set; }
 
-    //public byte InitCenter { get; set; }
-    //public byte InitSize { get; set; }
-    //public byte FinalCenter { get; set; }
-    //public byte FinalSize { get; set; }
-    //public byte InitToFinalTime { get; set; }
-    //public byte Ratio { get; set; }
-    //public byte ActiveTime { get; set; }
-    //public byte Lag { get; set; }
 
-    //public static object Deserialize(byte[] data)
-    //{
-    //    var result = new AttackCubeData();
-    //    result.InitCenter = data[0];
-    //    result.InitSize = data[1];
-    //    result.FinalCenter = data[2];
-    //    result.FinalSize = data[3];
-    //    result.InitToFinalTime = data[4];
-    //    result.Ratio = data[5];
-    //    result.ActiveTime = data[6];
-    //    result.Lag = data[7];
-    //    return result;
-    //}
-
-    //public static byte[] Serialize(object customType)
-    //{
-    //    var c = (AttackCubeData)customType;
-    //    return new byte[] { c.InitCenter, c.InitSize, c.FinalCenter, c.FinalSize, c.InitToFinalTime, c.Ratio, c.ActiveTime, c.Lag };
-    //}
 
 
     public AttackCubeData(Vector3 initOffset, Vector3 initScale, Vector3 finalOffset, Vector3 finalScale, float initToFinalTime, float ratio, float activeTime, float destory)

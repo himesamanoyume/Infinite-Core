@@ -25,15 +25,15 @@ public class CharManager : MonoBehaviourPunCallbacks
     public Dictionary<int, GameObject> recorders;
     public Dictionary<int, GameObject> playerInfoBarList;
 
-    //public static CharManager Instance;
+    public static CharManager Instance;
 
     private void Awake()
     {
-        //if (!Instance)
-        //{
-        //    Instance = this;
-        //}
-        
+        if (!Instance)
+        {
+            Instance = this;
+        }
+
     }
 
     private void Start()
@@ -50,7 +50,6 @@ public class CharManager : MonoBehaviourPunCallbacks
 
         #region Subscribe Event
 
-        //Debug.LogWarning("CharManager监听事件");
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUp);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
@@ -514,56 +513,6 @@ public class CharManager : MonoBehaviourPunCallbacks
             }
         }
 
-        //最后再全场搜寻信息条数量
-        //GameObject[] infoBars2 = GameObject.FindGameObjectsWithTag("PlayerInfoBar");
-        ////如果信息条数量与字典数量则打印完成信息
-        //if (infoBars2.Length == playerInfoBarList.Count)
-        //{
-        //    Debug.LogWarning("已添加信息条");
-        //}
-        //else
-        //{
-        //    //如果不满则清空字典
-        //    playerInfoBarList.Clear();
-        //}
-        
-        
-
-        
-        //if (alivePlayerCount == playerInfoBarList.Count + 1) return;
-
-        //playerInfoBarList.Clear();
-
-        //foreach (Player p in PhotonNetwork.PlayerList)
-        //{
-        //    if (p.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber) continue;
-
-        //    foreach (GameObject obj in gameObjects)
-        //    {
-        //        if (!obj) return;
-
-        //        if (obj.GetComponent<PlayerInfoBar>().actorNumber == p.ActorNumber)
-        //        {
-        //            FindPlayerRecorder(p.ActorNumber, out GameObject playerRecorder, out CharBase charBase);
-
-        //            FindPlayerInfoBar(p.ActorNumber, out GameObject t_playerInfoBar);
-
-        //            if (t_playerInfoBar == null)
-        //            {
-        //                t_playerInfoBar = Instantiate(playerInfoBarPrefab);
-        //                t_playerInfoBar.transform.SetParent(playerInfoCanvas);
-        //                t_playerInfoBar.GetComponent<PlayerInfoBar>().InitPlayerInfoBar(playerRecorder, obj);
-
-        //                t_playerInfoBar.name = p.NickName + " InfoBar";
-
-        //                playerInfoBarList.Add(p.ActorNumber, t_playerInfoBar);
-        //            }
-
-        //            break;
-        //        }
-        //    }
-        //}
-
     }
 
     /// <summary>
@@ -575,7 +524,6 @@ public class CharManager : MonoBehaviourPunCallbacks
         if (recorders == null) return;
         foreach (var recorder in recorders)
         {
-            Debug.LogWarning(recorder.Value.name + " is Try");
 
             if (recorder.Value.GetComponent<CharBase>().State == StateEnum.Alive)
             {
@@ -1325,9 +1273,10 @@ public class CharManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         FindPlayerRecorder(otherPlayer.ActorNumber,out GameObject recorder,out CharBase charBase);
-
+        FindPlayerInfoBar(otherPlayer.ActorNumber, out GameObject playerInfoBar);
         recorders.Remove(otherPlayer.ActorNumber);
-        Debug.LogWarning(recorder.name + " is Destroy");
+        playerInfoBarList.Remove(otherPlayer.ActorNumber);
+        Destroy(playerInfoBar);
         Destroy(recorder);
     }
 
