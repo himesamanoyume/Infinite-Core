@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     float receiveFinalDamage;
 
+    int enemyActorNumber;
+
     bool isAttack = false;
 
     Camera m_camera;
@@ -373,20 +375,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// <summary>
     /// 用于被敌方Cube碰撞后调用的接收伤害函数
     /// </summary>
+    /// <param name="otherActorNumber">被碰撞的物体ActorNumber</param>
     /// <param name="finalAttack"></param>
     /// <param name="finalDamage"></param>
     [PunRPC]
-    public void PlayerDamaged(int actorNumber, float finalAttack, float finalDamage)
+    public void PlayerDamaged(int otherActorNumber, int ownerActorNumber, float finalAttack, float finalDamage)
     {
-        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber) return;
+        if (otherActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
-        Debug.LogWarning(actorNumber + " Damaged");
+        Debug.LogWarning(otherActorNumber + " Damaged");
 
+        enemyActorNumber = ownerActorNumber;
         receiveFinalAttack = finalAttack;
         receiveFinalDamage = finalDamage;
-
-        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        
+        if (otherActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
         {
+            Debug.LogWarning(otherActorNumber + " Damaged2");
             GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, true);
         }
     }
@@ -427,9 +432,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void OnPlayerKilled(object[] args)
     {
         int actorNumber;
-        if (args.Length == 1)
+        int killerActorNumber;
+        if (args.Length == 2)
         {
             actorNumber = (int)args[0];
+            killerActorNumber = (int)args[1];
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerKilled, false);
 
@@ -459,9 +466,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void OnPlayerDead(object[] args)
     {
         int actorNumber;
-        if (args.Length == 1)
+        int killerActorNumber;
+        if (args.Length == 2)
         {
             actorNumber = (int)args[0];
+            killerActorNumber = (int)args[1];
 
             GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
 
@@ -576,8 +585,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     bool OnPlayerDamagedCheck(out object[] args)
     {
-        args = new object[] { receiveFinalAttack, receiveFinalDamage };
-        return true;
+        //if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+        //{
+        //    args = new object[] { -1 };
+        //    return true;
+        //}
+        if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            Debug.LogWarning("Hurted!!!");
+            args = new object[] { enemyActorNumber, receiveFinalAttack, receiveFinalDamage };
+            return true;
+        }
+        else
+        {
+            args = new object[] { -1 };
+            return true;
+
+        }
+
     }
 
     #endregion

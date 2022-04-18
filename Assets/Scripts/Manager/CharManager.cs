@@ -656,10 +656,11 @@ public class CharManager : MonoBehaviourPunCallbacks
     public void OnPlayerKilled(object[] args)
     {
         int actorNumber;
-
-        if(args.Length == 1)
+        int lastOneHurtActorNumber;
+        if (args.Length == 2)
         {
             actorNumber = (int)args[0];
+            lastOneHurtActorNumber = (int)args[1];
 
             FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
             if (charBase == null || recorder == null) { return; }
@@ -772,9 +773,11 @@ public class CharManager : MonoBehaviourPunCallbacks
     public void OnPlayerDead(object[] args)
     {
         int actorNumber;
-        if (args.Length == 1)
+        int lastOneHurtActorNumber;
+        if (args.Length == 2)
         {
             actorNumber = (int)args[0];
+            lastOneHurtActorNumber = (int)args[1];
 
             FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
             if (charBase == null || recorder == null) { return; }
@@ -836,10 +839,11 @@ public class CharManager : MonoBehaviourPunCallbacks
     public void OnPlayerRespawning(object[] args)
     {
         int actorNumber;
-
-        if( args.Length == 1)
+        float respawnCountDown;
+        if ( args.Length == 2)
         {
             actorNumber = (int)args[0];
+            respawnCountDown = (float)args[1];
 
             FindPlayerRecorder(actorNumber,out GameObject recorder,out CharBase charBase);
             if (charBase == null || recorder == null) { return; }

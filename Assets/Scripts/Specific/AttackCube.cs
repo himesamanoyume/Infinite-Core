@@ -112,22 +112,22 @@ public class AttackCube : MonoBehaviour
 
         PhotonView photonView = other.gameObject.GetPhotonView();
 
-        int actorNumber = photonView.OwnerActorNr;
+        int otherActorNumber = photonView.OwnerActorNr;
 
-        if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
-
-        Debug.LogWarning(other.name+ " " + actorNumber + " Enter");
+        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber) return;
+        if (otherActorNumber == owner.ActorNumber) return;
+        //Debug.LogWarning(other.name+ " " + otherActorNumber + " Enter");
 
         //---
         CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
-        charManager.recorders.TryGetValue(actorNumber, out GameObject recorder);
+        charManager.recorders.TryGetValue(otherActorNumber, out GameObject recorder);
         //---
 
         if (recorder.GetComponent<CharBase>().PlayerTeam == m_team) return;
 
-        Debug.LogWarning(other.name + " " + actorNumber + " Enter2");
+        //Debug.LogWarning(other.name + " " + otherActorNumber + " Enter2");
 
-        photonView.RPC("PlayerDamaged",RpcTarget.AllViaServer, actorNumber, finalAttack, finalDamage);
+        photonView.RPC("PlayerDamaged",RpcTarget.AllViaServer, otherActorNumber, owner.ActorNumber, finalAttack, finalDamage);
 
         //other.GetComponent<PlayerController>().PlayerDamaged(PhotonNetwork.LocalPlayer.ActorNumber, finalAttack , finalDamage);
     }

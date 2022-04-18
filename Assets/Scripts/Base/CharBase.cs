@@ -876,6 +876,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+
         if (stream.IsWriting)
         {
             stream.SendNext(ActorNumber);
@@ -1015,8 +1016,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEndCheck);
 
-            GameEventManager.RegisterEvent(EventEnum.OnPlayerKilled, OnPlayerKilledCheck);
-
             GameEventManager.RegisterEvent(EventEnum.OnPlayerMaxHealthChanged, OnPlayerMaxHealthChangedCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChangedCheck);
@@ -1033,17 +1032,32 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             GameEventManager.RegisterEvent(EventEnum.AllowPlayerTowardChanged, PlayerTowardChangedCheck);
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerAttackChanged, OnPlayerAttackChangedCheck);
-            
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerKilled, OnPlayerKilledCheck);
+
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerDead, OnPlayerDeadCheck);
+
         }
 
         #endregion
 
         #region Subscribe Event
 
-        GameEventManager.SubscribeEvent(EventEnum.OnPlayerDamaged, OnPlayerDamaged);
+        if (photonView.IsMine)
+        {
+            GameEventManager.SubscribeEvent(EventEnum.OnPlayerDamaged, OnPlayerDamaged);
+        }
+
+        
 
         #endregion
+
+        roomManager = GameObject.Find("RoomManager").GetComponent<RoomManager>();
+        charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
     }
+
+    RoomManager roomManager;
+    CharManager charManager;
 
     void UpdateFloatProps(string key, float value)
     {
@@ -1058,14 +1072,19 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     #region Event Response
 
+    int lastOneHurtActorNumber = -1;
+
     public void OnPlayerDamaged(object[] args)
     {
+        int enemyActorNumber;
         float rFinalAttack, rFinalDamage;
-        if (args.Length == 2)
+        if (args.Length == 3)
         {
-            rFinalAttack = (float)args[0];
-            rFinalDamage = (float)args[1];
+            enemyActorNumber = (int)args[0];
+            rFinalAttack = (float)args[1];
+            rFinalDamage = (float)args[2];
 
+            lastOneHurtActorNumber = enemyActorNumber;
             Debug.LogWarning("rFinalAttack: "+ rFinalAttack);
 
             float hurt = rFinalAttack * (1 - Defence * 0.00001f) * rFinalDamage;
@@ -1182,9 +1201,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         return true;
     }
 
+    //int theKilledActorNumber = -1;
+
     bool OnPlayerKillCheck(out object[] args)
     {
-        args = null;
+        args = new object[] { ActorNumber };
+        
         return true;
     }
 
@@ -1196,14 +1218,36 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerKilledCheck(out object[] args)
     {
-        args = new object[] { ActorNumber };
+        if (lastOneHurtActorNumber != -1)
+        {
+            string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+            photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+        }
+        args = new object[] { ActorNumber, lastOneHurtActorNumber };
+        lastOneHurtActorNumber = -1;
         return true;
     }
 
     bool OnPlayerDeadCheck(out object[] args)
     {
-        args = new object[] { ActorNumber };
+        if (lastOneHurtActorNumber != -1)
+        {
+            string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+            photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+        }
+        
+        args = new object[] { ActorNumber, lastOneHurtActorNumber };
+        lastOneHurtActorNumber = -1;
         return true;
+    }
+
+    [PunRPC]
+    public void BroadcastInfo(string text)
+    {
+        
+        roomManager.GetImportantInfo(text);
+        
+       
     }
 
     bool OnPlayerRespawnCheck(out object[] args)
@@ -1220,7 +1264,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerRespawningCheck(out object[] args)
     {
-        args =new object[] { ActorNumber } ;
+        args =new object[] { ActorNumber, respawnCountDown } ;
         return true;
     }
 

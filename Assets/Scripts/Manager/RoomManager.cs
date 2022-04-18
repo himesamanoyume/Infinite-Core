@@ -39,6 +39,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public Image bootsItem;
     public Image importantInfoPanel;
     public Image importantInfo;
+    public Text countDownText;
 
     [SerializeField]
     List<string> iptInfoList = new List<string>();
@@ -74,6 +75,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
         //GetImportantInfo("Player1145 击杀了 Player1145");
         //GetImportantInfo("Player1145 又击杀了 Player1145");
         //StartCoroutine("repeat");
+
+        #region Subscribe Event
+
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawning);
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownEnd, OnPlayerRespawnCountDownEnd);
+
+        #endregion
+
+
     }
 
     private void Update()
@@ -182,6 +192,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
     }
 
+    #region Unity Function
+
     delegate void IsActiveMenu();
     IsActiveMenu activeMenu;
 
@@ -205,7 +217,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         isActiveMenu();
     }
 
-    void GetImportantInfo(string infoText)
+    public void GetImportantInfo(string infoText)
     {
         iptInfoList.Add(infoText);
     }
@@ -262,4 +274,35 @@ public class RoomManager : MonoBehaviourPunCallbacks
             tabPlayerList.Remove(otherPlayer.ActorNumber);
         }
     }
+    #endregion
+
+    #region Event Response
+
+    public void OnPlayerRespawning(object[] args)
+    {
+        int actorNumber;
+        float countDown;
+        if (args.Length == 2)
+        {
+            actorNumber = (int)args[0];
+            countDown = (float)args[1];
+
+            countDownText.text = "复活倒计时: " + ((int)countDown).ToString();
+            
+        }
+    }
+
+    public void OnPlayerRespawnCountDownEnd(object[] args)
+    {
+        int actorNumber;
+        if (args.Length == 1)
+        {
+            actorNumber = (int)args[0];
+
+            countDownText.text = "";
+
+        }
+    }
+
+    #endregion
 }

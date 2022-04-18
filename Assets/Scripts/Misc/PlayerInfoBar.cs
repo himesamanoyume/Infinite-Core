@@ -36,8 +36,11 @@ public class PlayerInfoBar : MonoBehaviour
         if (m_recorder && charBase)
         {
             playerName.text = charBase.PlayerName;
+
             healthSlider.maxValue = charBase.MaxHealth;
             healthSlider.value = charBase.CurrentHealth;
+
+            //Debug.LogWarning(charBase.CurrentHealth);
 
             if (charBase.Shield > m_maxShield)
             {
