@@ -85,7 +85,7 @@ public class AttackCube : MonoBehaviour
 
         m_team = (TeamEnum)team;
 
-        Debug.LogWarning(m_team);
+        //Debug.LogWarning(m_team);
 
         switch (m_team)
         {

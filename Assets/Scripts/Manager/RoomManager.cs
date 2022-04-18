@@ -222,15 +222,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
         iptInfoList.Add(infoText);
     }
 
-    int index = 0;
-    IEnumerator repeat()
-    {
+    //int index = 0;
+    //IEnumerator repeat()
+    //{
         
-        GetImportantInfo("Player1145 击杀了 Player1145_" + index);
-        yield return new WaitForSeconds(8);
-        index++;
-        StartCoroutine("repeat");
-    }
+    //    GetImportantInfo("Player1145 击杀了 Player1145_" + index);
+    //    yield return new WaitForSeconds(8);
+    //    index++;
+    //    StartCoroutine("repeat");
+    //}
 
     //信息通知
     void PostImportantInfo()
@@ -249,7 +249,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     Text infoText;
     IEnumerator ShowImportantInfo(string text)
     {
-        Debug.LogWarning("Show");
+        //Debug.LogWarning("Show");
         importantInfo.gameObject.SetActive(true);
         importantInfo.color = importantInfoDefaultColor;
         importantInfo.GetComponent<RectTransform>().sizeDelta = defaultSizeDelta;

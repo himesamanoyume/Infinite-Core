@@ -223,7 +223,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 kill = value;
                 if (photonView.IsMine)
                 {
-                    GameEventManager.EnableEvent(EventEnum.OnPlayerKill, true);
+                    //GameEventManager.EnableEvent(EventEnum.OnPlayerKill, true);
                 }
 
             }
@@ -1129,18 +1129,21 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerCriticalHitRateChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, CriticalHitRate);
         args = new object[] { ActorNumber, CriticalHitRate };
         return true;
     }
 
     bool OnPlayerCriticalHitChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_CRITICAL_HIT, CriticalHit);
         args = new object[] { ActorNumber, CriticalHit };
         return true;
     }
 
     bool OnPlayerAttackRangeChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_ATTACK_RANGE, AttackRange);
         args = new object[] { ActorNumber, AttackRange };
         return true;
     }
@@ -1179,6 +1182,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerLevelChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_LEVEL, Level);
         args = new object[] { ActorNumber};
         return true;
     }
@@ -1191,12 +1195,14 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerMoneyChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_LEVEL, Level);
         args = new object[] { ActorNumber };
         return true;
     }
 
     bool OnPlayerMaxHealthChangedCheck(out object[] args)
     {
+        UpdateFloatProps(InfiniteCoreGame.PLAYER_MAX_HEALTH, MaxHealth);
         args = new object[] {ActorNumber};
         return true;
     }
@@ -1206,7 +1212,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     bool OnPlayerKillCheck(out object[] args)
     {
         args = new object[] { ActorNumber };
-        
+        //args = new object[] { lastOneHurtActorNumber };
         return true;
     }
 
@@ -1221,6 +1227,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         if (lastOneHurtActorNumber != -1)
         {
             string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+
+
+
+            photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
             photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
         }
         args = new object[] { ActorNumber, lastOneHurtActorNumber };
@@ -1233,6 +1243,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         if (lastOneHurtActorNumber != -1)
         {
             string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+
+            photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
             photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
         }
         
@@ -1244,10 +1256,20 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void BroadcastInfo(string text)
     {
-        
         roomManager.GetImportantInfo(text);
+    }
+
+    [PunRPC]
+    public void GetKillCount(int killerActorNumber)
+    {
+        Debug.LogWarning(charManager.recorders[killerActorNumber].name);
+
+        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
+
+        killerCharBase.Kill++;
+        killerCharBase.CurrentExp += 1000 + Level * 100;
+        killerCharBase.Money += 300 + Level * 50;
         
-       
     }
 
     bool OnPlayerRespawnCheck(out object[] args)

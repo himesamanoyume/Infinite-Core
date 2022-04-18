@@ -144,7 +144,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             {InfiniteCoreGame.PLAYER_SHIELD, c.Shield},
             {InfiniteCoreGame.PLAYER_MAX_HEALTH, c.MaxHealth },
             {InfiniteCoreGame.PLAYER_CURRENT_HEALTH, c.CurrentHealth},
-            {InfiniteCoreGame.PLAYER_CRITICALHIT_HIT, c.CriticalHit},
+            {InfiniteCoreGame.PLAYER_CRITICAL_HIT, c.CriticalHit},
             {InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, c.CriticalHitRate },
             {InfiniteCoreGame.PLAYER_DEFENCE, c.Defence},
             {InfiniteCoreGame.PLAYER_ATTACK_SPEED, c.AttackSpeed},

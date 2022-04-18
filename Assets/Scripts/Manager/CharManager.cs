@@ -53,6 +53,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerLevelUp, OnPlayerLevelUp);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerKill, OnPlayerKill);
         GameEventManager.SubscribeEvent(EventEnum.OnToast, Toast);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownStart, OnPlayerRespawnCountDownStart);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawning);
@@ -198,7 +199,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CURRENT_HEALTH, out object currentHealth);
         needTarget.CurrentHealth = (float)currentHealth;
 
-        player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICALHIT_HIT, out object criticalHit);
+        player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT, out object criticalHit);
         needTarget.CriticalHit = (float)criticalHit;
 
         player.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, out object criticalHitRate);
@@ -909,11 +910,12 @@ public class CharManager : MonoBehaviourPunCallbacks
 
             charBase.State = StateEnum.Alive;
 
-            charBase.CurrentHealth = charBase.MaxHealth;
-
             SpawnPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
 
+            charBase.CurrentHealth = charBase.MaxHealth;
+
             Toast(new object[] { actorNumber, "ÒÑ¸´»î" });
+
 
             GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, true);
 

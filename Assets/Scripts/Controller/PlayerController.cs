@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_ATTACK_RANGE, out object attackRange);
         m_attackRange = (float)attackRange;
 
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICALHIT_HIT, out object criticalHit);
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT, out object criticalHit);
         m_criticalHit = (float)criticalHit;
 
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, out object criticalHitRate);
@@ -272,7 +272,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             finalAttack
             );
 
-        photonView.RPC("SpawnAttackCube", RpcTarget.AllViaServer, selfPos, modelRotation, attackCubeData, attackCubeData2);
+        photonView.RPC("SpawnAttackCube", RpcTarget.All, selfPos, modelRotation, attackCubeData, attackCubeData2);
     }
 
     void InitArcherNormalAttack(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
@@ -383,7 +383,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (otherActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
-        Debug.LogWarning(otherActorNumber + " Damaged");
+        //Debug.LogWarning(otherActorNumber + " Damaged");
 
         enemyActorNumber = ownerActorNumber;
         receiveFinalAttack = finalAttack;
@@ -391,7 +391,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
         if (otherActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            Debug.LogWarning(otherActorNumber + " Damaged2");
+            //Debug.LogWarning(otherActorNumber + " Damaged2");
             GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, true);
         }
     }
@@ -592,7 +592,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //}
         if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            Debug.LogWarning("Hurted!!!");
+            //Debug.LogWarning("Hurted!!!");
             args = new object[] { enemyActorNumber, receiveFinalAttack, receiveFinalDamage };
             return true;
         }
