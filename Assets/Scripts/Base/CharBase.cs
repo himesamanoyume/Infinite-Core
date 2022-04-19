@@ -167,32 +167,32 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 头盔
     /// </summary>
-    private EquipHead headID;
+    private EquipHead headType;
     [SerializeField]
     /// <summary>
     /// 护甲
     /// </summary>
-    private EquipArmor armorID;
+    private EquipArmor armorType;
     [SerializeField]
     /// <summary>
     /// 护手
     /// </summary>
-    private EquipHand handID;
+    private EquipHand handType;
     [SerializeField]
     /// <summary>
     /// 护膝
     /// </summary>
-    private EquipKnee kneeID;
+    private EquipKnee kneeType;
     [SerializeField]
     /// <summary>
     /// 护腿
     /// </summary>
-    private EquipTrousers trousersID;
+    private EquipTrousers trousersType;
     [SerializeField]
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipBoots bootsID;
+    private EquipBoots bootsType;
 
 
 
@@ -729,12 +729,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     public SkillE SkillE { get => skillE; set => skillE = value; }
     public SkillR SkillR { get => skillR; set => skillR = value; }
     public SkillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
-    public EquipHead HeadID { get => headID; set => headID = value; }
-    public EquipArmor ArmorID { get => armorID; set => armorID = value; }
-    public EquipHand HandID { get => handID; set => handID = value; }
-    public EquipKnee KneeID { get => kneeID; set => kneeID = value; }
-    public EquipTrousers TrousersID { get => trousersID; set => trousersID = value; }
-    public EquipBoots BootsID { get => bootsID; set => bootsID = value; }
+    public EquipHead HeadID { get => headType; set => headType = value; }
+    public EquipArmor ArmorID { get => armorType; set => armorType = value; }
+    public EquipHand HandID { get => handType; set => handType = value; }
+    public EquipKnee KneeID { get => kneeType; set => kneeType = value; }
+    public EquipTrousers TrousersID { get => trousersType; set => trousersType = value; }
+    public EquipBoots BootsID { get => bootsType; set => bootsType = value; }
 
     public float MoveSpeed
     {

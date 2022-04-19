@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313984021180993626}
   m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000042869}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7623067064780183399}
@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.0684, y: 1.3582}
+  m_SizeDelta: {x: 18.929, y: 146.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8805031181600585897
 CanvasRenderer:
@@ -101,7 +101,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401968339556196474}
   m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0000004272}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7623067064780183399}
@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3.6444, y: 1.3582}
+  m_SizeDelta: {x: 461.12, y: 146.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2269837309422704187
 CanvasRenderer:
@@ -146,14 +146,14 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 20
+    m_MaxSize: 150
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 100
 --- !u!1 &1964675048807108989
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964675048807108989}
   m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000042721}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7623067064780183399}
@@ -189,7 +189,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.3168, y: 1.3582}
+  m_SizeDelta: {x: 29.173, y: 146.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7959166022729888926
 CanvasRenderer:
@@ -258,7 +258,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2196805931565774813}
-  m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.00000030814}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -335,7 +335,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7900205018191521077}
   m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000042721}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7623067064780183399}
@@ -344,7 +344,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.6806, y: 1.3582}
+  m_SizeDelta: {x: 34.672, y: 146.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1504662231998616631
 CanvasRenderer:
@@ -414,7 +414,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8730974448733434943}
   m_LocalRotation: {x: 6.0592775e-10, y: -0, z: 0.0000000017613351, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000042724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7623067064780183399}
@@ -423,7 +423,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1.1213, y: 1.3582}
+  m_SizeDelta: {x: 450, y: 146.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5445114139818053236
 CanvasRenderer:
@@ -455,15 +455,15 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 7e0e8cafe3af91b4987d998522733d3c, type: 3}
-    m_FontSize: 0
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 20
+    m_MinSize: 40
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u7B49\u7EA7"
+  m_Text: "\u653B\u51FB"

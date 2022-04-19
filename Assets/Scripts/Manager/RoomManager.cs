@@ -10,19 +10,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     //public static RoomManager Instance;
 
-    [SerializeField]
-    GameObject exitMenu; 
-    [SerializeField]
-    bool isExitMenuActive = false;
-    [SerializeField]
-    GameObject tabMenu;
-    [SerializeField]
-    Transform tabRedContent;
-    [SerializeField]
-    Transform tabBlueContent;
-
-    public GameObject playerTabItemPrefab;
-
+    [Header("Esc选单")]
+    public GameObject exitMenu; 
+    public bool isExitMenuActive = false;
+    
+    [Header("底部信息栏")]
     public GameObject myselfInfoMenu;
     public Slider healthSlider;
     public Slider shieldSlider;
@@ -37,9 +29,35 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public Image trousersItem;
     public Image kneeItem;
     public Image bootsItem;
+    public Text countDownText;
+
+
+    [Header("重要信息通知")]
     public Image importantInfoPanel;
     public Image importantInfo;
-    public Text countDownText;
+
+
+    [Header("Tab积分板")]
+    public GameObject tabMenu;
+    public Transform tabRedContent;
+    public Transform tabBlueContent;
+    public GameObject playerTabItemPrefab;
+
+    [Header("Bag背包面板")]
+    public Transform bagMenu;
+
+    [Header("Bag属性")]
+    public Text playerName;
+    public Text pro;
+    public Text attack;
+    public Text criticalHitRate;
+    public Text criticalHit;
+    public Text defence;
+    public Text attackSpeed;
+    public Text moveSpeed;
+
+    //[Header("Bag仓库")]
+    //public 
 
     [SerializeField]
     List<string> iptInfoList = new List<string>();

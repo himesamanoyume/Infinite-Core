@@ -29,6 +29,7 @@ Transform:
   m_Children:
   - {fileID: 1252089328102079823}
   - {fileID: 141483015129524862}
+  - {fileID: 8694586278144626214}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -139,8 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitMenu: {fileID: 0}
   isExitMenuActive: 0
-  tabMenu: {fileID: 0}
-  playerTabItemPrefab: {fileID: 8085726234527467013, guid: adfbeb3d95bb7e747be80dad5235e010, type: 3}
   myselfInfoMenu: {fileID: 0}
   healthSlider: {fileID: 0}
   shieldSlider: {fileID: 0}
@@ -155,7 +154,64 @@ MonoBehaviour:
   trousersItem: {fileID: 0}
   kneeItem: {fileID: 0}
   bootsItem: {fileID: 0}
+  countDownText: {fileID: 0}
   importantInfoPanel: {fileID: 0}
   importantInfo: {fileID: 0}
+  tabMenu: {fileID: 0}
+  tabRedContent: {fileID: 0}
+  tabBlueContent: {fileID: 0}
+  playerTabItemPrefab: {fileID: 8085726234527467013, guid: adfbeb3d95bb7e747be80dad5235e010, type: 3}
+  bagMenu: {fileID: 0}
+  playerName: {fileID: 0}
+  pro: {fileID: 0}
+  attack: {fileID: 0}
+  criticalHitRate: {fileID: 0}
+  criticalHit: {fileID: 0}
+  defence: {fileID: 0}
+  attackSpeed: {fileID: 0}
+  moveSpeed: {fileID: 0}
   iptInfoList: []
   healthText: {fileID: 0}
+--- !u!1 &8148972197395067884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8694586278144626214}
+  - component: {fileID: 3973249823306227634}
+  m_Layer: 0
+  m_Name: MonsterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8694586278144626214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148972197395067884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1252089327796656336}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3973249823306227634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148972197395067884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c9c8d82a92f78419d92039c19cfe39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

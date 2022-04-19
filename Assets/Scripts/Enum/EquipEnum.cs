@@ -149,4 +149,15 @@ public enum MainEntry
     AttackSpeed
 }
 
+/// <summary>
+/// ¸±´ÊÌõ
+/// </summary>
+public enum EntryLevelUp
+{
+    Null,
+    Q,
+    E,
+    R
+}
+
 
