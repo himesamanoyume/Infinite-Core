@@ -56,6 +56,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public Text attackSpeed;
     public Text moveSpeed;
 
+    bool isOpenBag = false;
+
     //[Header("Bag²Ö¿â")]
     //public 
 
@@ -176,6 +178,21 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             tabMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 900);
             //tabMenu.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            isOpenBag = !isOpenBag;
+            if (isOpenBag)
+            {
+                GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
+                bagMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(101, 132.596f);
+            }
+            else
+            {
+                GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, true);
+                bagMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(-3744, 132.596f);
+            }
         }
 
         if (charBase)

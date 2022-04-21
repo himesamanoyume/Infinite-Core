@@ -41,6 +41,7 @@ public enum EquipQuality
 /// </summary>
 public enum EquipSuit
 {
+    Null,
     [Tooltip("持之以恒")]
     Preserve,
     [Tooltip("天赋异禀")]
@@ -73,8 +74,28 @@ public enum EquipSuit
 public enum EquipHead
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 /// <summary>
@@ -83,8 +104,28 @@ public enum EquipHead
 public enum EquipArmor
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 /// <summary>
@@ -93,8 +134,28 @@ public enum EquipArmor
 public enum EquipHand
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 /// <summary>
@@ -103,8 +164,28 @@ public enum EquipHand
 public enum EquipTrousers
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 /// <summary>
@@ -113,8 +194,28 @@ public enum EquipTrousers
 public enum EquipKnee
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 /// <summary>
@@ -123,8 +224,28 @@ public enum EquipKnee
 public enum EquipBoots
 {
     Null,
-    [Tooltip("持之以恒系列")]
-    Preserve
+    [Tooltip("持之以恒")]
+    Preserve,
+    [Tooltip("天赋异禀")]
+    TheGifted,
+    [Tooltip("虚晃一枪")]
+    FeintShot,
+    [Tooltip("心急如焚")]
+    Worried,
+    [Tooltip("嗜血狂魔")]
+    Bloodthirsty,
+    [Tooltip("狂战士")]
+    Berserker,
+    [Tooltip("固若金汤")]
+    Impregnable,
+    [Tooltip("涌泉相报")]
+    YongQuanXiangBao,
+    [Tooltip("赏金猎人")]
+    BountyHunter,
+    [Tooltip("生命源泉")]
+    Lifespring,
+    [Tooltip("狂暴轰入")]
+    CrazyAttack
 }
 
 #endregion

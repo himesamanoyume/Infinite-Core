@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3121118744865694609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5317171701172321464}
+  - component: {fileID: 3629260053405745659}
+  m_Layer: 0
+  m_Name: PatrolMonsterGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5317171701172321464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121118744865694609}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 735023897703015834}
+  - {fileID: 515171702147478440}
+  - {fileID: 2611611286636179992}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3629260053405745659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121118744865694609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11bc7c8a2cfb6fc45b6df7b25505b7e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &6090824761588294817
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5317171701172321464}
+    m_Modifications:
+    - target: {fileID: 1259490272339368446, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292342947892957753, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.268
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027300526949257307, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_Name
+      value: PatrolMonster (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+--- !u!4 &515171702147478440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+  m_PrefabInstance: {fileID: 6090824761588294817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6454750500553765523
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5317171701172321464}
+    m_Modifications:
+    - target: {fileID: 1259490272339368446, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292342947892957753, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.555
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027300526949257307, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_Name
+      value: PatrolMonster
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+--- !u!4 &735023897703015834 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+  m_PrefabInstance: {fileID: 6454750500553765523}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8619603359706604817
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5317171701172321464}
+    m_Modifications:
+    - target: {fileID: 1259490272339368446, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292342947892957753, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.569
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.555
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027300526949257307, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+      propertyPath: m_Name
+      value: PatrolMonster (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+--- !u!4 &2611611286636179992 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6026015547627067145, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+  m_PrefabInstance: {fileID: 8619603359706604817}
+  m_PrefabAsset: {fileID: 0}

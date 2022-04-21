@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &358383827742632504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4071709229697802898}
+  m_Layer: 0
+  m_Name: RuleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4071709229697802898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358383827742632504}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1252089327796656336}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1252089327796656337
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,6 +60,7 @@ Transform:
   - {fileID: 1252089328102079823}
   - {fileID: 141483015129524862}
   - {fileID: 8694586278144626214}
+  - {fileID: 4071709229697802898}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -215,3 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c9c8d82a92f78419d92039c19cfe39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  redPatrolMonsterSpawnPos1: {fileID: 0}
+  redPatrolMonsterSpawnPos2: {fileID: 0}
+  redPatrolMonsterSpawnPos3: {fileID: 0}
+  redPatrolMonsterSpawnPos4: {fileID: 0}
+  bluePatrolMonsterSpawnPos1: {fileID: 0}
+  bluePatrolMonsterSpawnPos2: {fileID: 0}
+  bluePatrolMonsterSpawnPos3: {fileID: 0}
+  bluePatrolMonsterSpawnPos4: {fileID: 0}
+  patrolMonsterGroup: {fileID: 3121118744865694609, guid: cab8a50d51daac84ca6ff9ada055b928, type: 3}

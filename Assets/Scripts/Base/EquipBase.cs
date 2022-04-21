@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class EquipBase : MonoBehaviour
 {
@@ -10,6 +10,7 @@ public class EquipBase : MonoBehaviour
     /// </summary>
     //public EquipID equipID;
 
+    [Header("装备属性")]
     /// <summary>
     /// 装备类型
     /// </summary>
@@ -50,10 +51,30 @@ public class EquipBase : MonoBehaviour
     /// </summary>
     public EquipSuit equipSuit;
 
+    [Header("UI")]
+    public Text equipNameText;
+    public Text mainEntryText;
+    public Text mainEntryValueText;
+    public Image mainEntryQualityIcon;
+    public Slider mainEntrySlider;
+    public Text firstEntryText;
+    public Text secondEntryText;
+    public Text thirdEntryText;
+    public Image background;
+    public Button button;
+
     #region props
 
-    Color isWear = new Color(0, 0.4f, 0.1f);
-    Color noWear = new Color(0.4f, 0.4f, 0.4f);
+    Color normalColor = new Color(0.679f, 0.672f, 0.679f);
+    Color artifactColor = new Color(0.886f, 0.313f, 0.886f);
+    Color epicColor = new Color(1, 0.739f, 0.297f);
+    Color strangeColor = new Color(1, 0, 0.270f);
+    Color isWearColor = new Color(0, 0.4f, 0.1f);
+    Color noWearColor = new Color(0.4f, 0.4f, 0.4f);
+
+    bool isWear = false; 
+    GameObject wearGameObject;
+    GameObject contentGameObject;
 
     int minNormalAttackValue = 500;
     int minArtifactAttackValue = 750;
@@ -89,7 +110,9 @@ public class EquipBase : MonoBehaviour
 
     public void InitEquip()
     {
-        equipType = (EquipType)Random.Range(1, System.Enum.GetNames(typeof(EquipType)).Length + 1);
+        equipType = (EquipType)Random.Range(0, System.Enum.GetNames(typeof(EquipType)).Length + 1);
+
+        contentGameObject = GameObject.FindGameObjectWithTag(equipType.ToString() + "Content");
 
         float temp = Random.Range(0, 1f);
         if (0<=temp && temp< 0.5f)
@@ -138,8 +161,21 @@ public class EquipBase : MonoBehaviour
                 break;
         }
 
-        InitEntry(equipQuality);
+        InitEntry();
+        InitText();
 
+        wearGameObject = GameObject.FindGameObjectWithTag(equipType.ToString() + "Wear");
+
+        button.onClick.AddListener(() =>
+        {
+            if (!isWear)
+            {
+                wearGameObject.transform.GetChild(0).GetComponent<EquipBase>().TakeOffEquip();
+                gameObject.transform.SetParent(gameObject.transform);
+                isWear = true;
+            }
+            
+        });
     }
 
     int RandomMainValue(int min, int max)
@@ -152,6 +188,75 @@ public class EquipBase : MonoBehaviour
         return Random.Range(min, max);
     } 
 
+    public void TakeOffEquip()
+    {
+        contentGameObject.transform.SetParent(gameObject.transform);
+        isWear = false;
+    }
+    
+    void InitText()
+    {
+        equipNameText.text = equipSuit.ToString() + equipType.ToString();
+        mainEntryText.text = mainEntry.ToString();
+        mainEntryValueText.text = mainEntryValue.ToString();
+        switch (equipQuality)
+        {
+            case EquipQuality.Normal:
+                mainEntryQualityIcon.color = normalColor;
+                InitViceEntry(firstEntryText, firstEntry);
+                break;
+            case EquipQuality.Artifact:
+                mainEntryQualityIcon.color = artifactColor;
+                InitViceEntry(firstEntryText, firstEntry);
+                InitViceEntry(secondEntryText, secondEntry);
+                break;
+            case EquipQuality.Epic:
+                mainEntryQualityIcon.color = epicColor;
+                InitViceEntry(firstEntryText, firstEntry);
+                InitViceEntry(secondEntryText, secondEntry);
+                InitViceEntry(thirdEntryText, thirdEntry);
+                break;
+            case EquipQuality.Strange:
+                mainEntryQualityIcon.color = strangeColor;
+                InitViceEntry(firstEntryText, firstEntry);
+                InitViceEntry(secondEntryText, secondEntry);
+                InitViceEntry(thirdEntryText, thirdEntry);
+                break;
+        }
+        switch (mainEntry)
+        {
+            case MainEntry.Attack:
+                mainEntrySlider.maxValue = maxAttackValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+            case MainEntry.Health:
+                mainEntrySlider.maxValue = maxHealthValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+            case MainEntry.CriticalHit:
+                mainEntrySlider.maxValue = maxCriticalHitValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+            case MainEntry.CriticalHitRate:
+                mainEntrySlider.maxValue = maxCriticalHitRateValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+            case MainEntry.Defence:
+                mainEntrySlider.maxValue = maxDefenceValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+            case MainEntry.AttackSpeed:
+                mainEntrySlider.maxValue = maxAttackSpeedValue;
+                mainEntrySlider.value = mainEntryValue;
+                break;
+        }
+        
+    }
+
+    void InitViceEntry(Text target, EntryLevelUp targetLevelUp)
+    {
+        target.text = targetLevelUp.ToString();
+    }
 
     void InitHeadMainValue()
     {
@@ -267,7 +372,7 @@ public class EquipBase : MonoBehaviour
         }
     }
 
-    void InitEntry(EquipQuality equipQuality)
+    void InitEntry()
     {
         switch (equipQuality)
         {
@@ -286,9 +391,14 @@ public class EquipBase : MonoBehaviour
         }
     }
 
-
     public void GetEquipBase(out EquipBase equipBase)
     {
         equipBase = this;
+    }
+
+
+    private void Start()
+    {
+        
     }
 }

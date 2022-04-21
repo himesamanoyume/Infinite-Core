@@ -10,6 +10,18 @@ TagManager:
   - Ground
   - GroundCheck
   - PlayerInfoBar
+  - HeadWear
+  - ArmorWear
+  - HandWear
+  - TrousersWear
+  - KneeWear
+  - BootsWear
+  - HeadContent
+  - ArmorContent
+  - HandContent
+  - TrousersContent
+  - KneeContent
+  - BootsContent
   layers:
   - Default
   - TransparentFX
