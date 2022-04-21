@@ -4,6 +4,8 @@ using UnityEngine;
 
 using Photon.Pun;
 
+
+
 public class MonsterController : MonoBehaviour
 {
     public enum MonsterStateType
@@ -25,10 +27,7 @@ public class MonsterController : MonoBehaviour
     public MonsterType monsterType;
     public GameObject monsterInfoBarPrefab;
 
-    /// <summary>
-    /// 初始位置 Back状态时会返回此处
-    /// </summary>
-    private Vector3 initPos;
+    
 
     private GameObject myMonsterInfoBar;
 
@@ -36,11 +35,17 @@ public class MonsterController : MonoBehaviour
 
     bool isGround;
     public Transform groundCheck;
-    public LayerMask layerMask;
-    float checkRadius = 0.2f;
+    public LayerMask groundLayerMask;
+    public LayerMask checkPlayerLayerMask;
+    float groundCheckRadius = 0.2f;
+    
     Vector3 velocity = Vector3.zero;
     public float gravity;
-    CharacterController controller;
+
+    
+    [HideInInspector]
+    public CharacterController controller;
+
     Transform targetCanvas;
 
     // Start is called before the first frame update
@@ -48,14 +53,13 @@ public class MonsterController : MonoBehaviour
     {
         InitMonsterData();
 
-        initPos = transform.position;
-
         photonView = GetComponent<PhotonView>();
 
         controller = GetComponent<CharacterController>();
 
         targetCanvas = GameObject.Find("PlayerInfoCanvas").transform;
 
+        //--
         switch (monsterType)
         {
             case MonsterType.PatrolMonster:
@@ -68,39 +72,61 @@ public class MonsterController : MonoBehaviour
                 GetMonsterData(infiniteCore);
                 break;
         }
+        //-- init end
+
+        paramater.initPos = transform.position;
 
         states.Add(MonsterStateType.Idle, new IdleState(this));
         states.Add(MonsterStateType.Attacking, new AttackingState(this));
         states.Add(MonsterStateType.Back, new BackState(this));
 
-        TransitionState(MonsterStateType.Idle);
-
         paramater.animator = GetComponent<Animator>();
+
+        paramater.sphereCollider = GetComponent<SphereCollider>();
 
         myMonsterInfoBar = Instantiate(monsterInfoBarPrefab);
         myMonsterInfoBar.transform.SetParent(targetCanvas);
         myMonsterInfoBar.GetComponent<MonsterInfoBar>().InitMonsterInfoBar(this.transform, this.paramater);
+
+        TransitionState(MonsterStateType.Idle);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        PlayerGravity();
-
-        if (paramater.health <= 0)
+        if (photonView.IsMine)
         {
-            Destroy(myMonsterInfoBar);
-            Destroy(gameObject);
+            MonsterGravity();
+
+            if (paramater.health <= 0)
+            {
+                Destroy(myMonsterInfoBar);
+                Destroy(gameObject);
+            }
+
+            currentState.OnUpdate();
+
+            if (Vector3.Distance(transform.parent.transform.position, paramater.initPos) <= 0.1f && !paramater.isTarget)
+            {
+                TransitionState(MonsterStateType.Idle);
+            }
+
+            if (paramater.target)
+            {
+                controller.Move((paramater.target.transform.position - transform.position).normalized * Time.deltaTime * paramater.moveSpeed);
+
+                MonsterTowardChanged(paramater.target.transform);
+            }
         }
     }
 
-    void PlayerGravity()
+
+    void MonsterGravity()
     {
         if (photonView.IsMine)
         {
 
-            isGround = Physics.CheckSphere(groundCheck.position, checkRadius, layerMask);
+            isGround = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayerMask);
             if (isGround && velocity.y < 0)
             {
                 velocity.y = 0;
@@ -116,13 +142,13 @@ public class MonsterController : MonoBehaviour
         if (currentState! != null)
             currentState.OnExit();
         currentState = states[type];
-        currentState.OnExit();
+        currentState.OnEnter();
     }
 
     public void MonsterTowardChanged(Transform target)
     {
         var angle = Mathf.Atan2(target.position.x, target.position.y) * Mathf.Rad2Deg;
-        gameObject.transform.eulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
+        gameObject.transform.localEulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
     }
 
     public void GetMonsterData(Paramater presetParamater)
@@ -141,11 +167,33 @@ public class MonsterController : MonoBehaviour
         patrolMonster.attack = 50;
         patrolMonster.attackCd = 2f;
         patrolMonster.defense = 300;
-        patrolMonster.moveSpeed = 10f;
+        patrolMonster.moveSpeed = 4f;
 
         worldMonster = new Paramater();
 
         infiniteCore = new Paramater();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+        if (other.CompareTag("PlayerModel"))
+        {
+            Debug.LogWarning("Enter");
+            paramater.target = other.gameObject.transform;
+            paramater.isTarget = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("PlayerModel"))
+        {
+            paramater.isTarget = false;
+            //paramater.target = null;
+
+            paramater.target.transform.position = paramater.initPos;
+        }
     }
 }
 
@@ -161,7 +209,10 @@ public class Paramater
     public float awardExp;
     public float awardMoney;
     public Animator animator;
-
+    public Transform target;
+    public Vector3 initPos;
+    public SphereCollider sphereCollider;
+    public bool isTarget;
 }
 
 public interface IState
@@ -176,18 +227,20 @@ public interface IState
 public class IdleState : IState
 {
     private MonsterController monsterController;
-    private Paramater paramater;
 
     public IdleState(MonsterController monsterController)
     {
         this.monsterController = monsterController;
-        this.paramater = monsterController.paramater;
-
     }
 
     public void OnUpdate()
     {
         //球形检测到有tag为PlayerModel时设为target 进入Attacking
+
+        if (monsterController.paramater.isTarget)
+        {
+            monsterController.TransitionState(MonsterController.MonsterStateType.Attacking);
+        }
     }
 
     public void OnExit()
@@ -197,24 +250,26 @@ public class IdleState : IState
 
     public void OnEnter()
     {
-
+        Debug.LogWarning("Idle");
+        monsterController.paramater.sphereCollider.radius = 10f;
     }
 }
 
-public class AttackingState : IState
+public class AttackingState :  IState
 {
     private MonsterController monsterController;
-    private Paramater paramater;
 
     public AttackingState(MonsterController monsterController)
     {
         this.monsterController = monsterController;
-        this.paramater = monsterController.paramater;
     }
 
     public void OnUpdate()
     {
-
+        if (!monsterController.paramater.isTarget)
+        {
+            monsterController.TransitionState(MonsterController.MonsterStateType.Back);
+        }
     }
 
     public void OnExit()
@@ -224,19 +279,19 @@ public class AttackingState : IState
 
     public void OnEnter()
     {
-
+        monsterController.paramater.sphereCollider.radius = 15f;
+        Debug.LogWarning("Attack Enter");
     }
+
 }
 
 public class BackState : IState
 {
     private MonsterController monsterController;
-    private Paramater paramater;
 
     public BackState(MonsterController monsterController)
     {
         this.monsterController = monsterController;
-        this.paramater = monsterController.paramater;
     }
 
     public void OnUpdate()
@@ -251,6 +306,9 @@ public class BackState : IState
 
     public void OnEnter()
     {
+        
 
+        monsterController.paramater.sphereCollider.radius = 0.01f;
+        Debug.LogWarning("Back Enter");
     }
 }

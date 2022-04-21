@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6670529175098057658}
   - component: {fileID: 2324064519577645683}
   - component: {fileID: 8447122507708229725}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7828554704633682638}
   - component: {fileID: 3582941198726743515}
   - component: {fileID: 3583927794871379588}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Check
   m_TagString: GroundCheck
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 1167034307262293716}
   - component: {fileID: 1851854394834265673}
   - component: {fileID: 1634461797708726204}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 1307905066947866740}
   - component: {fileID: -6445740049516378270}
   - component: {fileID: 1733294401604970469}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tanker
   m_TagString: PlayerModel
   m_Icon: {fileID: 0}
@@ -583,6 +583,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rapier
       objectReference: {fileID: 0}
+    - target: {fileID: 4385990178902471720, guid: 7e807b2bf253b1e4fbb67db8aec89bfa, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e807b2bf253b1e4fbb67db8aec89bfa, type: 3}
 --- !u!1001 &1207790300845354423
@@ -640,6 +644,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftArm
       objectReference: {fileID: 0}
+    - target: {fileID: 3894123894547830781, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7943707875799449740, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
 --- !u!4 &1089798311455883489 stripped
@@ -657,6 +669,10 @@ PrefabInstance:
     - target: {fileID: 2260097789832059352, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
       propertyPath: m_Name
       value: RightArm
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260097789832059352, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3930126044674990963, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
       propertyPath: m_RootOrder
@@ -702,6 +718,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5146057200623963817, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
 --- !u!4 &4928879953610077290 stripped
@@ -719,6 +739,10 @@ PrefabInstance:
     - target: {fileID: 1149137616435854573, guid: 4005c54b73c3d9e4d920c6e70a3c1ff8, type: 3}
       propertyPath: m_Name
       value: TankShield
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149137616435854573, guid: 4005c54b73c3d9e4d920c6e70a3c1ff8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4375812221205201279, guid: 4005c54b73c3d9e4d920c6e70a3c1ff8, type: 3}
       propertyPath: m_RootOrder

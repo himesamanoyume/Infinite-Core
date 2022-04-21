@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7395925755810499284}
   - component: {fileID: 5766085055946595069}
   - component: {fileID: 2191262268521381009}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 5584543423215619188}
   - component: {fileID: 8614023126811488020}
   - component: {fileID: 6850987481380757034}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Check
   m_TagString: GroundCheck
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 1167034307262293716}
   - component: {fileID: 1851854394834265673}
   - component: {fileID: 1634461797708726204}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 1307905066947866740}
   - component: {fileID: -2588786748352845729}
   - component: {fileID: 1162445596391529753}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Doctor
   m_TagString: PlayerModel
   m_Icon: {fileID: 0}
@@ -539,6 +539,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightArm
       objectReference: {fileID: 0}
+    - target: {fileID: 2260097789832059352, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3930126044674990963, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -582,6 +586,10 @@ PrefabInstance:
     - target: {fileID: 3930126044674990963, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5146057200623963817, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a8cd9cf8d91f740938572dd394f097, type: 3}
@@ -645,6 +653,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rod
       objectReference: {fileID: 0}
+    - target: {fileID: 3859201724489341377, guid: 3647e3388654c32478432ebcdd6f3c3d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305889027383495178, guid: 3647e3388654c32478432ebcdd6f3c3d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3647e3388654c32478432ebcdd6f3c3d, type: 3}
 --- !u!1001 &8603233700797796486
@@ -701,6 +717,14 @@ PrefabInstance:
     - target: {fileID: 3894123894547830781, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
       propertyPath: m_Name
       value: LeftArm
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894123894547830781, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7943707875799449740, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd38a175525a22499b81ab26e556db5, type: 3}
