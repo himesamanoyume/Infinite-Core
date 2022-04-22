@@ -27,7 +27,7 @@ public class MonsterController : MonoBehaviour
     public MonsterType monsterType;
     public GameObject monsterInfoBarPrefab;
 
-    
+    public GameObject monsterAttackCubePrefab;
 
     private GameObject myMonsterInfoBar;
 
@@ -96,6 +96,15 @@ public class MonsterController : MonoBehaviour
     {
         if (photonView.IsMine)
         {
+
+            //if (paramater.isChaseTarget)
+            //{
+            //    if (!paramater.currentTarget.CompareTag("PlayerModel"))
+            //    {
+            //        paramater.currentTarget = null;
+            //    }
+            //}
+
             MonsterGravity();
 
             if (paramater.health <= 0)
@@ -111,15 +120,13 @@ public class MonsterController : MonoBehaviour
                 TransitionState(MonsterStateType.Idle);
             }
 
-            //if (paramater.target && paramater.isTarget)
-            if (paramater.isChase)
+            if (paramater.isChase && paramater.isChaseTarget && paramater.currentTarget)
             {
                 //追击状态
-                controller.Move((paramater.target.transform.position - transform.position).normalized * Time.deltaTime * paramater.moveSpeed);
+                controller.Move((paramater.currentTarget.transform.position - transform.position).normalized * Time.deltaTime * paramater.moveSpeed);
 
-                MonsterTowardChanged(paramater.target.transform.position);
+                MonsterTowardChanged(paramater.currentTarget.transform.position);
             }
-            //else if (!paramater.isTarget && !paramater.target && !paramater.isIdle)
             else if (paramater.isBack)
             {
                 //返回状态
@@ -127,7 +134,6 @@ public class MonsterController : MonoBehaviour
 
                 MonsterTowardChanged(paramater.initPos);
             }
-            //else if (!paramater.isIdle)
             else if (paramater.isIdle)
             {
 
@@ -135,6 +141,90 @@ public class MonsterController : MonoBehaviour
         }
     }
 
+    float GetFinalAttack(float t_attack, float t_criticalHit, float t_criticalHitRate, float t_ratio)
+    {
+        if (t_criticalHitRate == 1) return t_attack * 0.5f * t_criticalHit * t_ratio;
+
+        if (Random.Range(0, 1f) <= t_criticalHitRate)
+        {
+            return t_attack * 0.5f * (1 + t_criticalHit) * t_ratio;
+        }
+        else
+        {
+            return t_attack * 0.5f * t_ratio;
+        }
+
+    }
+
+    public void AnimationEventOnMonsterAttack()
+    {
+        if (photonView.IsMine)
+        {
+            //if (this.photonView.CreatorActorNr != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
+            float finalAttack = GetFinalAttack(paramater.attack, 0.8f, 0.05f, 1);
+
+            InitMonsterAttackCubeData(transform.position, transform.rotation, finalAttack);
+        }
+    }
+
+    [PunRPC]
+    public IEnumerator SpawnAttackCube(Vector3 position, Quaternion rotation, Vector3[] attackCubeData, float[] attackCubeData2, PhotonMessageInfo info)
+    {
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+
+        GameObject attackCube = Instantiate(monsterAttackCubePrefab, position, Quaternion.identity);
+
+        //传入的attackCubeData应该为碰撞体的信息
+        attackCube.GetComponent<MonsterAttackCube>().InitAttackCube(rotation * Vector3.forward, Mathf.Abs(lag), attackCubeData, attackCubeData2);
+
+        yield return new WaitForSeconds(0.5f);
+
+    }
+
+    void InitMonsterAttackCubeData(Vector3 selfPos, Quaternion modelRotation, float finalAttack)
+    {
+        Vector3[] attackCubeData = SetAttackCubeData(
+                       modelRotation * Vector3.forward,
+                       new Vector3(1.5f, 1.5f, 2) * paramater.attackRange * 0.1f,
+                       modelRotation * Vector3.forward,
+                       new Vector3(1.5f, 1.5f, 2) * paramater.attackRange * 0.1f
+                       );
+
+        float[] attackCubeData2 = SetAttackCubeData2(
+            0.3f,
+            paramater.finalDamage,
+            0,
+            finalAttack
+            );
+
+        photonView.RPC("SpawnAttackCube", RpcTarget.All, selfPos, modelRotation, attackCubeData, attackCubeData2);
+    }
+
+    Vector3[] SetAttackCubeData(Vector3 initOffset, Vector3 initScale, Vector3 finalOffset, Vector3 finalScale)
+    {
+        Vector3[] data = new Vector3[4]
+        {
+            initOffset,
+            initScale,
+            finalOffset,
+            finalScale
+        };
+        return data;
+    }
+
+    float[] SetAttackCubeData2(float initToFinalTime, float finalDamage, float activeTime, float finalAttack)
+    {
+        float[] data = new float[4]
+        {
+            initToFinalTime,
+            finalDamage,
+            activeTime,
+            finalAttack
+        };
+
+        return data;
+    }
 
     void MonsterGravity()
     {
@@ -179,6 +269,8 @@ public class MonsterController : MonoBehaviour
         patrolMonster = new Paramater();
         patrolMonster.health = 500f;
         patrolMonster.attack = 50;
+        patrolMonster.attackRange = 10;
+        patrolMonster.finalDamage = 1;
         patrolMonster.attackCd = 2f;
         patrolMonster.defense = 300;
         patrolMonster.moveSpeed = 4f;
@@ -194,8 +286,8 @@ public class MonsterController : MonoBehaviour
         if (other.CompareTag("PlayerModel"))
         {
             //Debug.LogWarning("Enter");
-            paramater.target = other.gameObject.transform;
-            paramater.isTarget = true;
+            paramater.currentTarget = other.gameObject.transform;
+            paramater.isChaseTarget = true;
         }
     }
 
@@ -203,9 +295,9 @@ public class MonsterController : MonoBehaviour
     {
         if (other.CompareTag("PlayerModel"))
         {
-            paramater.isTarget = false;
+            paramater.isChaseTarget = false;
 
-            paramater.target = null;
+            paramater.currentTarget = null;
 
             //paramater.target.position = paramater.initPos;
         }
@@ -219,16 +311,18 @@ public class Paramater
     public float health;
     public int attack;
     public float attackCd;
+    public float attackRange;
+    public float finalDamage;
     public int defense;
     public float moveSpeed;
     public float awardExp;
     public float awardMoney;
     public Animator animator;
-    public Transform target;
+    public Transform currentTarget;
     public Transform selfTransform;
     public Vector3 initPos;
     public SphereCollider sphereCollider;
-    public bool isTarget;
+    public bool isChaseTarget;
     public bool isIdle;
     public bool isChase;
     public bool isAttack;
@@ -258,7 +352,7 @@ public class IdleState : IState
     public void OnUpdate()
     {
 
-        if (paramater.isTarget)
+        if (paramater.isChaseTarget)
         {
             mController.TransitionState(MonsterStateType.Chase);
         }
@@ -341,14 +435,23 @@ public class ChaseState : IState
             mController.TransitionState(MonsterStateType.Back);
         }
 
-        if (!paramater.isTarget)
+        if (!paramater.isChaseTarget && paramater.currentTarget == null)
         {
             mController.TransitionState(MonsterStateType.Back);
         }
 
-        if (Vector3.Distance(paramater.target.position, new Vector3(paramater.selfTransform.position.x, paramater.target.position.y, paramater.selfTransform.position.z)) <= 1.8f && paramater.isChase && attackCdCountDown <= 0)
+        if (paramater.isChaseTarget && paramater.isChase && attackCdCountDown <= 0 && paramater.currentTarget)
         {
-            mController.TransitionState(MonsterStateType.Attack);
+            if (Vector3.Distance(paramater.currentTarget.position, new Vector3(paramater.selfTransform.position.x, paramater.currentTarget.position.y, paramater.selfTransform.position.z)) <= 1.8f)
+            {
+                mController.TransitionState(MonsterStateType.Attack);
+            }
+            
+        }
+
+        if (Vector3.Distance(paramater.initPos, paramater.selfTransform.position) >= 25f)
+        {
+            mController.TransitionState(MonsterStateType.Back);
         }
 
     }
@@ -393,6 +496,8 @@ public class BackState : IState
     public void OnEnter()
     {
         paramater.isBack = true;
+        paramater.isChaseTarget = false;
+        paramater.currentTarget = null;
         paramater.sphereCollider.radius = 0.01f;
         Debug.LogWarning("Back Enter");
     }

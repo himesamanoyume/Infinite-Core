@@ -1226,13 +1226,20 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (lastOneHurtActorNumber != -1)
         {
-            string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+            if (lastOneHurtActorNumber == -2)
+            {
+                photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, PlayerName + "¾¹±»Ò°¹Ö»÷É±!");
+            }
+            else
+            {
+                string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
 
-
-
-            photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
-            photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+                photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
+                photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+            }
+           
         }
+
         args = new object[] { ActorNumber, lastOneHurtActorNumber };
         lastOneHurtActorNumber = -1;
         return true;
@@ -1242,12 +1249,19 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (lastOneHurtActorNumber != -1)
         {
-            string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
+            if (lastOneHurtActorNumber == -2)
+            {
+                photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, PlayerName + "¾¹±»Ò°¹Ö»÷É±!");
+            }
+            else
+            {
+                string killerName = charManager.recorders[lastOneHurtActorNumber].GetComponent<CharBase>().PlayerName;
 
-            photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
-            photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+                photonView.RPC("GetKillCount", RpcTarget.All, lastOneHurtActorNumber);
+                photonView.RPC("BroadcastInfo", RpcTarget.AllViaServer, killerName + "»÷É±ÁË" + PlayerName);
+            }
         }
-        
+
         args = new object[] { ActorNumber, lastOneHurtActorNumber };
         lastOneHurtActorNumber = -1;
         return true;

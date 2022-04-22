@@ -412,7 +412,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, true);
         }
-        
     }
 
 
@@ -585,22 +584,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     bool OnPlayerDamagedCheck(out object[] args)
     {
-        //if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
-        //{
-        //    args = new object[] { -1 };
-        //    return true;
-        //}
         if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
         {
             //Debug.LogWarning("Hurted!!!");
             args = new object[] { enemyActorNumber, receiveFinalAttack, receiveFinalDamage };
             return true;
         }
-        else
+        else if(enemyActorNumber == -1)
         {
             args = new object[] { -1 };
             return true;
 
+        }else
+        {
+            args = new object[] { -2 };
+            return true;
         }
 
     }
