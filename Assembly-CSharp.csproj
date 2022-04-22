@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Controller\RecorderController.cs" />
     <Compile Include="Assets\Scripts\Enum\CharEnum.cs" />
     <Compile Include="Assets\Scripts\Misc\PlayerInfo.cs" />
+    <Compile Include="Assets\Scripts\Specific\MonsterGroup.cs" />
     <Compile Include="Assets\Scripts\Base\GameEventBase.cs" />
     <Compile Include="Assets\Scripts\Misc\PlayerNameInputField.cs" />
     <Compile Include="Assets\Scripts\Misc\CameraWork.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
-    <Compile Include="Assets\Scripts\Specific\MonsterGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

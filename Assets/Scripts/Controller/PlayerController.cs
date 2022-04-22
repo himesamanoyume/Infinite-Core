@@ -165,6 +165,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             var playerScreenPoint = m_camera.WorldToScreenPoint(this.transform.position);
             var point = Input.mousePosition - playerScreenPoint;
             var angle = Mathf.Atan2(point.x, point.y) * Mathf.Rad2Deg;
+
             playerModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, angle, transform.eulerAngles.z);
         }
         
