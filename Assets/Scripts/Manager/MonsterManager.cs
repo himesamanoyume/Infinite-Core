@@ -3,73 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
+using System.Threading;
+using System;
 
 public class MonsterManager : MonoBehaviour
 {
+    public Transform redPatrolMonsterSpawnPos0;
     public Transform redPatrolMonsterSpawnPos1;
     public Transform redPatrolMonsterSpawnPos2;
     public Transform redPatrolMonsterSpawnPos3;
-    public Transform redPatrolMonsterSpawnPos4;
 
-    public Transform bluePatrolMonsterSpawnPos1;
-    public Transform bluePatrolMonsterSpawnPos2;
-    public Transform bluePatrolMonsterSpawnPos3;
     public Transform bluePatrolMonsterSpawnPos4;
+    public Transform bluePatrolMonsterSpawnPos5;
+    public Transform bluePatrolMonsterSpawnPos6;
+    public Transform bluePatrolMonsterSpawnPos7;
 
-    Dictionary<Transform, bool> isEmptyPatrol = new Dictionary<Transform, bool>();
-
+    List<Transform> patrolPosList = new List<Transform>();
+   
     public GameObject patrolMonsterGroup;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        isEmptyPatrol.Add(redPatrolMonsterSpawnPos1, true);
-        isEmptyPatrol.Add(redPatrolMonsterSpawnPos2, true);
-        isEmptyPatrol.Add(redPatrolMonsterSpawnPos3, true);
-        isEmptyPatrol.Add(redPatrolMonsterSpawnPos4, true);
-        isEmptyPatrol.Add(bluePatrolMonsterSpawnPos1, true);
-        isEmptyPatrol.Add(bluePatrolMonsterSpawnPos2, true);
-        isEmptyPatrol.Add(bluePatrolMonsterSpawnPos3, true);
-        isEmptyPatrol.Add(bluePatrolMonsterSpawnPos4, true);
+        patrolPosList.Add(redPatrolMonsterSpawnPos0);
+        patrolPosList.Add(redPatrolMonsterSpawnPos1);
+        patrolPosList.Add(redPatrolMonsterSpawnPos2);
+        patrolPosList.Add(redPatrolMonsterSpawnPos3);
+        patrolPosList.Add(bluePatrolMonsterSpawnPos4);
+        patrolPosList.Add(bluePatrolMonsterSpawnPos5);
+        patrolPosList.Add(bluePatrolMonsterSpawnPos6);
+        patrolPosList.Add(bluePatrolMonsterSpawnPos7);
+
+        PatrolMonsterGroupSpawn();
     }
 
-    // Update is called once per frame
     void Update()
+    {
+       
+    }
+
+    void PatrolMonsterGroupSpawn()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            try
+            for (int i = 0; i < patrolPosList.Count; i++)
             {
-                foreach (var item in isEmptyPatrol)
-                {
-                    if (item.Value == true)
-                    {
-                        StartCoroutine(SpawnMonster(patrolMonsterGroup, 20f, item.Key));
-                    }
-                }
-            }
-            catch (System.Exception)
-            {
-
+                GameObject gameObject = PhotonNetwork.InstantiateRoomObject(patrolMonsterGroup.name, patrolPosList[i].position, Quaternion.identity);
+                gameObject.GetComponent<MonsterGroup>().InitGroup(MonsterType.PatrolMonster, i);
             }
         }
+
     }
 
-    IEnumerator SpawnMonster(GameObject targetGroup, float spawnTime, Transform pos)
-    {
-        isEmptyPatrol[pos] = false;
-        yield return spawnTime;
-        PhotonNetwork.InstantiateRoomObject(targetGroup.name, pos.position, Quaternion.identity);
-        
-    }
-
-    
-
-    public void GroupWasKilled(Transform pos)
-    {
-        isEmptyPatrol[pos] = true;
-    }
 }
 
 

@@ -669,15 +669,6 @@ public class CharManager : MonoBehaviourPunCallbacks
             FindPlayerModel(actorNumber,out GameObject playerModel);
             if (playerModel == null) { return; }
 
-            //if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
-            //{
-            //    FindPlayerInfoBar(actorNumber, out GameObject playerInfoBar);
-            //    if (playerInfoBar == null) { return; }
-            //    Debug.LogWarning(playerInfoBar.name);
-            //    Destroy(playerInfoBar);
-            //    playerInfoBarList.Remove(actorNumber);
-            //}
-
             charBase.Death++;
 
             PhotonNetwork.Destroy(playerModel);

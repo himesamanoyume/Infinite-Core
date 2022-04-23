@@ -81,19 +81,10 @@ public class AttackCube : MonoBehaviour
         this.lag = lag;
         
         owner.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team);
-        //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_TEAM, out object team);
 
         m_team = (TeamEnum)team;
 
-        //Debug.LogWarning(m_team);
-
-        switch (m_team)
-        {
-            //¿ØÖÆcubeÑÕÉ«
-        }
-
-        StartCoroutine("SetActiveBox");
-        
+        StartCoroutine(SetActiveBox());
     }
 
     /// <summary>
@@ -107,29 +98,30 @@ public class AttackCube : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
-        if (!other.CompareTag("PlayerModel")) return;
 
-        PhotonView photonView = other.gameObject.GetPhotonView();
+        if (other.CompareTag("PlayerModel"))
+        {
+            PhotonView photonView = other.gameObject.GetPhotonView();
 
-        int otherActorNumber = photonView.OwnerActorNr;
+            int otherActorNumber = photonView.OwnerActorNr;
 
-        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber) return;
-        if (otherActorNumber == owner.ActorNumber) return;
-        //Debug.LogWarning(other.name+ " " + otherActorNumber + " Enter");
+            if (otherActorNumber == owner.ActorNumber) return;
 
-        //---
-        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
-        charManager.recorders.TryGetValue(otherActorNumber, out GameObject recorder);
-        //---
+            CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
 
-        if (recorder.GetComponent<CharBase>().PlayerTeam == m_team) return;
+            charManager.recorders.TryGetValue(otherActorNumber, out GameObject recorder);
 
-        //Debug.LogWarning(other.name + " " + otherActorNumber + " Enter2");
+            if (recorder.GetComponent<CharBase>().PlayerTeam == m_team) return;
 
-        photonView.RPC("PlayerDamaged",RpcTarget.AllViaServer, otherActorNumber, owner.ActorNumber, finalAttack, finalDamage);
+            photonView.RPC("PlayerDamaged", RpcTarget.AllViaServer, otherActorNumber, owner.ActorNumber, finalAttack, finalDamage);
+        }
+        else if (other.CompareTag("Monster"))
+        {
+            PhotonView photonView = other.gameObject.GetPhotonView();
 
-        //other.GetComponent<PlayerController>().PlayerDamaged(PhotonNetwork.LocalPlayer.ActorNumber, finalAttack , finalDamage);
+            photonView.RPC("MonsterDamaged", RpcTarget.AllViaServer, owner.ActorNumber, finalAttack, finalDamage);
+        }
+
     }
 
     private IEnumerator SetActiveBox()

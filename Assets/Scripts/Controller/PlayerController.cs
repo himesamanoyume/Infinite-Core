@@ -383,15 +383,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (otherActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
-        //Debug.LogWarning(otherActorNumber + " Damaged");
-
         enemyActorNumber = ownerActorNumber;
         receiveFinalAttack = finalAttack;
         receiveFinalDamage = finalDamage;
         
         if (otherActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            //Debug.LogWarning(otherActorNumber + " Damaged2");
             GameEventManager.EnableEvent(EventEnum.OnPlayerDamaged, true);
         }
     }
@@ -586,7 +583,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (enemyActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            //Debug.LogWarning("Hurted!!!");
             args = new object[] { enemyActorNumber, receiveFinalAttack, receiveFinalDamage };
             return true;
         }

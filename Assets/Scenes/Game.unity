@@ -3338,35 +3338,35 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1974600457}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: redPatrolMonsterSpawnPos1
+      propertyPath: redPatrolMonsterSpawnPos0
       value: 
       objectReference: {fileID: 6458508032467114781}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: redPatrolMonsterSpawnPos2
+      propertyPath: redPatrolMonsterSpawnPos1
       value: 
       objectReference: {fileID: 3750582821699619909}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: redPatrolMonsterSpawnPos3
+      propertyPath: redPatrolMonsterSpawnPos2
       value: 
       objectReference: {fileID: 2311023708315151324}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: redPatrolMonsterSpawnPos4
+      propertyPath: redPatrolMonsterSpawnPos3
       value: 
       objectReference: {fileID: 7147571386341761026}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: bluePatrolMonsterSpawnPos1
+      propertyPath: bluePatrolMonsterSpawnPos4
       value: 
       objectReference: {fileID: 6171300331136918152}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: bluePatrolMonsterSpawnPos2
+      propertyPath: bluePatrolMonsterSpawnPos5
       value: 
       objectReference: {fileID: 3165407972270146087}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: bluePatrolMonsterSpawnPos3
+      propertyPath: bluePatrolMonsterSpawnPos6
       value: 
       objectReference: {fileID: 1927752117059077925}
     - target: {fileID: 3973249823306227634, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
-      propertyPath: bluePatrolMonsterSpawnPos4
+      propertyPath: bluePatrolMonsterSpawnPos7
       value: 
       objectReference: {fileID: 6530905878833257539}
     m_RemovedComponents: []
@@ -3764,7 +3764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8764304707669071318, guid: 3b786ae635e0abd45afa5596fd999bcf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.73
+      value: 1.99
       objectReference: {fileID: 0}
     - target: {fileID: 8764304707669071318, guid: 3b786ae635e0abd45afa5596fd999bcf, type: 3}
       propertyPath: m_LocalPosition.z

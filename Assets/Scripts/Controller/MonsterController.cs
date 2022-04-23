@@ -14,16 +14,22 @@ public enum MonsterType
     PatrolMonster, WorldMonster, InfiniteCore
 }
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : MonoBehaviour, IPunObservable
 {
-    
-
+    #region Props
     private IState currentState;
 
     private Dictionary<MonsterStateType, IState> states = new Dictionary<MonsterStateType, IState>();
 
     public Paramater paramater;
+    Paramater patrolMonster;
+    Paramater worldMonster;
+    Paramater infiniteCore;
 
+    public float currentHealth;
+    public float maxHealth;
+
+    public int m_groupId = -1;
     public MonsterType monsterType;
     public GameObject monsterInfoBarPrefab;
 
@@ -38,17 +44,20 @@ public class MonsterController : MonoBehaviour
     public LayerMask groundLayerMask;
     public LayerMask checkPlayerLayerMask;
     float groundCheckRadius = 0.2f;
-    
+
     Vector3 velocity = Vector3.zero;
     public float gravity;
 
-    
     [HideInInspector]
     public CharacterController controller;
 
     Transform targetCanvas;
+    CharManager charManager;
 
-    // Start is called before the first frame update
+    #endregion
+
+    #region Unity Lifecycle
+
     void Start()
     {
         InitMonsterData();
@@ -82,35 +91,44 @@ public class MonsterController : MonoBehaviour
 
         paramater.animator = GetComponent<Animator>();
 
-        paramater.sphereCollider = GetComponent<SphereCollider>();
+        paramater.sphereCollider = transform.GetChild(0).GetComponent<SphereCollider>();
+
+        maxHealth = paramater.health;
+        currentHealth = paramater.health;
 
         myMonsterInfoBar = Instantiate(monsterInfoBarPrefab);
         myMonsterInfoBar.transform.SetParent(targetCanvas);
-        myMonsterInfoBar.GetComponent<MonsterInfoBar>().InitMonsterInfoBar(this.transform, this.paramater);
+        myMonsterInfoBar.GetComponent<MonsterInfoBar>().InitMonsterInfoBar(transform, this);
 
         TransitionState(MonsterStateType.Idle);
+
+        charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (m_groupId != -1)
+        {
+            transform.SetParent(GameObject.Find(monsterType.ToString() + "Group" + m_groupId).transform);
+        }
+
         if (photonView.IsMine)
         {
 
-            //if (paramater.isChaseTarget)
-            //{
-            //    if (!paramater.currentTarget.CompareTag("PlayerModel"))
-            //    {
-            //        paramater.currentTarget = null;
-            //    }
-            //}
-
             MonsterGravity();
 
-            if (paramater.health <= 0)
+            if (currentHealth < maxHealth && currentHealth > 0)
             {
-                Destroy(myMonsterInfoBar);
-                Destroy(gameObject);
+                currentHealth += paramater.restore * Time.deltaTime;
+            }
+            else if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            else if (currentHealth <= 0)
+            {
+                RewardTheKiller(paramater.lastOneHurtActorNumber);
+                PhotonNetwork.Destroy(gameObject);
             }
 
             currentState.OnUpdate();
@@ -141,19 +159,19 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    float GetFinalAttack(float t_attack, float t_criticalHit, float t_criticalHitRate, float t_ratio)
+    private void OnDestroy()
     {
-        if (t_criticalHitRate == 1) return t_attack * 0.5f * t_criticalHit * t_ratio;
+        TransitionState(MonsterStateType.Idle);
+        Destroy(myMonsterInfoBar);
+    }
 
-        if (Random.Range(0, 1f) <= t_criticalHitRate)
-        {
-            return t_attack * 0.5f * (1 + t_criticalHit) * t_ratio;
-        }
-        else
-        {
-            return t_attack * 0.5f * t_ratio;
-        }
+    #endregion
 
+    #region Public Functions
+
+    public void InitController(int id)
+    {
+        m_groupId = id;
     }
 
     public void AnimationEventOnMonsterAttack()
@@ -168,17 +186,61 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public IEnumerator SpawnAttackCube(Vector3 position, Quaternion rotation, Vector3[] attackCubeData, float[] attackCubeData2, PhotonMessageInfo info)
+    public void TransitionState(MonsterStateType type)
     {
-        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+        if (currentState! != null)
+            currentState.OnExit();
+        currentState = states[type];
+        currentState.OnEnter();
+    }
 
-        GameObject attackCube = Instantiate(monsterAttackCubePrefab, position, Quaternion.identity);
+    public void MonsterTowardChanged(Vector3 target)
+    {
 
-        //传入的attackCubeData应该为碰撞体的信息
-        attackCube.GetComponent<MonsterAttackCube>().InitAttackCube(rotation * Vector3.forward, Mathf.Abs(lag), attackCubeData, attackCubeData2);
+        gameObject.transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
+    }
 
-        yield return new WaitForSeconds(0.5f);
+    public void GetMonsterData(Paramater presetParamater)
+    {
+        paramater = presetParamater;
+        paramater.selfTransform = transform;
+    }
+
+    #endregion
+
+    #region Private Functions
+
+    IEnumerator ResetLastOneHurtActorNumber()
+    {
+        yield return new WaitForSeconds(10);
+        paramater.lastOneHurtActorNumber = -2;
+    }
+
+    void RewardTheKiller(int killerActorNumber)
+    {
+        if (killerActorNumber >= 1)
+        {
+            PhotonView otherPhotonView = charManager.recorders[killerActorNumber].GetPhotonView();
+
+            float awardExp = Random.Range(paramater.awardMinExp, paramater.awardMaxExp);
+            int awardMoney = (int)Random.Range(paramater.awardMinMoney, paramater.awardMaxMoney);
+
+            otherPhotonView.RPC("GetMonsterAward",RpcTarget.AllViaServer, killerActorNumber, awardExp,  awardMoney);
+        }
+    }
+
+    float GetFinalAttack(float t_attack, float t_criticalHit, float t_criticalHitRate, float t_ratio)
+    {
+        if (t_criticalHitRate == 1) return t_attack * 0.5f * t_criticalHit * t_ratio;
+
+        if (Random.Range(0, 1f) <= t_criticalHitRate)
+        {
+            return t_attack * 0.5f * (1 + t_criticalHit) * t_ratio;
+        }
+        else
+        {
+            return t_attack * 0.5f * t_ratio;
+        }
 
     }
 
@@ -240,83 +302,99 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    public void TransitionState(MonsterStateType type)
-    {
-        if (currentState! != null)
-            currentState.OnExit();
-        currentState = states[type];
-        currentState.OnEnter();
-    }
-
-    public void MonsterTowardChanged(Vector3 target)
-    {
-
-        gameObject.transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
-    }
-
-    public void GetMonsterData(Paramater presetParamater)
-    {
-        paramater = presetParamater;
-        paramater.selfTransform = transform;
-    }
-
-    Paramater patrolMonster;
-    Paramater worldMonster;
-    Paramater infiniteCore;
-
+    /// <summary>
+    /// 初始化不同类型怪物的数据
+    /// </summary>
     void InitMonsterData()
     {
         patrolMonster = new Paramater();
-        patrolMonster.health = 500f;
+        patrolMonster.health = 500;
         patrolMonster.attack = 50;
+        patrolMonster.restore = 5;
         patrolMonster.attackRange = 10;
         patrolMonster.finalDamage = 1;
-        patrolMonster.attackCd = 2f;
+        patrolMonster.attackCd = 2;
         patrolMonster.defense = 300;
-        patrolMonster.moveSpeed = 4f;
+        patrolMonster.moveSpeed = 4;
+        patrolMonster.awardMinExp = 100;
+        patrolMonster.awardMaxExp = 200;
+        patrolMonster.awardMinMoney = 15;
+        patrolMonster.awardMaxMoney = 25;
 
         worldMonster = new Paramater();
 
         infiniteCore = new Paramater();
     }
 
-    private void OnTriggerEnter(Collider other)
+    #endregion
+
+    #region Pun Function
+
+    [PunRPC]
+    public IEnumerator SpawnAttackCube(Vector3 position, Quaternion rotation, Vector3[] attackCubeData, float[] attackCubeData2, PhotonMessageInfo info)
     {
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+
+        GameObject attackCube = Instantiate(monsterAttackCubePrefab, position, Quaternion.identity);
+
+        //传入的attackCubeData应该为碰撞体的信息
+        attackCube.GetComponent<MonsterAttackCube>().InitAttackCube(rotation * Vector3.forward, Mathf.Abs(lag), attackCubeData, attackCubeData2);
+
+        yield return new WaitForSeconds(0.5f);
+
+    }
+
+    [PunRPC]
+    public void MonsterDamaged(int playerActorNumber, float finalAttack, float finalDamage)
+    {
+
+        StopCoroutine(ResetLastOneHurtActorNumber());
+        paramater.lastOneHurtActorNumber = playerActorNumber;
+        float hurt = finalAttack * (1 - paramater.defense * 0.00001f) * finalDamage;
+
+        currentHealth -= hurt;
+            
+        StartCoroutine(ResetLastOneHurtActorNumber());
         
-        if (other.CompareTag("PlayerModel"))
-        {
-            //Debug.LogWarning("Enter");
-            paramater.currentTarget = other.gameObject.transform;
-            paramater.isChaseTarget = true;
-        }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (other.CompareTag("PlayerModel"))
+        if (stream.IsWriting)
         {
-            paramater.isChaseTarget = false;
-
-            paramater.currentTarget = null;
-
-            //paramater.target.position = paramater.initPos;
+            stream.SendNext(currentHealth);
+            stream.SendNext(maxHealth);
+            stream.SendNext(m_groupId);
+        }
+        else
+        {
+            currentHealth = (float)stream.ReceiveNext();
+            maxHealth = (float)stream.ReceiveNext();
+            m_groupId = (int)stream.ReceiveNext();
         }
     }
+
+    #endregion
+
 }
 
-[SerializeField]
+#region 偷懒 (State Machine)
+
 public class Paramater
 {
-    public int id;
+    public int lastOneHurtActorNumber;
     public float health;
     public int attack;
+    public float restore;
     public float attackCd;
     public float attackRange;
     public float finalDamage;
     public int defense;
     public float moveSpeed;
-    public float awardExp;
-    public float awardMoney;
+    public float awardMinExp;
+    public float awardMaxExp;
+    public float awardMinMoney;
+    public float awardMaxMoney;
     public Animator animator;
     public Transform currentTarget;
     public Transform selfTransform;
@@ -365,7 +443,6 @@ public class IdleState : IState
 
     public void OnEnter()
     {
-        Debug.LogWarning("Idle Enter");
         paramater.isIdle = true;
         paramater.sphereCollider.radius = 5f;
     }
@@ -403,7 +480,6 @@ public class AttackState :  IState
     {
         paramater.isAttack = true;
         paramater.animator.Play("PatrolMonsterAttack");
-        Debug.LogWarning("Attack Enter");
     }
 }
 
@@ -468,7 +544,6 @@ public class ChaseState : IState
         paramater.isChase = true;
         attackCdCountDown = paramater.attackCd;
         paramater.sphereCollider.radius = 8f;
-        Debug.LogWarning("Chase Enter");
     }
 }
 
@@ -499,6 +574,7 @@ public class BackState : IState
         paramater.isChaseTarget = false;
         paramater.currentTarget = null;
         paramater.sphereCollider.radius = 0.01f;
-        Debug.LogWarning("Back Enter");
     }
 }
+
+#endregion

@@ -105,16 +105,17 @@ public class MonsterAttackCube : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (!other.CompareTag("PlayerModel")) return;
+        if (other.CompareTag("PlayerModel"))
+        {
+            PhotonView photonView = other.gameObject.GetPhotonView();
 
-        PhotonView photonView = other.gameObject.GetPhotonView();
+            int otherActorNumber = photonView.OwnerActorNr;
 
-        int otherActorNumber = photonView.OwnerActorNr;
+            CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+            charManager.recorders.TryGetValue(otherActorNumber, out GameObject recorder);
 
-        CharManager charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
-        charManager.recorders.TryGetValue(otherActorNumber, out GameObject recorder);
-
-        photonView.RPC("PlayerDamaged", RpcTarget.AllViaServer, otherActorNumber, -2, finalAttack, finalDamage);
+            photonView.RPC("PlayerDamaged", RpcTarget.All, otherActorNumber, -2, finalAttack, finalDamage);
+        }        
     }
 
     private IEnumerator SetActiveBox()

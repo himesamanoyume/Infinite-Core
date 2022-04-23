@@ -175,9 +175,11 @@ GameObject:
   - component: {fileID: 227847424631895185}
   - component: {fileID: 1292342947892957753}
   - component: {fileID: 2193949807901309421}
+  - component: {fileID: 1631625805892057411}
+  - component: {fileID: 2157307011797560347}
   m_Layer: 8
-  m_Name: Player
-  m_TagString: Player
+  m_Name: Monster
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,6 +290,31 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!135 &1631625805892057411
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737929497430468621}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2157307011797560347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737929497430468621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb13f9b3627dd648acc74712f51895d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8027300526949257307
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,10 +332,9 @@ GameObject:
   - component: {fileID: 28386884753191923}
   - component: {fileID: 8067954488486179076}
   - component: {fileID: 3658300378301829478}
-  - component: {fileID: 2864359918351749925}
   m_Layer: 8
   m_Name: PatrolMonster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,6 +443,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 1307905066947866740}
   - {fileID: 8067954488486179076}
+  - {fileID: 3658300378301829478}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -487,6 +514,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27cfaa561554a444b6dd4e8dcede468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  m_groupId: -1
   monsterType: 0
   monsterInfoBarPrefab: {fileID: 5015258106457713884, guid: 9ab46f3873dd1e44daabbcd357dbb6f8, type: 3}
   monsterAttackCubePrefab: {fileID: 5012474347994624960, guid: 6a123bc294906fb4eabe2431a338ae78, type: 3}
@@ -499,19 +529,6 @@ MonoBehaviour:
     m_Bits: 128
   gravity: -19.8
   controller: {fileID: 0}
---- !u!135 &2864359918351749925
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027300526949257307}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &402388601578676713
 PrefabInstance:
   m_ObjectHideFlags: 0

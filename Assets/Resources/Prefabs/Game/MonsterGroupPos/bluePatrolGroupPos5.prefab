@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5790189308919402400}
   m_Layer: 0
-  m_Name: bluePatrolGroupPos3
+  m_Name: bluePatrolGroupPos5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

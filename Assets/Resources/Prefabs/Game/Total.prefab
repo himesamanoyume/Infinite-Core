@@ -246,12 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c9c8d82a92f78419d92039c19cfe39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redPatrolMonsterSpawnPos1: {fileID: 0}
-  redPatrolMonsterSpawnPos2: {fileID: 0}
-  redPatrolMonsterSpawnPos3: {fileID: 0}
-  redPatrolMonsterSpawnPos4: {fileID: 0}
-  bluePatrolMonsterSpawnPos1: {fileID: 0}
-  bluePatrolMonsterSpawnPos2: {fileID: 0}
-  bluePatrolMonsterSpawnPos3: {fileID: 0}
-  bluePatrolMonsterSpawnPos4: {fileID: 0}
+  redPatrolMonsterSpawnPos0: {fileID: 8217799107548441371, guid: e6cbe7b59f4c69c49abadba43ac3d7aa, type: 3}
+  redPatrolMonsterSpawnPos1: {fileID: 8764304707669071318, guid: 3b786ae635e0abd45afa5596fd999bcf, type: 3}
+  redPatrolMonsterSpawnPos2: {fileID: 6812074133447339490, guid: 6a61d42dbcdeeb84590a4cce02e7c0bd, type: 3}
+  redPatrolMonsterSpawnPos3: {fileID: 2572800460530844025, guid: b4dcefeae44f55f4aa4b39a0b08e0208, type: 3}
+  bluePatrolMonsterSpawnPos4: {fileID: 3718011081958381791, guid: 94824763065548f46bbba64e1a40d22e, type: 3}
+  bluePatrolMonsterSpawnPos5: {fileID: 5790189308919402400, guid: 89e6b9f80dfe6ee4f878150b9431e304, type: 3}
+  bluePatrolMonsterSpawnPos6: {fileID: 8727520113564097853, guid: 076fce3013b994a439f563e86b8018fb, type: 3}
+  bluePatrolMonsterSpawnPos7: {fileID: 570014258434938523, guid: b584b3376cf50df45a181a39c232b0f0, type: 3}
   patrolMonsterGroup: {fileID: 3121118744865694609, guid: cab8a50d51daac84ca6ff9ada055b928, type: 3}

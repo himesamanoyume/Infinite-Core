@@ -22,6 +22,7 @@ TagManager:
   - TrousersContent
   - KneeContent
   - BootsContent
+  - Monster
   layers:
   - Default
   - TransparentFX

@@ -7,19 +7,19 @@ public class MonsterInfoBar : MonoBehaviour
 {
     public Slider healthSlider;
     Transform targetMonsterPos;
-    Paramater targetParam;
-    // Start is called before the first frame update
+    MonsterController mController;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        if (targetMonsterPos && targetParam != null)
+        if (targetMonsterPos && mController != null)
         {
-            healthSlider.value = targetParam.health;
+            healthSlider.value = mController.currentHealth;
 
             Vector3 worldInfoBarPos = new Vector3(targetMonsterPos.position.x, targetMonsterPos.position.y + 1.5f, targetMonsterPos.transform.position.z);
 
@@ -27,13 +27,12 @@ public class MonsterInfoBar : MonoBehaviour
         }
     }
 
-    public void InitMonsterInfoBar(Transform monsterPos, Paramater paramater)
+    public void InitMonsterInfoBar(Transform monsterPos, MonsterController monsterController)
     {
-        Debug.LogWarning("isInit");
-        targetParam = paramater;
         targetMonsterPos = monsterPos;
-        healthSlider.maxValue = targetParam.health;
-        healthSlider.value = targetParam.health;
+        mController = monsterController;
+        healthSlider.maxValue = mController.currentHealth;
+        healthSlider.value = mController.maxHealth;
     }
 
 }

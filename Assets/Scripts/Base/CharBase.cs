@@ -1085,11 +1085,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             rFinalDamage = (float)args[2];
 
             lastOneHurtActorNumber = enemyActorNumber;
-            Debug.LogWarning("rFinalAttack: "+ rFinalAttack);
+            //Debug.LogWarning("rFinalAttack: "+ rFinalAttack);
 
             float hurt = rFinalAttack * (1 - Defence * 0.00001f) * rFinalDamage;
 
-            Debug.LogWarning("hurt: " + hurt);
+            //Debug.LogWarning("hurt: " + hurt);
 
             //如果有护盾
             if (Shield>0)
@@ -1276,14 +1276,20 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void GetKillCount(int killerActorNumber)
     {
-        Debug.LogWarning(charManager.recorders[killerActorNumber].name);
-
         CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
 
         killerCharBase.Kill++;
         killerCharBase.CurrentExp += 1000 + Level * 100;
         killerCharBase.Money += 300 + Level * 50;
-        
+    }
+
+    [PunRPC]
+    public void GetMonsterAward(int killerActorNumber, float awardExp, int awardMoney)
+    {
+        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
+
+        killerCharBase.CurrentExp += awardExp;
+        killerCharBase.Money += awardMoney;
     }
 
     bool OnPlayerRespawnCheck(out object[] args)

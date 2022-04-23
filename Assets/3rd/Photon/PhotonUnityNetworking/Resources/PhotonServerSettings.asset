@@ -47,6 +47,8 @@ MonoBehaviour:
   - PlayerDamaged
   - BroadcastInfo
   - GetKillCount
+  - MonsterDamaged
+  - GetMonsterAward
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
