@@ -62,7 +62,7 @@ public enum EquipSuit
     BountyHunter,
     [Tooltip("生命源泉")]
     Lifespring,
-    [Tooltip("狂暴轰入")]
+    [Tooltip("狂暴进攻")]
     CrazyAttack
 }
 

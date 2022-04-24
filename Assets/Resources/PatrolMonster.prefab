@@ -520,6 +520,7 @@ MonoBehaviour:
   monsterType: 0
   monsterInfoBarPrefab: {fileID: 5015258106457713884, guid: 9ab46f3873dd1e44daabbcd357dbb6f8, type: 3}
   monsterAttackCubePrefab: {fileID: 5012474347994624960, guid: 6a123bc294906fb4eabe2431a338ae78, type: 3}
+  equipItemPrefab: {fileID: 8874769348184511163, guid: 6e65349245604ab49a945b42f42a37bd, type: 3}
   groundCheck: {fileID: 7773691860614865273}
   groundLayerMask:
     serializedVersion: 2

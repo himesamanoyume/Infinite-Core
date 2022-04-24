@@ -23,6 +23,7 @@ TagManager:
   - KneeContent
   - BootsContent
   - Monster
+  - MiscInfoMenu
   layers:
   - Default
   - TransparentFX

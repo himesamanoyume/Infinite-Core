@@ -136,6 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 141483015129524862}
   - component: {fileID: 1252089328219413643}
+  - component: {fileID: 7469611675745253166}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -192,6 +193,20 @@ MonoBehaviour:
   tabRedContent: {fileID: 0}
   tabBlueContent: {fileID: 0}
   playerTabItemPrefab: {fileID: 8085726234527467013, guid: adfbeb3d95bb7e747be80dad5235e010, type: 3}
+  iptInfoList: []
+  healthText: {fileID: 0}
+--- !u!114 &7469611675745253166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7145714854119937179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f9a61453ffc5f489755be8c0d4585c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   bagMenu: {fileID: 0}
   playerName: {fileID: 0}
   pro: {fileID: 0}
@@ -201,8 +216,18 @@ MonoBehaviour:
   defence: {fileID: 0}
   attackSpeed: {fileID: 0}
   moveSpeed: {fileID: 0}
-  iptInfoList: []
-  healthText: {fileID: 0}
+  wearingHeadContent: {fileID: 0}
+  wearingArmorContent: {fileID: 0}
+  wearingHandContent: {fileID: 0}
+  wearingTrousersContent: {fileID: 0}
+  wearingKneeContent: {fileID: 0}
+  wearingBootsContent: {fileID: 0}
+  HeadContent: {fileID: 0}
+  ArmorContent: {fileID: 0}
+  HandContent: {fileID: 0}
+  TrousersContent: {fileID: 0}
+  KneeContent: {fileID: 0}
+  BootsContent: {fileID: 0}
 --- !u!1 &8148972197395067884
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,12 +271,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c9c8d82a92f78419d92039c19cfe39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redPatrolMonsterSpawnPos0: {fileID: 8217799107548441371, guid: e6cbe7b59f4c69c49abadba43ac3d7aa, type: 3}
-  redPatrolMonsterSpawnPos1: {fileID: 8764304707669071318, guid: 3b786ae635e0abd45afa5596fd999bcf, type: 3}
-  redPatrolMonsterSpawnPos2: {fileID: 6812074133447339490, guid: 6a61d42dbcdeeb84590a4cce02e7c0bd, type: 3}
-  redPatrolMonsterSpawnPos3: {fileID: 2572800460530844025, guid: b4dcefeae44f55f4aa4b39a0b08e0208, type: 3}
-  bluePatrolMonsterSpawnPos4: {fileID: 3718011081958381791, guid: 94824763065548f46bbba64e1a40d22e, type: 3}
-  bluePatrolMonsterSpawnPos5: {fileID: 5790189308919402400, guid: 89e6b9f80dfe6ee4f878150b9431e304, type: 3}
-  bluePatrolMonsterSpawnPos6: {fileID: 8727520113564097853, guid: 076fce3013b994a439f563e86b8018fb, type: 3}
-  bluePatrolMonsterSpawnPos7: {fileID: 570014258434938523, guid: b584b3376cf50df45a181a39c232b0f0, type: 3}
+  redPatrolMonsterSpawnPos0: {fileID: 0}
+  redPatrolMonsterSpawnPos1: {fileID: 0}
+  redPatrolMonsterSpawnPos2: {fileID: 0}
+  redPatrolMonsterSpawnPos3: {fileID: 0}
+  bluePatrolMonsterSpawnPos4: {fileID: 0}
+  bluePatrolMonsterSpawnPos5: {fileID: 0}
+  bluePatrolMonsterSpawnPos6: {fileID: 0}
+  bluePatrolMonsterSpawnPos7: {fileID: 0}
   patrolMonsterGroup: {fileID: 3121118744865694609, guid: cab8a50d51daac84ca6ff9ada055b928, type: 3}

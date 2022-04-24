@@ -406,6 +406,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 level = value;
                 if (photonView.IsMine)
                 {
+                    GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfo");
+                    Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "你的等级提升了");
                     GameEventManager.EnableEvent(EventEnum.OnPlayerLevelChanged, true);
                 }
 

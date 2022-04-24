@@ -34,6 +34,7 @@ public class MonsterController : MonoBehaviour, IPunObservable
     public GameObject monsterInfoBarPrefab;
 
     public GameObject monsterAttackCubePrefab;
+    public GameObject equipItemPrefab;
 
     private GameObject myMonsterInfoBar;
 
@@ -125,8 +126,9 @@ public class MonsterController : MonoBehaviour, IPunObservable
             {
                 currentHealth = maxHealth;
             }
-            else if (currentHealth <= 0)
+            else if (currentHealth < 0)
             {
+                currentHealth = 0;
                 RewardTheKiller(paramater.lastOneHurtActorNumber);
                 PhotonNetwork.Destroy(gameObject);
             }
@@ -140,7 +142,7 @@ public class MonsterController : MonoBehaviour, IPunObservable
 
             if (paramater.isChase && paramater.isChaseTarget && paramater.currentTarget)
             {
-                //×·»÷×´Ì¬
+                //×·»÷×´Ì¬  ÓÐBug
                 controller.Move((paramater.currentTarget.transform.position - transform.position).normalized * Time.deltaTime * paramater.moveSpeed);
 
                 MonsterTowardChanged(paramater.currentTarget.transform.position);
@@ -224,6 +226,12 @@ public class MonsterController : MonoBehaviour, IPunObservable
 
             float awardExp = Random.Range(paramater.awardMinExp, paramater.awardMaxExp);
             int awardMoney = (int)Random.Range(paramater.awardMinMoney, paramater.awardMaxMoney);
+
+            if (Random.Range(0,1f) <= paramater.awardEquipProb)
+            {
+                //Debug.LogWarning("Get Equip!");
+                Instantiate(equipItemPrefab, GameObject.FindGameObjectWithTag("HeadContent").transform).GetComponent<EquipBase>().InitEquip();
+            }
 
             otherPhotonView.RPC("GetMonsterAward",RpcTarget.AllViaServer, killerActorNumber, awardExp,  awardMoney);
         }
@@ -320,6 +328,7 @@ public class MonsterController : MonoBehaviour, IPunObservable
         patrolMonster.awardMaxExp = 200;
         patrolMonster.awardMinMoney = 15;
         patrolMonster.awardMaxMoney = 25;
+        patrolMonster.awardEquipProb = 0.2f;
 
         worldMonster = new Paramater();
 
@@ -395,6 +404,7 @@ public class Paramater
     public float awardMaxExp;
     public float awardMinMoney;
     public float awardMaxMoney;
+    public float awardEquipProb;
     public Animator animator;
     public Transform currentTarget;
     public Transform selfTransform;

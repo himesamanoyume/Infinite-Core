@@ -72,6 +72,7 @@ public class EquipBase : MonoBehaviour
     Color isWearColor = new Color(0, 0.4f, 0.1f);
     Color noWearColor = new Color(0.4f, 0.4f, 0.4f);
 
+    [SerializeField]
     bool isWear = false; 
     GameObject wearGameObject;
     GameObject contentGameObject;
@@ -110,19 +111,21 @@ public class EquipBase : MonoBehaviour
 
     public void InitEquip()
     {
-        equipType = (EquipType)Random.Range(0, System.Enum.GetNames(typeof(EquipType)).Length + 1);
+        equipType = (EquipType)Random.Range(0, System.Enum.GetNames(typeof(EquipType)).Length);
 
         contentGameObject = GameObject.FindGameObjectWithTag(equipType.ToString() + "Content");
 
+        transform.SetParent(contentGameObject.transform);
+
         float temp = Random.Range(0, 1f);
-        if (0<=temp && temp< 0.5f)
+        if (0<=temp && temp< 0.7f)
         {
             equipQuality = EquipQuality.Normal;
-        }else if (0.5f <= temp && temp < 0.8f)
+        }else if (0.7f <= temp && temp < 0.9f)
         {
             equipQuality = EquipQuality.Artifact;
         }
-        else if (0.8f <= temp && temp < 0.95f)
+        else if (0.9f <= temp && temp < 0.99f)
         {
             equipQuality = EquipQuality.Epic;
         }
@@ -166,16 +169,46 @@ public class EquipBase : MonoBehaviour
 
         wearGameObject = GameObject.FindGameObjectWithTag(equipType.ToString() + "Wear");
 
-        button.onClick.AddListener(() =>
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfo");
+
+        switch (equipQuality)
         {
-            if (!isWear)
+            case EquipQuality.Normal:
+                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Normal, "获得了普通"+ equipNameText.text);
+                break;
+            case EquipQuality.Artifact:
+                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Artifact, "获得了神器" + equipNameText.text);
+                break;
+            case EquipQuality.Epic:
+                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "获得了史诗" + equipNameText.text);
+                break;
+            case EquipQuality.Strange:
+                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Normal, "获得了奇特" + equipNameText.text+"!");
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public void EquipItemOnClick()
+    {
+        if (!isWear)
+        {
+            if (wearGameObject.transform.GetComponentsInChildren<Transform>(true).Length > 1)
             {
                 wearGameObject.transform.GetChild(0).GetComponent<EquipBase>().TakeOffEquip();
-                gameObject.transform.SetParent(gameObject.transform);
+                transform.SetParent(wearGameObject.transform);
+                transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(174.8149f, -105);
                 isWear = true;
             }
-            
-        });
+            else
+            {
+                transform.SetParent(wearGameObject.transform);
+                transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(174.8149f, -105);
+                isWear = true;
+            }
+        }
     }
 
     int RandomMainValue(int min, int max)
@@ -190,15 +223,182 @@ public class EquipBase : MonoBehaviour
 
     public void TakeOffEquip()
     {
-        contentGameObject.transform.SetParent(gameObject.transform);
+        transform.SetParent(contentGameObject.transform);
         isWear = false;
     }
-    
+
+    delegate void GetCnDele(out string cnText);
+    GetCnDele getCnDele;
+
+    public void GetCnMainEntryText(out string equipMainEntryCNText)
+    {
+        switch (mainEntry)
+        {
+            case MainEntry.Null:
+                equipMainEntryCNText = "无";
+                break;
+            case MainEntry.Attack:
+                equipMainEntryCNText = "攻击";
+                break;
+            case MainEntry.Health:
+                equipMainEntryCNText = "生命";
+                break;
+            case MainEntry.CriticalHit:
+                equipMainEntryCNText = "爆伤";
+                break;
+            case MainEntry.CriticalHitRate:
+                equipMainEntryCNText = "暴击";
+                break;
+            case MainEntry.Defence:
+                equipMainEntryCNText = "防御";
+                break;
+            case MainEntry.AttackSpeed:
+                equipMainEntryCNText = "攻速";
+                break;
+            default:
+                equipMainEntryCNText = "无";
+                break;
+        }
+    }
+
+    public void GetCnSuitText(out string equipSuitCNText)
+    {
+        switch (equipSuit)
+        {
+            case EquipSuit.Null:
+                equipSuitCNText = "";
+                break;
+            case EquipSuit.Preserve:
+                equipSuitCNText = "持之以恒";
+                break;
+            case EquipSuit.TheGifted:
+                equipSuitCNText = "天赋异禀";
+                break;
+            case EquipSuit.FeintShot:
+                equipSuitCNText = "虚晃一枪";
+                break;
+            case EquipSuit.Worried:
+                equipSuitCNText = "心急如焚";
+                break;
+            case EquipSuit.Bloodthirsty:
+                equipSuitCNText = "嗜血狂魔";
+                break;
+            case EquipSuit.Berserker:
+                equipSuitCNText = "狂战士";
+                break;
+            case EquipSuit.Impregnable:
+                equipSuitCNText = "固若金汤";
+                break;
+            case EquipSuit.YongQuanXiangBao:
+                equipSuitCNText = "涌泉相报";
+                break;
+            case EquipSuit.BountyHunter:
+                equipSuitCNText = "赏金猎人";
+                break;
+            case EquipSuit.Lifespring:
+                equipSuitCNText = "生命源泉";
+                break;
+            case EquipSuit.CrazyAttack:
+                equipSuitCNText = "狂暴进攻";
+                break;
+            default:
+                equipSuitCNText = "无";
+                break;
+        }
+    }
+
+    public void GetCnTypeText(out string equipTypeCNText)
+    {
+        switch (equipType)
+        {
+            case EquipType.Head:
+                equipTypeCNText = "头盔";
+                break;
+            case EquipType.Armor:
+                equipTypeCNText = "护甲";
+                break;
+            case EquipType.Hand:
+                equipTypeCNText = "护手";
+                break;
+            case EquipType.Trousers:
+                equipTypeCNText = "护腿";
+                break;
+            case EquipType.Knee:
+                equipTypeCNText = "护膝";
+                break;
+            case EquipType.Boots:
+                equipTypeCNText = "鞋子";
+                break;
+            default:
+                equipTypeCNText = "无";
+                break;
+        }
+    }
+
+    public void GetCnQualityText(out string equipQualityCNText)
+    {
+        switch (equipQuality)
+        {
+            case EquipQuality.Normal:
+                equipQualityCNText = "普通";
+                break;
+            case EquipQuality.Artifact:
+                equipQualityCNText = "神器";
+                break;
+            case EquipQuality.Epic:
+                equipQualityCNText = "史诗";
+                break;
+            case EquipQuality.Strange:
+                equipQualityCNText = "奇特";
+                break;
+            default:
+                equipQualityCNText = "无";
+                break;
+        }
+    }
+
     void InitText()
     {
-        equipNameText.text = equipSuit.ToString() + equipType.ToString();
-        mainEntryText.text = mainEntry.ToString();
-        mainEntryValueText.text = mainEntryValue.ToString();
+
+        getCnDele = GetCnMainEntryText;
+        getCnDele(out string equipMainEntryCNText);
+        getCnDele = GetCnSuitText;
+        getCnDele(out string equipSuitCNText);
+        getCnDele = GetCnTypeText;
+        getCnDele(out string equipTypeCNText);
+        getCnDele= GetCnQualityText;
+        getCnDele(out string equipQualityCNText);
+
+        equipNameText.text = equipSuitCNText + equipTypeCNText;
+        mainEntryText.text = equipMainEntryCNText;
+        switch (mainEntry)
+        {
+            case MainEntry.Null:
+                mainEntryValueText.text = mainEntryValue.ToString("f1");
+                break;
+            case MainEntry.Attack:
+                mainEntryValueText.text = mainEntryValue.ToString();
+                break;
+            case MainEntry.Health:
+                mainEntryValueText.text = ((int)mainEntryValue).ToString();
+                break;
+            case MainEntry.CriticalHit:
+                mainEntryValueText.text = (mainEntryValue * 100).ToString("f1") + "%";
+                break;
+            case MainEntry.CriticalHitRate:
+                mainEntryValueText.text = (mainEntryValue * 100).ToString("f1") + "%";
+                break;
+            case MainEntry.Defence:
+                mainEntryValueText.text = mainEntryValue.ToString();
+                break;
+            case MainEntry.AttackSpeed:
+                mainEntryValueText.text = (mainEntryValue * 100).ToString("f1") + "%";
+                break;
+            default:
+                mainEntryValueText.text = mainEntryValue.ToString("f1");
+                break;
+        }
+        
         switch (equipQuality)
         {
             case EquipQuality.Normal:
@@ -253,6 +453,11 @@ public class EquipBase : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 副词条的技能提升
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="targetLevelUp"></param>
     void InitViceEntry(Text target, EntryLevelUp targetLevelUp)
     {
         target.text = targetLevelUp.ToString();
@@ -377,16 +582,16 @@ public class EquipBase : MonoBehaviour
         switch (equipQuality)
         {
             case EquipQuality.Normal:
-                firstEntry = (EntryLevelUp)Random.Range(0, 3);
+                firstEntry = (EntryLevelUp)Random.Range(1, 4);
                 break;
             case EquipQuality.Artifact:
-                firstEntry = (EntryLevelUp)Random.Range(0, 3);
-                secondEntry = (EntryLevelUp)Random.Range(0, 3);
+                firstEntry = (EntryLevelUp)Random.Range(1, 4);
+                secondEntry = (EntryLevelUp)Random.Range(1, 4);
                 break;
             default:
-                firstEntry = (EntryLevelUp)Random.Range(0, 3);
-                secondEntry = (EntryLevelUp)Random.Range(0, 3);
-                thirdEntry = (EntryLevelUp)Random.Range(0, 3);
+                firstEntry = (EntryLevelUp)Random.Range(1, 4);
+                secondEntry = (EntryLevelUp)Random.Range(1, 4);
+                thirdEntry = (EntryLevelUp)Random.Range(1, 4);
                 break;
         }
     }

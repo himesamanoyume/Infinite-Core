@@ -8,7 +8,7 @@ using Photon.Realtime;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    //public static RoomManager Instance;
+    #region Props
 
     [Header("Esc选单")]
     public GameObject exitMenu; 
@@ -43,24 +43,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public Transform tabBlueContent;
     public GameObject playerTabItemPrefab;
 
-    [Header("Bag背包面板")]
-    public Transform bagMenu;
-
-    [Header("Bag属性")]
-    public Text playerName;
-    public Text pro;
-    public Text attack;
-    public Text criticalHitRate;
-    public Text criticalHit;
-    public Text defence;
-    public Text attackSpeed;
-    public Text moveSpeed;
-
-    bool isOpenBag = false;
-
-    //[Header("Bag仓库")]
-    //public 
-
     [SerializeField]
     List<string> iptInfoList = new List<string>();
     bool isNext = true;
@@ -72,17 +54,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     Dictionary<int, GameObject> tabPlayerList = new Dictionary<int, GameObject>();
     CharManager charManager;
-    private void Awake()
-    {
-        //if (!Instance)
-        //{
-        //    Instance = this;
-        //}
-    }
 
     Vector2 defaultSizeDelta;
     Color importantInfoDefaultColor;
     Color infoTextDefaultColor;
+
+    #endregion
+
+    #region Unity
+
     private void Start()
     {
         defaultSizeDelta = importantInfo.GetComponent<RectTransform>().sizeDelta;
@@ -180,20 +160,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             //tabMenu.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            isOpenBag = !isOpenBag;
-            if (isOpenBag)
-            {
-                GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
-                bagMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(101, 132.596f);
-            }
-            else
-            {
-                GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, true);
-                bagMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(-3744, 132.596f);
-            }
-        }
+        
 
         if (charBase)
         {
@@ -226,6 +193,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
             infoText.color = Color.Lerp(infoText.color, new Color(0.21f, 0.21f, 0.21f, 1), 0.1f);
         }
     }
+
+    #endregion
 
     #region Unity Function
 

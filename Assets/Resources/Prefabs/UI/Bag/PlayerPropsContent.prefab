@@ -1499,7 +1499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3751065076422708121, guid: cd8e2e56c5ca92640812b8e586d407bb, type: 3}
       propertyPath: m_Text
-      value: "\u653B\u901F"
+      value: "\u653B\u901F\u52A0\u6210"
       objectReference: {fileID: 0}
     - target: {fileID: 4692438883911298646, guid: cd8e2e56c5ca92640812b8e586d407bb, type: 3}
       propertyPath: m_AnchorMax.y

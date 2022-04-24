@@ -84,7 +84,7 @@
     <Compile Include="Assets\Scripts\Misc\PlayerNameInputField.cs" />
     <Compile Include="Assets\Scripts\Misc\CameraWork.cs" />
     <Compile Include="Assets\Scripts\DebugConsole\DebugCommandBase.cs" />
-    <Compile Include="Assets\TabItemManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\TabItemManager.cs" />
     <Compile Include="Assets\Scripts\Controller\MonsterController.cs" />
     <Compile Include="Assets\Scripts\Enum\EquipEnum.cs" />
     <Compile Include="Assets\Scripts\Controller\MonsterChildController.cs" />
@@ -100,6 +100,8 @@
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\BagManager.cs" />
+    <Compile Include="Assets\Scripts\Misc\MiscInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
