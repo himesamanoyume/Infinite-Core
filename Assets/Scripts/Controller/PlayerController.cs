@@ -33,8 +33,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     Vector3 velocity = Vector3.zero;
 
+    CharBase m_charBase;
+
     ProEnum m_pro;
 
+    [SerializeField]
     float m_attack;
 
     float m_attackRange;
@@ -70,26 +73,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
         m_camera = Camera.main;
         playerModel = charManager.FindChildObjWithTag("Player", this.gameObject);
 
-        m_moveSpeed = 8f;
+        
         gravity = -19.8f;
 
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_PRO, out object pro);
-        m_pro = (ProEnum)pro;
+        charManager.FindPlayerRecorder(PhotonNetwork.LocalPlayer.ActorNumber, out GameObject recorder, out CharBase charBase);
+        m_charBase = charBase;
 
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_ATTACK_RANGE, out object attackRange);
-        m_attackRange = (float)attackRange;
-
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT, out object criticalHit);
-        m_criticalHit = (float)criticalHit;
-
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_CRITICAL_HIT_RATE, out object criticalHitRate);
-        m_criticalHitRate = (float)criticalHitRate;
-
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_ATTACK,out object attack);
-        m_attack = (float)attack;
-
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(InfiniteCoreGame.PLAYER_FINAL_DAMAGE, out object finalDamage);
-        m_finalDamage = (float)finalDamage;
+        if (m_charBase)
+        {
+            m_pro = m_charBase.Pro;
+            m_attackRange = m_charBase.AttackRange;
+            m_criticalHit = m_charBase.CriticalHit;
+            m_criticalHitRate = m_charBase.CriticalHitRate;
+            m_attack = m_charBase.Attack;
+            m_finalDamage = m_charBase.FinalDamage;
+            m_moveSpeed = m_charBase.MoveSpeed;
+        }
+        
 
         #endregion
 
@@ -136,6 +136,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) return;
 
         PlayerGravity();
+
+        if (m_charBase)
+        {
+            m_attackRange = m_charBase.AttackRange;
+            m_criticalHit = m_charBase.CriticalHit;
+            m_criticalHitRate = m_charBase.CriticalHitRate;
+            m_attack = m_charBase.Attack;
+            m_finalDamage = m_charBase.FinalDamage;
+            m_moveSpeed = m_charBase.MoveSpeed;
+        }
+        
     }
 
     #endregion

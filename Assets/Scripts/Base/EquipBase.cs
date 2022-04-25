@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class EquipBase : MonoBehaviour
 {
-    /// <summary>
-    /// 装备ID
-    /// </summary>
-    //public EquipID equipID;
-
     [Header("装备属性")]
     /// <summary>
     /// 装备类型
@@ -63,7 +58,7 @@ public class EquipBase : MonoBehaviour
     public Image background;
     public Button button;
 
-    #region props
+    #region Props
 
     Color normalColor = new Color(0.679f, 0.672f, 0.679f);
     Color artifactColor = new Color(0.886f, 0.313f, 0.886f);
@@ -76,6 +71,7 @@ public class EquipBase : MonoBehaviour
     bool isWear = false; 
     GameObject wearGameObject;
     GameObject contentGameObject;
+    CharBase m_charBase;
 
     int minNormalAttackValue = 500;
     int minArtifactAttackValue = 750;
@@ -134,7 +130,7 @@ public class EquipBase : MonoBehaviour
             equipQuality = EquipQuality.Strange;
         }
 
-        equipSuit = (EquipSuit)Random.Range(1, System.Enum.GetNames(typeof(EquipSuit)).Length + 1);
+        equipSuit = (EquipSuit)Random.Range(1, System.Enum.GetNames(typeof(EquipSuit)).Length);
 
         switch (equipType)
         {
@@ -169,28 +165,25 @@ public class EquipBase : MonoBehaviour
 
         wearGameObject = GameObject.FindGameObjectWithTag(equipType.ToString() + "Wear");
 
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfo");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfoPrefab");
 
         switch (equipQuality)
         {
             case EquipQuality.Normal:
-                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Normal, "获得了普通"+ equipNameText.text);
+                Instantiate(prefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Normal, "获得了普通"+ equipNameText.text);
                 break;
             case EquipQuality.Artifact:
-                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Artifact, "获得了神器" + equipNameText.text);
+                Instantiate(prefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Artifact, "获得了神器" + equipNameText.text);
                 break;
             case EquipQuality.Epic:
-                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "获得了史诗" + equipNameText.text);
+                Instantiate(prefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "获得了史诗" + equipNameText.text);
                 break;
             case EquipQuality.Strange:
-                Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Normal, "获得了奇特" + equipNameText.text+"!");
-                break;
-            default:
+                Instantiate(prefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Strange, "获得了奇特" + equipNameText.text+"!");
                 break;
         }
 
     }
-
     public void EquipItemOnClick()
     {
         if (!isWear)
@@ -208,23 +201,75 @@ public class EquipBase : MonoBehaviour
                 transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(174.8149f, -105);
                 isWear = true;
             }
+
+            if (isWear)
+            {
+                switch (equipType)
+                {
+                    case EquipType.Head:
+                        m_charBase.HeadSuit = (EquipHead)equipSuit;
+                        m_charBase.CriticalHitRate += mainEntryValue;
+                        break;
+                    case EquipType.Armor:
+                        m_charBase.ArmorSuit = (EquipArmor)equipSuit;
+                        m_charBase.Defence += mainEntryValue;
+                        break;
+                    case EquipType.Hand:
+                        m_charBase.HandSuit = (EquipHand)equipSuit;
+                        m_charBase.Attack += mainEntryValue;
+                        break;
+                    case EquipType.Trousers:
+                        m_charBase.TrousersSuit = (EquipTrousers)equipSuit;
+                        m_charBase.MaxHealth += mainEntryValue;
+                        m_charBase.CurrentHealth += mainEntryValue;
+                        break;
+                    case EquipType.Knee:
+                        m_charBase.KneeSuit = (EquipKnee)equipSuit;
+                        m_charBase.CriticalHit += mainEntryValue;
+                        break;
+                    case EquipType.Boots:
+                        m_charBase.BootsSuit = (EquipBoots)equipSuit;
+                        m_charBase.AttackSpeed += mainEntryValue;
+                        break;
+                }
+            }
         }
     }
-
     int RandomMainValue(int min, int max)
     {
         return Random.Range(min, max+1);
     }
-
     float RandomMainValue(float min, float max)
     {
         return Random.Range(min, max);
     } 
-
     public void TakeOffEquip()
     {
         transform.SetParent(contentGameObject.transform);
         isWear = false;
+        switch (equipType)
+        {
+            case EquipType.Head:
+                m_charBase.CriticalHitRate -= mainEntryValue;
+                break;
+            case EquipType.Armor:
+                m_charBase.Defence -= mainEntryValue;
+                break;
+            case EquipType.Hand:
+                m_charBase.Attack -= mainEntryValue;
+                break;
+            case EquipType.Trousers:
+                m_charBase.MaxHealth -= mainEntryValue;
+                m_charBase.CurrentHealth -= mainEntryValue;
+                break;
+            case EquipType.Knee:
+                m_charBase.CriticalHit -= mainEntryValue;
+                break;
+            case EquipType.Boots:
+                m_charBase.AttackSpeed -= mainEntryValue;
+                break;
+            
+        }
     }
 
     delegate void GetCnDele(out string cnText);
@@ -260,7 +305,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     public void GetCnSuitText(out string equipSuitCNText)
     {
         switch (equipSuit)
@@ -306,7 +350,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     public void GetCnTypeText(out string equipTypeCNText)
     {
         switch (equipType)
@@ -334,7 +377,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     public void GetCnQualityText(out string equipQualityCNText)
     {
         switch (equipQuality)
@@ -356,7 +398,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     void InitText()
     {
 
@@ -452,7 +493,6 @@ public class EquipBase : MonoBehaviour
         }
         
     }
-
     /// <summary>
     /// 副词条的技能提升
     /// </summary>
@@ -462,7 +502,7 @@ public class EquipBase : MonoBehaviour
     {
         target.text = targetLevelUp.ToString();
     }
-
+    //暴击率
     void InitHeadMainValue()
     {
         switch (equipQuality)
@@ -481,7 +521,7 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
+    //防御
     void InitArmorMainValue()
     {
         switch (equipQuality)
@@ -500,7 +540,7 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
+    //攻击
     void InitHandMainValue()
     {
         switch (equipQuality)
@@ -519,7 +559,7 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
+    //生命
     void InitTrousersMainValue()
     {
         switch (equipQuality)
@@ -538,7 +578,7 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
+    //爆伤
     void InitKneeMainValue()
     {
         switch (equipQuality)
@@ -557,7 +597,7 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
+    //攻速加成
     void InitBootsMainValue()
     {
         switch (equipQuality)
@@ -576,7 +616,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     void InitEntry()
     {
         switch (equipQuality)
@@ -595,7 +634,6 @@ public class EquipBase : MonoBehaviour
                 break;
         }
     }
-
     public void GetEquipBase(out EquipBase equipBase)
     {
         equipBase = this;
@@ -604,6 +642,7 @@ public class EquipBase : MonoBehaviour
 
     private void Start()
     {
-        
+        GameObject.Find("CharManager").GetComponent<CharManager>().FindPlayerRecorder(Photon.Pun.PhotonNetwork.LocalPlayer.ActorNumber, out GameObject recorder, out CharBase charBase);
+        m_charBase = charBase;
     }
 }

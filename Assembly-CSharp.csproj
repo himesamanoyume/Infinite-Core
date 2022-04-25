@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\3rd\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs" />
-    <Compile Include="Assets\Scripts\Manager\RoomManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\Misc\MonsterInfoBar.cs" />
     <Compile Include="Assets\Scripts\Specific\GameEventGroup.cs" />
     <Compile Include="Assets\Scripts\Misc\LauncherSelect.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Specific\Skill.cs" />
     <Compile Include="Assets\Scripts\Controller\ButtonController.cs" />
     <Compile Include="Assets\Scripts\Manager\CharManager.cs" />
+    <Compile Include="Assets\Scripts\Misc\MiscInfo.cs" />
     <Compile Include="Assets\Scripts\Misc\Launcher.cs" />
     <Compile Include="Assets\Scripts\Base\SkillBase.cs" />
     <Compile Include="Assets\Scripts\Specific\GameEvent.cs" />
@@ -94,14 +95,13 @@
     <Compile Include="Assets\Scripts\Specific\AttackCubeData.cs" />
     <Compile Include="Assets\Scripts\Enum\SkillEnum.cs" />
     <Compile Include="Assets\Scripts\Specific\AttackCube.cs" />
+    <Compile Include="Assets\Scripts\Manager\BagManager.cs" />
     <Compile Include="Assets\Scripts\Manager\MonsterManager.cs" />
     <Compile Include="Assets\Scripts\Base\ModelBase.cs" />
     <Compile Include="Assets\Scripts\InfiniteCoreGame.cs" />
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
-    <Compile Include="Assets\Scripts\Manager\BagManager.cs" />
-    <Compile Include="Assets\Scripts\Misc\MiscInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

@@ -73,12 +73,12 @@ MonoBehaviour:
   skillE: 0
   skillR: 0
   skillBurst: 0
-  headType: 0
-  armorType: 0
-  handType: 0
-  kneeType: 0
-  trousersType: 0
-  bootsType: 0
+  headSuit: 0
+  armorSuit: 0
+  handSuit: 0
+  kneeSuit: 0
+  trousersSuit: 0
+  bootsSuit: 0
 --- !u!114 &4600758666631930024
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -113,25 +113,39 @@ public class MonsterController : MonoBehaviour, IPunObservable
             transform.SetParent(GameObject.Find(monsterType.ToString() + "Group" + m_groupId).transform);
         }
 
+        if (currentHealth < maxHealth && currentHealth > 0)
+        {
+            if (photonView.IsMine)
+            {
+                currentHealth += paramater.restore * Time.deltaTime;
+            }
+            
+        }
+        else if (currentHealth >= maxHealth)
+        {
+            if (photonView.IsMine)
+            {
+                currentHealth = maxHealth;
+            }
+            
+        }
+        else if (currentHealth < 0)
+        {
+
+            RewardTheKiller(paramater.lastOneHurtActorNumber);
+            if (photonView.IsMine)
+            {
+                currentHealth = 0;
+                PhotonNetwork.Destroy(gameObject);
+            }            
+        }
+
         if (photonView.IsMine)
         {
 
             MonsterGravity();
 
-            if (currentHealth < maxHealth && currentHealth > 0)
-            {
-                currentHealth += paramater.restore * Time.deltaTime;
-            }
-            else if (currentHealth >= maxHealth)
-            {
-                currentHealth = maxHealth;
-            }
-            else if (currentHealth < 0)
-            {
-                currentHealth = 0;
-                RewardTheKiller(paramater.lastOneHurtActorNumber);
-                PhotonNetwork.Destroy(gameObject);
-            }
+            
 
             currentState.OnUpdate();
 
@@ -222,6 +236,8 @@ public class MonsterController : MonoBehaviour, IPunObservable
     {
         if (killerActorNumber >= 1)
         {
+            //if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
             PhotonView otherPhotonView = charManager.recorders[killerActorNumber].GetPhotonView();
 
             float awardExp = Random.Range(paramater.awardMinExp, paramater.awardMaxExp);
@@ -229,11 +245,10 @@ public class MonsterController : MonoBehaviour, IPunObservable
 
             if (Random.Range(0,1f) <= paramater.awardEquipProb)
             {
-                //Debug.LogWarning("Get Equip!");
                 Instantiate(equipItemPrefab, GameObject.FindGameObjectWithTag("HeadContent").transform).GetComponent<EquipBase>().InitEquip();
             }
 
-            otherPhotonView.RPC("GetMonsterAward",RpcTarget.AllViaServer, killerActorNumber, awardExp,  awardMoney);
+            otherPhotonView.RPC("GetMonsterAward",RpcTarget.MasterClient, killerActorNumber, awardExp,  awardMoney);
         }
     }
 
@@ -356,11 +371,11 @@ public class MonsterController : MonoBehaviour, IPunObservable
     [PunRPC]
     public void MonsterDamaged(int playerActorNumber, float finalAttack, float finalDamage)
     {
-
         StopCoroutine(ResetLastOneHurtActorNumber());
         paramater.lastOneHurtActorNumber = playerActorNumber;
         float hurt = finalAttack * (1 - paramater.defense * 0.00001f) * finalDamage;
 
+        Debug.LogWarning("MonsterDamaged, is" + playerActorNumber);
         currentHealth -= hurt;
             
         StartCoroutine(ResetLastOneHurtActorNumber());

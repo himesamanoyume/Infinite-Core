@@ -66,6 +66,7 @@ public class BagManager : MonoBehaviour
 
         if (m_recorder && m_charBase)
         {
+            attack.text = m_charBase.Attack.ToString();
             criticalHitRate.text = (m_charBase.CriticalHitRate *100).ToString("f1") + "%";
             criticalHit.text = (m_charBase.CriticalHit * 100).ToString("f1") + "%";
             defence.text = m_charBase.Defence.ToString();
@@ -83,7 +84,22 @@ public class BagManager : MonoBehaviour
         m_charBase = charBase;
 
         playerName.text = m_charBase.PlayerName;
-        pro.text = m_charBase.Pro.ToString();
+        switch (m_charBase.Pro)
+        {
+            case ProEnum.Soilder:
+                pro.text = "近战";
+                break;
+            case ProEnum.Archer:
+                pro.text = "远程";
+                break;
+            case ProEnum.Doctor:
+                pro.text = "辅助";
+                break;
+            case ProEnum.Tanker:
+                pro.text = "坦克";
+                break;
+        }
+        
 
     }
 }

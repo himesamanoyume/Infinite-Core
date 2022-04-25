@@ -14,7 +14,7 @@ public enum MiscLevel
 public class MiscInfo : MonoBehaviour
 {
     Image m_Bg;
-    Transform miscInfoPanel;
+    //Transform miscInfoPanel;
     public Image miscLevelBg;
     public Text miscInfoText;
 
@@ -32,7 +32,8 @@ public class MiscInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_Bg = GetComponent<Image>();
+        //miscInfoPanel = GameObject.FindGameObjectWithTag("MiscInfoMenu").transform;
+        //transform.SetParent(miscInfoPanel.transform);
         StartCoroutine(DestoryMyself());
     }
 
@@ -44,7 +45,8 @@ public class MiscInfo : MonoBehaviour
 
     public void InitMiscInfo(MiscLevel miscLevel, string text)
     {
-        miscInfoPanel = GameObject.FindGameObjectWithTag("MiscInfoMenu").transform;
+        m_Bg = GetComponent<Image>();
+        
         switch (miscLevel)
         {
             case MiscLevel.Normal:
@@ -57,7 +59,7 @@ public class MiscInfo : MonoBehaviour
                 break;
             case MiscLevel.Epic:
                 m_Bg.color = epicColorBg;
-                miscLevelBg.color = epicColorBg;
+                miscLevelBg.color = epicColor;
                 break;
             case MiscLevel.Strange:
                 m_Bg.color = strangeColorBg;
@@ -69,12 +71,13 @@ public class MiscInfo : MonoBehaviour
                 break;
         }
         miscInfoText.text = text;
-        transform.SetParent(miscInfoPanel.transform);
+        
     }
 
     IEnumerator DestoryMyself()
     {
+        Debug.LogWarning("DestoryMyself");
         yield return new WaitForSeconds(8);
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

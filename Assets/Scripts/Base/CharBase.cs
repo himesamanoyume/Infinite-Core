@@ -167,34 +167,32 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 头盔
     /// </summary>
-    private EquipHead headType;
+    private EquipHead headSuit;
     [SerializeField]
     /// <summary>
     /// 护甲
     /// </summary>
-    private EquipArmor armorType;
+    private EquipArmor armorSuit;
     [SerializeField]
     /// <summary>
     /// 护手
     /// </summary>
-    private EquipHand handType;
+    private EquipHand handSuit;
     [SerializeField]
     /// <summary>
     /// 护膝
     /// </summary>
-    private EquipKnee kneeType;
+    private EquipKnee kneeSuit;
     [SerializeField]
     /// <summary>
     /// 护腿
     /// </summary>
-    private EquipTrousers trousersType;
+    private EquipTrousers trousersSuit;
     [SerializeField]
     /// <summary>
     /// 鞋子
     /// </summary>
-    private EquipBoots bootsType;
-
-
+    private EquipBoots bootsSuit;
 
     #endregion
 
@@ -406,8 +404,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
                 level = value;
                 if (photonView.IsMine)
                 {
-                    GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfo");
-                    Instantiate(prefab).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "你的等级提升了");
+                    GameObject prefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfoPrefab");
+                    Instantiate(prefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, "你的等级提升了");
                     GameEventManager.EnableEvent(EventEnum.OnPlayerLevelChanged, true);
                 }
 
@@ -731,12 +729,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     public SkillE SkillE { get => skillE; set => skillE = value; }
     public SkillR SkillR { get => skillR; set => skillR = value; }
     public SkillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
-    public EquipHead HeadID { get => headType; set => headType = value; }
-    public EquipArmor ArmorID { get => armorType; set => armorType = value; }
-    public EquipHand HandID { get => handType; set => handType = value; }
-    public EquipKnee KneeID { get => kneeType; set => kneeType = value; }
-    public EquipTrousers TrousersID { get => trousersType; set => trousersType = value; }
-    public EquipBoots BootsID { get => bootsType; set => bootsType = value; }
+    public EquipHead HeadSuit { get => headSuit; set => headSuit = value; }
+    public EquipArmor ArmorSuit { get => armorSuit; set => armorSuit = value; }
+    public EquipHand HandSuit { get => handSuit; set => handSuit = value; }
+    public EquipKnee KneeSuit { get => kneeSuit; set => kneeSuit = value; }
+    public EquipTrousers TrousersSuit { get => trousersSuit; set => trousersSuit = value; }
+    public EquipBoots BootsSuit { get => bootsSuit; set => bootsSuit = value; }
 
     public float MoveSpeed
     {
@@ -906,12 +904,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(SkillE);
             stream.SendNext(SkillR);
             stream.SendNext(SkillBurst);
-            stream.SendNext(HeadID);
-            stream.SendNext(ArmorID);
-            stream.SendNext(HandID);
-            stream.SendNext(KneeID);
-            stream.SendNext(TrousersID);
-            stream.SendNext(BootsID);
+            stream.SendNext(HeadSuit);
+            stream.SendNext(ArmorSuit);
+            stream.SendNext(HandSuit);
+            stream.SendNext(KneeSuit);
+            stream.SendNext(TrousersSuit);
+            stream.SendNext(BootsSuit);
             stream.SendNext(MoveSpeed);
             stream.SendNext(AttackRange);
             stream.SendNext(RespawnTime);
@@ -945,12 +943,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             SkillE = (SkillE)stream.ReceiveNext();
             SkillR = (SkillR)stream.ReceiveNext();
             SkillBurst = (SkillBurst)stream.ReceiveNext();
-            HeadID = (EquipHead)stream.ReceiveNext();
-            ArmorID = (EquipArmor)stream.ReceiveNext();
-            HandID = (EquipHand)stream.ReceiveNext();
-            KneeID = (EquipKnee)stream.ReceiveNext();
-            TrousersID = (EquipTrousers)stream.ReceiveNext();
-            BootsID = (EquipBoots)stream.ReceiveNext();
+            HeadSuit = (EquipHead)stream.ReceiveNext();
+            ArmorSuit = (EquipArmor)stream.ReceiveNext();
+            HandSuit = (EquipHand)stream.ReceiveNext();
+            KneeSuit = (EquipKnee)stream.ReceiveNext();
+            TrousersSuit = (EquipTrousers)stream.ReceiveNext();
+            BootsSuit = (EquipBoots)stream.ReceiveNext();
             MoveSpeed = (float)stream.ReceiveNext();
             AttackRange = (float)stream.ReceiveNext();
             RespawnTime = (float)stream.ReceiveNext();
@@ -1054,11 +1052,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
         #endregion
 
-        roomManager = GameObject.Find("RoomManager").GetComponent<RoomManager>();
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
     }
 
-    RoomManager roomManager;
+    UIManager uiManager;
     CharManager charManager;
 
     void UpdateFloatProps(string key, float value)
@@ -1272,7 +1270,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void BroadcastInfo(string text)
     {
-        roomManager.GetImportantInfo(text);
+        uiManager.GetImportantInfo(text);
     }
 
     [PunRPC]
@@ -1288,6 +1286,9 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void GetMonsterAward(int killerActorNumber, float awardExp, int awardMoney)
     {
+        Debug.LogWarning("获得杀怪奖赏" + killerActorNumber);
+        if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
         CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
 
         killerCharBase.CurrentExp += awardExp;

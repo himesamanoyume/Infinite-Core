@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class UIManager : MonoBehaviourPunCallbacks
 {
     #region Props
 
@@ -23,12 +23,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public Image skillECountDown;
     public Image skillRCountDown;
     public Image skillBrustCountDown;
-    public Image headItem;
-    public Image armorItem;
-    public Image handItem;
-    public Image trousersItem;
-    public Image kneeItem;
-    public Image bootsItem;
     public Text countDownText;
 
 

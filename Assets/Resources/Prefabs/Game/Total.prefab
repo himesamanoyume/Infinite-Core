@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 1252089328219413643}
   - component: {fileID: 7469611675745253166}
   m_Layer: 0
-  m_Name: RoomManager
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
