@@ -66,9 +66,6 @@ public class UIManager : MonoBehaviourPunCallbacks
 
         infoTextDefaultColor = infoText.color;
         charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
-        //GetImportantInfo("Player1145 击杀了 Player1145");
-        //GetImportantInfo("Player1145 又击杀了 Player1145");
-        //StartCoroutine("repeat");
 
         #region Subscribe Event
 
@@ -179,7 +176,6 @@ public class UIManager : MonoBehaviourPunCallbacks
 
         if (isShow)
         {
-            //Debug.LogWarning("isSow");
             importantInfo.GetComponent<RectTransform>().sizeDelta = Vector2.Lerp(importantInfo.GetComponent<RectTransform>().sizeDelta, new Vector2(1600, importantInfo.GetComponent<RectTransform>().sizeDelta.y), 0.2f);
 
             importantInfo.color = Color.Lerp(importantInfo.color, new Color(1, 1, 1, 0.6f), 0.1f);
@@ -220,16 +216,6 @@ public class UIManager : MonoBehaviourPunCallbacks
         iptInfoList.Add(infoText);
     }
 
-    //int index = 0;
-    //IEnumerator repeat()
-    //{
-        
-    //    GetImportantInfo("Player1145 击杀了 Player1145_" + index);
-    //    yield return new WaitForSeconds(8);
-    //    index++;
-    //    StartCoroutine("repeat");
-    //}
-
     //信息通知
     void PostImportantInfo()
     {
@@ -241,9 +227,8 @@ public class UIManager : MonoBehaviourPunCallbacks
                 StartCoroutine("ShowImportantInfo", iptInfoList[0]);
             }
         }
-
-
     }
+
     Text infoText;
     IEnumerator ShowImportantInfo(string text)
     {

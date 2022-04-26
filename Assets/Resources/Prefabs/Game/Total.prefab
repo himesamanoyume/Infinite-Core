@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4071709229697802898}
+  - component: {fileID: 8518535831247116633}
   m_Layer: 0
   m_Name: RuleManager
   m_TagString: Untagged
@@ -30,6 +31,21 @@ Transform:
   m_Father: {fileID: 1252089327796656336}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8518535831247116633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358383827742632504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c8063e9facfda41b54ad4c6d9a92e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterManager: {fileID: 8148972197395067884}
+  gameTime: {fileID: 0}
+  m_gameTimeInt: 0
 --- !u!1 &1252089327796656337
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,12 +196,6 @@ MonoBehaviour:
   skillECountDown: {fileID: 0}
   skillRCountDown: {fileID: 0}
   skillBrustCountDown: {fileID: 0}
-  headItem: {fileID: 0}
-  armorItem: {fileID: 0}
-  handItem: {fileID: 0}
-  trousersItem: {fileID: 0}
-  kneeItem: {fileID: 0}
-  bootsItem: {fileID: 0}
   countDownText: {fileID: 0}
   importantInfoPanel: {fileID: 0}
   importantInfo: {fileID: 0}
@@ -279,4 +289,9 @@ MonoBehaviour:
   bluePatrolMonsterSpawnPos5: {fileID: 0}
   bluePatrolMonsterSpawnPos6: {fileID: 0}
   bluePatrolMonsterSpawnPos7: {fileID: 0}
+  redWorldBossMonsterSpawnPos8: {fileID: 0}
+  redWorldBossMonsterSpawnPos9: {fileID: 0}
+  blueWorldBossMonsterSpawnPos10: {fileID: 0}
+  blueWorldBossMonsterSpawnPos11: {fileID: 0}
+  infiniteCoreMonsterSpawnPos12: {fileID: 0}
   patrolMonsterGroup: {fileID: 3121118744865694609, guid: cab8a50d51daac84ca6ff9ada055b928, type: 3}

@@ -49,6 +49,7 @@ MonoBehaviour:
   - GetKillCount
   - MonsterDamaged
   - GetMonsterAward
+  - RewardTheKiller
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

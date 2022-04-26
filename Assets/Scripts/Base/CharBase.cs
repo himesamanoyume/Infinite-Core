@@ -1207,8 +1207,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         return true;
     }
 
-    //int theKilledActorNumber = -1;
-
     bool OnPlayerKillCheck(out object[] args)
     {
         args = new object[] { ActorNumber };
@@ -1286,7 +1284,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void GetMonsterAward(int killerActorNumber, float awardExp, int awardMoney)
     {
-        Debug.LogWarning("ªÒµ√…±π÷Ω±…Õ" + killerActorNumber);
+        //Debug.LogWarning("ªÒµ√…±π÷Ω±…Õ" + killerActorNumber);
         if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
         CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();

@@ -105,7 +105,7 @@ public class EquipBase : MonoBehaviour
 
     #endregion
 
-    public void InitEquip()
+    public void InitEquip(EquipQuality tempEquipQuality)
     {
         equipType = (EquipType)Random.Range(0, System.Enum.GetNames(typeof(EquipType)).Length);
 
@@ -113,17 +113,25 @@ public class EquipBase : MonoBehaviour
 
         transform.SetParent(contentGameObject.transform);
 
-        float temp = Random.Range(0, 1f);
-        if (0<=temp && temp< 0.7f)
+        if (tempEquipQuality != EquipQuality.Strange)
         {
-            equipQuality = EquipQuality.Normal;
-        }else if (0.7f <= temp && temp < 0.9f)
-        {
-            equipQuality = EquipQuality.Artifact;
-        }
-        else if (0.9f <= temp && temp < 0.99f)
-        {
-            equipQuality = EquipQuality.Epic;
+            float temp = Random.Range(0, 1f);
+            if (0 <= temp && temp < 0.7f)
+            {
+                equipQuality = EquipQuality.Normal;
+            }
+            else if (0.7f <= temp && temp < 0.9f)
+            {
+                equipQuality = EquipQuality.Artifact;
+            }
+            else if (0.9f <= temp && temp < 0.99f)
+            {
+                equipQuality = EquipQuality.Epic;
+            }
+            else
+            {
+                equipQuality = EquipQuality.Strange;
+            }
         }
         else
         {

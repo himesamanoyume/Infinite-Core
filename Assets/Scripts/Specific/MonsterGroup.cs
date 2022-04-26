@@ -18,6 +18,8 @@ public class MonsterGroup : MonoBehaviour, IPunObservable
     public Transform no3Pos;
 
     public GameObject partolMonsterPrefab;
+    public GameObject worldBossMonsterPrefab;
+    public GameObject InfiniteCorePrefab;
 
     private void Start()
     {
@@ -32,7 +34,7 @@ public class MonsterGroup : MonoBehaviour, IPunObservable
             transform.name = m_type.ToString() + "Group" + m_id;
         }
 
-        if (isInit)
+        if (isInit && m_type == MonsterType.PatrolMonster)
         {
             if (GetComponentsInChildren<Transform>(true).Length <= 4 && isEmpty == false && isRespawn == false)
             {
@@ -56,8 +58,10 @@ public class MonsterGroup : MonoBehaviour, IPunObservable
                 StartCoroutine(SpawnMonster(0));
                 break;
             case MonsterType.WorldMonster:
+                StartCoroutine(SpawnMonster(0));
                 break;
             case MonsterType.InfiniteCore:
+                StartCoroutine(SpawnMonster(0));
                 break;
         }
         transform.name = m_type.ToString() + "Group" + id;
@@ -84,11 +88,17 @@ public class MonsterGroup : MonoBehaviour, IPunObservable
                 g.GetComponent<MonsterController>().InitController(m_id);
                 g.transform.SetParent(transform);
                 break;
+
             case MonsterType.WorldMonster:
-
+                g = PhotonNetwork.InstantiateRoomObject(worldBossMonsterPrefab.name, no1Pos.position, Quaternion.identity);
+                g.GetComponent<MonsterController>().InitController(m_id);
+                g.transform.SetParent(transform);
                 break;
-            case MonsterType.InfiniteCore:
 
+            case MonsterType.InfiniteCore:
+                g = PhotonNetwork.InstantiateRoomObject(InfiniteCorePrefab.name, no1Pos.position, Quaternion.identity);
+                g.GetComponent<MonsterController>().InitController(m_id);
+                g.transform.SetParent(transform);
                 break;
         }
         isInit = true;

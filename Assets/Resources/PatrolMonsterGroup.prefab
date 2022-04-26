@@ -85,6 +85,8 @@ MonoBehaviour:
   no2Pos: {fileID: 379519594265616636}
   no3Pos: {fileID: 5000058957619666116}
   partolMonsterPrefab: {fileID: 8027300526949257307, guid: 797ae421cad3bfa4f959f1dd21cb34b8, type: 3}
+  worldBossMonsterPrefab: {fileID: 8027300526949257307, guid: 03c2bf35b697a5c4e9af5df4442b32ca, type: 3}
+  InfiniteCorePrefab: {fileID: 8027300526949257307, guid: cdb3228274defc042a12b0ee7fd9fa4b, type: 3}
 --- !u!114 &1307233833233378321
 MonoBehaviour:
   m_ObjectHideFlags: 0

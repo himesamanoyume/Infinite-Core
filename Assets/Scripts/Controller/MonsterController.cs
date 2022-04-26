@@ -113,39 +113,28 @@ public class MonsterController : MonoBehaviour, IPunObservable
             transform.SetParent(GameObject.Find(monsterType.ToString() + "Group" + m_groupId).transform);
         }
 
-        if (currentHealth < maxHealth && currentHealth > 0)
-        {
-            if (photonView.IsMine)
-            {
-                currentHealth += paramater.restore * Time.deltaTime;
-            }
-            
-        }
-        else if (currentHealth >= maxHealth)
-        {
-            if (photonView.IsMine)
-            {
-                currentHealth = maxHealth;
-            }
-            
-        }
-        else if (currentHealth < 0)
-        {
-
-            RewardTheKiller(paramater.lastOneHurtActorNumber);
-            if (photonView.IsMine)
-            {
-                currentHealth = 0;
-                PhotonNetwork.Destroy(gameObject);
-            }            
-        }
+       
 
         if (photonView.IsMine)
         {
 
             MonsterGravity();
 
-            
+            if (currentHealth < maxHealth && currentHealth > 0)
+            {
+                currentHealth += paramater.restore * Time.deltaTime;
+
+            }
+            else if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            else if (currentHealth < 0)
+            {
+                photonView.RPC("RewardTheKiller", RpcTarget.All, paramater.lastOneHurtActorNumber);
+                currentHealth = 0;
+                PhotonNetwork.Destroy(gameObject);
+            }
 
             currentState.OnUpdate();
 
@@ -232,23 +221,38 @@ public class MonsterController : MonoBehaviour, IPunObservable
         paramater.lastOneHurtActorNumber = -2;
     }
 
-    void RewardTheKiller(int killerActorNumber)
+
+    [PunRPC]
+    public void RewardTheKiller(int killerActorNumber)
     {
         if (killerActorNumber >= 1)
         {
-            //if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+            //Debug.LogWarning("RewardTheKiller " + killerActorNumber);
+
+            if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
             PhotonView otherPhotonView = charManager.recorders[killerActorNumber].GetPhotonView();
 
             float awardExp = Random.Range(paramater.awardMinExp, paramater.awardMaxExp);
             int awardMoney = (int)Random.Range(paramater.awardMinMoney, paramater.awardMaxMoney);
 
-            if (Random.Range(0,1f) <= paramater.awardEquipProb)
+            switch (monsterType)
             {
-                Instantiate(equipItemPrefab, GameObject.FindGameObjectWithTag("HeadContent").transform).GetComponent<EquipBase>().InitEquip();
+                case MonsterType.PatrolMonster:
+                    if (Random.Range(0, 1f) <= paramater.awardEquipProb)
+                    {
+                        Instantiate(equipItemPrefab, GameObject.FindGameObjectWithTag("HeadContent").transform).GetComponent<EquipBase>().InitEquip(EquipQuality.Normal);
+                    }
+                    break;
+                case MonsterType.WorldMonster:
+                    Instantiate(equipItemPrefab, GameObject.FindGameObjectWithTag("HeadContent").transform).GetComponent<EquipBase>().InitEquip(EquipQuality.Strange);
+                    break;
+                case MonsterType.InfiniteCore:
+                    //击杀后不掉落物品
+                    break;
             }
 
-            otherPhotonView.RPC("GetMonsterAward",RpcTarget.MasterClient, killerActorNumber, awardExp,  awardMoney);
+            otherPhotonView.RPC("GetMonsterAward",RpcTarget.AllViaServer, killerActorNumber, awardExp,  awardMoney);
         }
     }
 
@@ -346,8 +350,35 @@ public class MonsterController : MonoBehaviour, IPunObservable
         patrolMonster.awardEquipProb = 0.2f;
 
         worldMonster = new Paramater();
+        worldMonster.health = 10000;
+        worldMonster.attack = 500;
+        worldMonster.restore = 50;
+        worldMonster.attackRange = 20;
+        worldMonster.finalDamage = 1;
+        worldMonster.attackCd = 2;
+        worldMonster.defense = 300;
+        worldMonster.moveSpeed = 4;
+        worldMonster.awardMinExp = 2000;
+        worldMonster.awardMaxExp = 3000;
+        worldMonster.awardMinMoney = 1500;
+        worldMonster.awardMaxMoney = 2500;
+        worldMonster.awardEquipProb = 1;
+
 
         infiniteCore = new Paramater();
+        infiniteCore.health = 50000;
+        infiniteCore.attack = 1500;
+        infiniteCore.restore = 0;
+        infiniteCore.attackRange = 40;
+        infiniteCore.finalDamage = 1;
+        infiniteCore.attackCd = 2;
+        infiniteCore.defense = 500;
+        infiniteCore.moveSpeed = 4;
+        infiniteCore.awardMinExp = 10000;
+        infiniteCore.awardMaxExp = 10000;
+        infiniteCore.awardMinMoney = 5000;
+        infiniteCore.awardMaxMoney = 5000;
+        infiniteCore.awardEquipProb = 0;
     }
 
     #endregion
@@ -375,7 +406,7 @@ public class MonsterController : MonoBehaviour, IPunObservable
         paramater.lastOneHurtActorNumber = playerActorNumber;
         float hurt = finalAttack * (1 - paramater.defense * 0.00001f) * finalDamage;
 
-        Debug.LogWarning("MonsterDamaged, is" + playerActorNumber);
+        //Debug.LogWarning("MonsterDamaged, is" + playerActorNumber);
         currentHealth -= hurt;
             
         StartCoroutine(ResetLastOneHurtActorNumber());
