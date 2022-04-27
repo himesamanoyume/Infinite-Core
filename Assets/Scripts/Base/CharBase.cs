@@ -63,7 +63,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// <summary>
     /// 当前角色身上所带的buff
     /// </summary>
-    private Dictionary<int,BuffEnum> buff;
+    private Dictionary<int,BuffEnum> buff = new Dictionary<int, BuffEnum>();
     [SerializeField, Header("职业")]
     /// <summary>
     /// 角色职业
@@ -888,7 +888,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(CurrentExp);
             stream.SendNext(MaxExp);
             stream.SendNext(State);
-            stream.SendNext(Buff);
+            //stream.SendNext(Buff);
             //stream.SendNext(Pro);
             stream.SendNext(Level);
             stream.SendNext(Attack);
@@ -927,7 +927,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             CurrentExp = (float)stream.ReceiveNext();
             MaxExp = (float)stream.ReceiveNext();
             State = (StateEnum)stream.ReceiveNext();
-            Buff = (Dictionary<int,BuffEnum>)stream.ReceiveNext();
+            //Buff = (Dictionary<int,BuffEnum>)stream.ReceiveNext();
             //Pro = (ProEnum)stream.ReceiveNext();
             Level = (int)stream.ReceiveNext();
             Attack = (float)stream.ReceiveNext();
@@ -970,6 +970,54 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.Destroy(playerModel);
         
 
+    }
+
+    [PunRPC]
+    public void BroadcastInfo(string text)
+    {
+        uiManager.GetImportantInfo(text);
+    }
+
+    [PunRPC]
+    public void GetKillCount(int killerActorNumber)
+    {
+        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
+
+        killerCharBase.Kill++;
+        killerCharBase.CurrentExp += 1000 + Level * 100;
+        killerCharBase.Money += 300 + Level * 50;
+    }
+
+    [PunRPC]
+    public void GetMonsterAward(int killerActorNumber, float awardExp, int awardMoney)
+    {
+        //Debug.LogWarning("获得杀怪奖赏" + killerActorNumber);
+        if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+
+        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
+
+        killerCharBase.CurrentExp += awardExp;
+        killerCharBase.Money += awardMoney;
+    }
+
+    [PunRPC]
+    public void GetBuff(int receiverActorNumber, BuffEnum buff)
+    {
+        if (receiverActorNumber != actorNumber)
+            return;
+        if (!Buff.ContainsKey((int)buff))
+        {
+            Buff.Add((int)buff, buff);
+        }
+    }
+
+    [PunRPC]
+    public void AllGetBuff(BuffEnum buff)
+    {
+        if (!Buff.ContainsKey((int)buff))
+        {
+            Buff.Add((int)buff, buff);
+        }
     }
 
     #endregion
@@ -1037,6 +1085,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
             GameEventManager.RegisterEvent(EventEnum.OnPlayerDead, OnPlayerDeadCheck);
 
+            GameEventManager.RegisterEvent(EventEnum.OnPlayerBuffChanged, OnPlayerBuffChangedCheck);
         }
 
         #endregion
@@ -1047,8 +1096,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         {
             GameEventManager.SubscribeEvent(EventEnum.OnPlayerDamaged, OnPlayerDamaged);
         }
-
-        
 
         #endregion
 
@@ -1118,6 +1165,14 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
 
     #region Event Check
+
+    bool OnPlayerBuffChangedCheck(out object[] args)
+    {
+        Buff.TryGetValue((int)BuffEnum.Coreless, out BuffEnum buffEnum);
+        Debug.LogWarning(buffEnum);
+        args = new object[] { ActorNumber};
+        return true;
+    }
 
     bool OnPlayerFinalDamageChangedCheck(out object[] args)
     {
@@ -1263,34 +1318,6 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         args = new object[] { ActorNumber, lastOneHurtActorNumber };
         lastOneHurtActorNumber = -1;
         return true;
-    }
-
-    [PunRPC]
-    public void BroadcastInfo(string text)
-    {
-        uiManager.GetImportantInfo(text);
-    }
-
-    [PunRPC]
-    public void GetKillCount(int killerActorNumber)
-    {
-        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
-
-        killerCharBase.Kill++;
-        killerCharBase.CurrentExp += 1000 + Level * 100;
-        killerCharBase.Money += 300 + Level * 50;
-    }
-
-    [PunRPC]
-    public void GetMonsterAward(int killerActorNumber, float awardExp, int awardMoney)
-    {
-        //Debug.LogWarning("获得杀怪奖赏" + killerActorNumber);
-        if (killerActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
-
-        CharBase killerCharBase = charManager.recorders[killerActorNumber].GetComponent<CharBase>();
-
-        killerCharBase.CurrentExp += awardExp;
-        killerCharBase.Money += awardMoney;
     }
 
     bool OnPlayerRespawnCheck(out object[] args)

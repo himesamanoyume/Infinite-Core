@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterManager: {fileID: 8148972197395067884}
+  charManager: {fileID: 1252089328102079820}
   gameTime: {fileID: 0}
   m_gameTimeInt: 0
+  oneMinWallGroup: {fileID: 0}
+  twoMinWallGroup: {fileID: 0}
 --- !u!1 &1252089327796656337
 GameObject:
   m_ObjectHideFlags: 0

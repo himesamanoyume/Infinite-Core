@@ -50,6 +50,8 @@ MonoBehaviour:
   - MonsterDamaged
   - GetMonsterAward
   - RewardTheKiller
+  - AllGetBuff
+  - GetBuff
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

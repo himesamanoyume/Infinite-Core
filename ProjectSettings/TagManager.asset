@@ -24,6 +24,7 @@ TagManager:
   - BootsContent
   - Monster
   - MiscInfoMenu
+  - InfiniteCoreArea
   layers:
   - Default
   - TransparentFX

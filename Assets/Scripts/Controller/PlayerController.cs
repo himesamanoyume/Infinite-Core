@@ -182,6 +182,30 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("InfiniteCoreArea"))
+        {
+            
+            StopCoroutine(NotSafe());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("InfiniteCoreArea"))
+        {
+            Debug.LogWarning("NoSafe!");
+            StartCoroutine(NotSafe());
+        }
+    }
+
+    IEnumerator NotSafe()
+    {
+        yield return new WaitForSeconds(1);
+        m_charBase.CurrentHealth -= m_charBase.MaxHealth * 0.05f;
+    }
+
     void PlayerGravity()
     {
         if (photonView.IsMine)

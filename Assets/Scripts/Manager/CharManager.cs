@@ -54,6 +54,7 @@ public class CharManager : MonoBehaviourPunCallbacks
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerCurrentHealthChanged, OnPlayerCurrentHealthChanged);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKilled, OnPlayerKilled);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerKill, OnPlayerKill);
+        GameEventManager.SubscribeEvent(EventEnum.OnPlayerDead, OnPlayerDead);
         GameEventManager.SubscribeEvent(EventEnum.OnToast, Toast);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawnCountDownStart, OnPlayerRespawnCountDownStart);
         GameEventManager.SubscribeEvent(EventEnum.OnPlayerRespawning, OnPlayerRespawning);
@@ -777,15 +778,6 @@ public class CharManager : MonoBehaviourPunCallbacks
             FindPlayerModel(actorNumber, out GameObject playerModel);
             if(playerModel == null) { return; }
 
-            //if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
-            //{
-            //    FindPlayerInfoBar(actorNumber, out GameObject playerInfoBar);
-            //    if (playerInfoBar == null) { return; }
-
-            //    Destroy(playerInfoBar);
-            //    playerInfoBarList.Remove(actorNumber);
-            //}
-
             charBase.Death++;
 
             PhotonNetwork.Destroy(playerModel);
@@ -793,10 +785,11 @@ public class CharManager : MonoBehaviourPunCallbacks
             playerInfoBarList.Remove(actorNumber);
 
             charBase.State = StateEnum.Dead;
-            GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
 
-            GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
             Toast(new object[2] { actorNumber, "³¹µ×ËÀÍö" });
+
+            GameEventManager.EnableEvent(EventEnum.PlayerControlGroup, false);
+            GameEventManager.EnableEvent(EventEnum.OnPlayerDead, false);
         }
     }
 

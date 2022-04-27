@@ -76,7 +76,7 @@ public class MiscInfo : MonoBehaviour
 
     IEnumerator DestoryMyself()
     {
-        Debug.LogWarning("DestoryMyself");
+        //Debug.LogWarning("DestoryMyself");
         yield return new WaitForSeconds(8);
         Destroy(gameObject);
     }
