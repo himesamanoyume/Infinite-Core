@@ -182,12 +182,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
     }
 
+    bool isSafe;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("InfiniteCoreArea"))
         {
-            
-            StopCoroutine(NotSafe());
+            isSafe = true;
         }
     }
 
@@ -195,7 +196,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (other.CompareTag("InfiniteCoreArea"))
         {
-            Debug.LogWarning("NoSafe!");
+            isSafe = false;
             StartCoroutine(NotSafe());
         }
     }
@@ -203,7 +204,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     IEnumerator NotSafe()
     {
         yield return new WaitForSeconds(1);
-        m_charBase.CurrentHealth -= m_charBase.MaxHealth * 0.05f;
+        if (!isSafe)
+        {
+            m_charBase.CurrentHealth -= m_charBase.MaxHealth * 0.05f;
+            StartCoroutine(NotSafe());
+        }
     }
 
     void PlayerGravity()
@@ -446,6 +451,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
+    public void ThreeMinRule()
+    {
+        StartCoroutine(NotSafe());
+    }
 
     #endregion
 

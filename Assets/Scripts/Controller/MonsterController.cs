@@ -350,8 +350,8 @@ public class MonsterController : MonoBehaviour, IPunObservable
         patrolMonster.awardEquipProb = 0.2f;
 
         worldMonster = new Paramater();
-        worldMonster.health = 10000;
-        worldMonster.attack = 500;
+        worldMonster.health = 30000;
+        worldMonster.attack = 1000;
         worldMonster.restore = 50;
         worldMonster.attackRange = 20;
         worldMonster.finalDamage = 1;
@@ -366,8 +366,8 @@ public class MonsterController : MonoBehaviour, IPunObservable
 
 
         infiniteCore = new Paramater();
-        infiniteCore.health = 50000;
-        infiniteCore.attack = 1500;
+        infiniteCore.health = 100000;
+        infiniteCore.attack = 3500;
         infiniteCore.restore = 0;
         infiniteCore.attackRange = 40;
         infiniteCore.finalDamage = 1;

@@ -11,7 +11,7 @@
 
 ### 高优先级
 
-毒圈(3分钟时对所有玩家的PlayerController调用NotSafe 进入区域内的玩家可以停止 出去后会再次调用)
+无
 
 #### bug
 
@@ -29,8 +29,6 @@
 
 技能施放 技能升级 装备词条对技能升级实装
 
-BUFF效果实装
-
 套装效果实装
 
 新增计时器与怪物属性的关联 开局时间越长 怪物属性越强
@@ -47,63 +45,11 @@ CharBase也许可以重做
 
 DebugConsole 改版
 
-动画控制器记得加入photonView.IsMine的判断
-
-## Tips
-
-单例模式初始化时应检查是否已存在 若为null再赋值
-
-Exception: Write failed. Custom type not found:老老实实用回基础类型吧
-
-发现调用事件怎么都启动不了时 检查一下GameEventManager对应实例化的位置 此Event是否被错误的实例化为了EventGroup
-
-**注册事件时一定要添加isMine判断** 在开启事件时一般也要添加isMine判断 关闭事件时基本不用管
-
-MasterClient是只要当你是房主时 你看到的任何物体都是master 但不代表isMine
-
-任何数值影响都应转移到物体主人自身来处理 如攻击到敌人时根据碰撞体调用对方的事件方法
-
-如果找不到设置位置的方式 则只能通过PhotonNetwork.Destory后再重新(已实现)
-
-RPC调用适用于使对方某一物体调用其内部函数 而不是用来广播
-
-该事件系统中 RootGroup必须enable为true，且只能在GameEventManager中使用enable修改， 无法使用EnableAllEvents或EnableEvent对EventName.rootGroup进行操作，必须从RootGroup下的第一级事件组当中进行操作 如EventName.playerGroup  
-
-技能碰撞限制
-
-项目命名空间无法识别时直接到Unity 的Edit-> Perferences-> External Tools-> Regenarate project files
-
-以后我再也不要在代码里除字符串和注释以外的任何地方写中文了
-
-如果玩家阵营信息逻辑太复杂可以让玩家条目挂载CharBase 将信息全部赋值到CharBase上 再直接取值作判断
-
-进房间时通过PlayerList查找每一个玩家的阵营 根据阵营填充背景颜色 
-
-完善房间进出时回调的字典控制
-
-房间内玩家需要准备才可开始
-
-红方玩家材质都为红色 蓝方玩家材质都为蓝色
-
-玩家在房间内选择好自己的职业 每个职业的技能是固定的那3个
-
-如果主机切换 则需要新的主机负责生成野怪(AsteroidsGameManager.cs 131)
-
-倒计时显示XX.00位方法(AsteroidsGameManager.cs 100)
-
-当玩家属性更新时(AsteroidsGameManager.cs 148)
-
-检测玩家是否都加载完关卡(AsteroidsGameManager.cs 223)
-
-玩家在房间选择好属性 设置哈希表 全部准备完毕后才能开始 (PlayerListEntry.cs 39)
-
-快捷方便的开关UI面板方法(LobbyMainPanel.cs 336)
-
-加分改属性示例(PunPlayerScores.cs 45)
-
-如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可
-
 ## Done
+
+### 2022.4.28
+
+毒圈机制 结算胜负【算作项目基本完成】
 
 ### 2022.4.27
 
@@ -432,3 +378,57 @@ DebugConsole新增money经验的对应函数
 DebugConsole Text大小
 
 DebugConsole全分辨率适配
+
+## Tips
+
+单例模式初始化时应检查是否已存在 若为null再赋值
+
+Exception: Write failed. Custom type not found:老老实实用回基础类型吧
+
+发现调用事件怎么都启动不了时 检查一下GameEventManager对应实例化的位置 此Event是否被错误的实例化为了EventGroup
+
+**注册事件时一定要添加isMine判断** 在开启事件时一般也要添加isMine判断 关闭事件时基本不用管
+
+MasterClient是只要当你是房主时 你看到的任何物体都是master 但不代表isMine
+
+任何数值影响都应转移到物体主人自身来处理 如攻击到敌人时根据碰撞体调用对方的事件方法
+
+如果找不到设置位置的方式 则只能通过PhotonNetwork.Destory后再重新(已实现)
+
+RPC调用适用于使对方某一物体调用其内部函数 而不是用来广播
+
+该事件系统中 RootGroup必须enable为true，且只能在GameEventManager中使用enable修改， 无法使用EnableAllEvents或EnableEvent对EventName.rootGroup进行操作，必须从RootGroup下的第一级事件组当中进行操作 如EventName.playerGroup  
+
+技能碰撞限制
+
+项目命名空间无法识别时直接到Unity 的Edit-> Perferences-> External Tools-> Regenarate project files
+
+以后我再也不要在代码里除字符串和注释以外的任何地方写中文了
+
+如果玩家阵营信息逻辑太复杂可以让玩家条目挂载CharBase 将信息全部赋值到CharBase上 再直接取值作判断
+
+进房间时通过PlayerList查找每一个玩家的阵营 根据阵营填充背景颜色 
+
+完善房间进出时回调的字典控制
+
+房间内玩家需要准备才可开始
+
+红方玩家材质都为红色 蓝方玩家材质都为蓝色
+
+玩家在房间内选择好自己的职业 每个职业的技能是固定的那3个
+
+如果主机切换 则需要新的主机负责生成野怪(AsteroidsGameManager.cs 131)
+
+倒计时显示XX.00位方法(AsteroidsGameManager.cs 100)
+
+当玩家属性更新时(AsteroidsGameManager.cs 148)
+
+检测玩家是否都加载完关卡(AsteroidsGameManager.cs 223)
+
+玩家在房间选择好属性 设置哈希表 全部准备完毕后才能开始 (PlayerListEntry.cs 39)
+
+快捷方便的开关UI面板方法(LobbyMainPanel.cs 336)
+
+加分改属性示例(PunPlayerScores.cs 45)
+
+如果PhotonNetwork的引用出毛病了就备份一下重要文件 然后Package Manager里重装即可

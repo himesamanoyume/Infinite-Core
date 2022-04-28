@@ -402,6 +402,75 @@ public class CharManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void GameOverCheck()
+    {
+        
+        int redAlive = 0;
+        int blueAlive = 0;
+        GameObject masterRecorder;
+        FindPlayerRecorder(PhotonNetwork.LocalPlayer.ActorNumber, out GameObject t_masterRecorder, out CharBase t_masterCharBase);
+
+        masterRecorder = t_masterRecorder;
+        masterRecorder.GetPhotonView().RPC("GameOver", RpcTarget.All);
+
+        foreach (var item in recorders)
+        {
+            CharBase tempCharBase = item.Value.GetComponent<CharBase>();
+            switch (tempCharBase.PlayerTeam)
+            {
+                case TeamEnum.Red:
+                    if (tempCharBase.State == StateEnum.Alive)
+                        redAlive++;
+                    break;
+                case TeamEnum.Blue:
+                    if (tempCharBase.State == StateEnum.Alive)
+                        blueAlive++;
+                    break;
+            }
+        }
+
+        if (redAlive > blueAlive)
+        {
+            masterRecorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "红队胜利!");
+        }
+        else if (redAlive < blueAlive)
+        {
+            masterRecorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "蓝队胜利!");
+        }
+        else
+        {
+            int redKill = 0;
+            int blueKill = 0;
+
+            foreach (var item in recorders)
+            {
+                CharBase tempCharBase = item.Value.GetComponent<CharBase>();
+                switch (tempCharBase.PlayerTeam)
+                {
+                    case TeamEnum.Red:
+                        redKill += tempCharBase.Kill;
+                        break;
+                    case TeamEnum.Blue:
+                        blueKill += tempCharBase.Kill;
+                        break;
+                }
+            }
+
+            if (redKill > blueKill)
+            {
+                masterRecorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "红队胜利!");
+            }
+            else if (redKill < blueKill)
+            {
+                masterRecorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "蓝队胜利!");
+            }
+            else
+            {
+                masterRecorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "平局!");
+            }
+
+        }
+    }
 
     /// <summary>
     /// 通过tag找父物体的某个单个子物体

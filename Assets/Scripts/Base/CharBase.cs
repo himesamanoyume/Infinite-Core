@@ -1020,6 +1020,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    [PunRPC]
+    public void GameOver()
+    {
+        GameEventManager.EnableEvent(EventEnum.PlayerGroup, false);
+    }
+
     #endregion
 
     #region Unity Functions

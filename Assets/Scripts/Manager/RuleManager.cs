@@ -13,6 +13,7 @@ public class RuleManager : MonoBehaviourPunCallbacks
 
     CharBase m_charBase;
     GameObject m_recorder;
+    GameObject m_playerModel;
 
     public GameObject gameTime;
     public int m_gameTimeInt;
@@ -38,9 +39,10 @@ public class RuleManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(1);
         charManager.GetComponent<CharManager>().FindPlayerRecorder(PhotonNetwork.LocalPlayer.ActorNumber, out GameObject recorder, out CharBase charBase);
-
+        charManager.GetComponent<CharManager>().FindPlayerModel(PhotonNetwork.LocalPlayer.ActorNumber, out GameObject playerModel);
         m_charBase = charBase;
         m_recorder = recorder;
+        m_playerModel = playerModel;
     }
 
     void Update()
@@ -102,19 +104,22 @@ public class RuleManager : MonoBehaviourPunCallbacks
             twoMinWallGroup.transform.position.z);
         monsterManager.GetComponent<MonsterManager>().WorldBossMonsterGroupSpawn();
         monsterManager.GetComponent<MonsterManager>().InfiniteCoreMonsterGroupSpawn();
-        m_recorder.GetPhotonView().RPC("AllGetBuff", RpcTarget.All, (int)BuffEnum.Coreless);
+
+        
     }
 
     void ThreeMin()
     {
         Debug.LogWarning("3分钟");
         m_recorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "安全区收缩!请尽快进入无限核心区域");
-        
+        m_playerModel.GetPhotonView().RPC("ThreeMinRule", RpcTarget.All);
+        m_recorder.GetPhotonView().RPC("AllGetBuff", RpcTarget.All, (int)BuffEnum.Coreless);
     }
 
     void EndGame()
     {
         m_recorder.GetPhotonView().RPC("BroadcastInfo", RpcTarget.AllViaServer, "游戏结束");
+        charManager.GetComponent<CharManager>().GameOverCheck();
         Debug.LogWarning("4分钟");
     }
 }
