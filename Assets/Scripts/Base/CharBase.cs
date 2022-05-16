@@ -193,6 +193,10 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// 鞋子
     /// </summary>
     private EquipBoots bootsSuit;
+    /// <summary>
+    /// 普攻倍率
+    /// </summary>
+    private float normalAttackRatio;
 
     #endregion
 
@@ -729,7 +733,14 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     public SkillE SkillE { get => skillE; set => skillE = value; }
     public SkillR SkillR { get => skillR; set => skillR = value; }
     public SkillBurst SkillBurst { get => skillBurst; set => skillBurst = value; }
-    public EquipHead HeadSuit { get => headSuit; set => headSuit = value; }
+    public EquipHead HeadSuit { 
+        get => headSuit; 
+        set
+        {
+            headSuit = value;
+            GetComponent<SuitController>().SuitUpdate();
+        } 
+    }
     public EquipArmor ArmorSuit { get => armorSuit; set => armorSuit = value; }
     public EquipHand HandSuit { get => handSuit; set => handSuit = value; }
     public EquipKnee KneeSuit { get => kneeSuit; set => kneeSuit = value; }
@@ -870,6 +881,14 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+    public float NormalAttackRatio
+    {
+        get=> normalAttackRatio;
+        set
+        {
+            normalAttackRatio = value;
+        }
+    }
     #endregion
 
     #region Photon Callbacks
@@ -1000,17 +1019,33 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         killerCharBase.Money += awardMoney;
     }
 
+    /// <summary>
+    /// 普通的Buff添加 需要具体时间
+    /// </summary>
+    /// <param name="receiverActorNumber"></param>
+    /// <param name="buff"></param>
+    /// <param name="time"></param>
     [PunRPC]
-    public void GetBuff(int receiverActorNumber, BuffEnum buff)
+    public void GetBuff(int receiverActorNumber, BuffEnum buff, float time)
     {
         if (receiverActorNumber != actorNumber)
             return;
         if (!Buff.ContainsKey((int)buff))
         {
             Buff.Add((int)buff, buff);
+            BuffController buffController = GetComponent<BuffController>();
+            if (time >= 0)
+            {
+                buffController.AddBuff(buff, time);
+            }
+            
         }
     }
 
+    /// <summary>
+    /// 对所有人添加BUFF 通常只用来添加Coreless 所以不限制时间
+    /// </summary>
+    /// <param name="buff"></param>
     [PunRPC]
     public void AllGetBuff(BuffEnum buff)
     {
@@ -1174,8 +1209,8 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
     bool OnPlayerBuffChangedCheck(out object[] args)
     {
-        Buff.TryGetValue((int)BuffEnum.Coreless, out BuffEnum buffEnum);
-        Debug.LogWarning(buffEnum);
+        //Buff.TryGetValue((int)BuffEnum.Coreless, out BuffEnum buffEnum);
+        //Debug.LogWarning(buffEnum);
         args = new object[] { ActorNumber};
         return true;
     }

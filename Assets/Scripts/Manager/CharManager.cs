@@ -12,7 +12,7 @@ public class CharManager : MonoBehaviourPunCallbacks
 {
     public GameObject archer;
     public GameObject doctor;
-    public GameObject solider;
+    public GameObject soldier;
     public GameObject tanker;
     public GameObject recorder;
     public GameObject playerInfoBarPrefab;

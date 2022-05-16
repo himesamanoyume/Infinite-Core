@@ -388,7 +388,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, false);
 
-            float finalAttack = GetFinalAttack(m_attack, m_criticalHit, m_criticalHitRate, 1);
+            float finalAttack = GetFinalAttack(m_attack, m_criticalHit, m_criticalHitRate, m_charBase.NormalAttackRatio);
 
             switch (m_pro)
             {
