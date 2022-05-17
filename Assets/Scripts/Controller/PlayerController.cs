@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     int enemyActorNumber;
 
+    float m_normalAttackRatio;
+
     bool isAttack = false;
 
     Camera m_camera;
@@ -88,6 +90,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             m_attack = m_charBase.Attack;
             m_finalDamage = m_charBase.FinalDamage;
             m_moveSpeed = m_charBase.MoveSpeed;
+            m_normalAttackRatio = m_charBase.NormalAttackRatio;
         }
         
 
@@ -145,6 +148,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             m_attack = m_charBase.Attack;
             m_finalDamage = m_charBase.FinalDamage;
             m_moveSpeed = m_charBase.MoveSpeed;
+            m_normalAttackRatio = m_charBase.NormalAttackRatio;
         }
         
     }
@@ -388,11 +392,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GameEventManager.EnableEvent(EventEnum.AllowPlayerMove, false);
 
-            float finalAttack = GetFinalAttack(m_attack, m_criticalHit, m_criticalHitRate, m_charBase.NormalAttackRatio);
+            float finalAttack = GetFinalAttack(m_attack, m_criticalHit, m_criticalHitRate, m_normalAttackRatio);
 
             switch (m_pro)
             {
-                case ProEnum.Soilder:
+                case ProEnum.Soldier:
                     InitSoilderNormalAttack(selfPos, modelRotation, finalAttack);
                     break;
                 case ProEnum.Archer:

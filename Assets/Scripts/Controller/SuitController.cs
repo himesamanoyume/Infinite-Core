@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Photon.Pun;
+
 public class SuitController : MonoBehaviour
 {
     public Dictionary<int, EquipSuit> suitList = new Dictionary<int, EquipSuit>();
@@ -12,11 +14,18 @@ public class SuitController : MonoBehaviour
 
     Dictionary<EquipSuit, SuitEffectDelegate> suitEffectList = new Dictionary<EquipSuit, SuitEffectDelegate>();
 
+    Dictionary<EquipSuit, bool> suitState = new Dictionary<EquipSuit, bool>();
+
     delegate void SuitEffectDelegate(EquipSuit equipSuit, bool enable);
+
+    PhotonView photonView;
+
+    GameObject infoPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         suitCount.Add(EquipSuit.Null, 6);
         suitCount.Add(EquipSuit.Preserve, 0);
         suitCount.Add(EquipSuit.TheGifted, 0);
@@ -29,6 +38,35 @@ public class SuitController : MonoBehaviour
         suitCount.Add(EquipSuit.BountyHunter, 0);
         suitCount.Add(EquipSuit.Lifespring, 0);
         suitCount.Add(EquipSuit.CrazyAttack, 0);
+
+        SuitEffectDelegate suitEffectDelegate;
+        suitEffectList.Add(EquipSuit.Null, suitEffectDelegate = NullSuitEffect);
+        suitEffectList.Add(EquipSuit.Preserve, suitEffectDelegate = PreserveSuitEffect);
+        suitEffectList.Add(EquipSuit.TheGifted, suitEffectDelegate = TheGiftedSuitEffect);
+        suitEffectList.Add(EquipSuit.FeintShot, suitEffectDelegate = FeintShotSuitEffect);
+        suitEffectList.Add(EquipSuit.Worried, suitEffectDelegate = WorriedSuitEffect);
+        suitEffectList.Add(EquipSuit.Bloodthirsty, suitEffectDelegate = BloodthirstySuitEffect);
+        suitEffectList.Add(EquipSuit.Berserker, suitEffectDelegate = BerserkerSuitEffect);
+        suitEffectList.Add(EquipSuit.Impregnable, suitEffectDelegate = ImpregnableSuitEffect);
+        suitEffectList.Add(EquipSuit.YongQuanXiangBao, suitEffectDelegate = YongQuanXiangBaoSuitEffect);
+        suitEffectList.Add(EquipSuit.BountyHunter, suitEffectDelegate = BountyHunterSuitEffect);
+        suitEffectList.Add(EquipSuit.Lifespring, suitEffectDelegate = LifespringSuitEffect);
+        suitEffectList.Add(EquipSuit.CrazyAttack, suitEffectDelegate = CrazyAttackSuitEffect);
+
+        suitState.Add(EquipSuit.Null, true);
+        suitState.Add(EquipSuit.Preserve, false);
+        suitState.Add(EquipSuit.TheGifted, false);
+        suitState.Add(EquipSuit.FeintShot, false);
+        suitState.Add(EquipSuit.Worried, false);
+        suitState.Add(EquipSuit.Bloodthirsty, false);
+        suitState.Add(EquipSuit.Berserker, false);
+        suitState.Add(EquipSuit.Impregnable, false);
+        suitState.Add(EquipSuit.YongQuanXiangBao, false);
+        suitState.Add(EquipSuit.BountyHunter, false);
+        suitState.Add(EquipSuit.Lifespring, false);
+        suitState.Add(EquipSuit.CrazyAttack, false);
+
+        infoPrefab = (GameObject)Resources.Load("Prefabs/UI/MiscInfo/MiscInfoPrefab");
     }
 
     // Update is called once per frame
@@ -39,38 +77,64 @@ public class SuitController : MonoBehaviour
 
     public void AddSuitCount(EquipSuit equipSuit)
     {
-        if (equipSuit != EquipSuit.Null)
+        if (photonView.IsMine)
         {
             suitCount[equipSuit]++;
-            suitCount[EquipSuit.Null]--;
-
-            if (suitCount[EquipSuit.Null] <= 0)
-                suitCount[EquipSuit.Null] = 0;
-
-            SuitUpdate();
-        }
-        
+            //Debug.LogError(equipSuit + " +");
+        } 
     }
 
     public void RemoveSuitCount(EquipSuit equipSuit)
     {
-        suitCount[equipSuit]--;
-        SuitUpdate();
+        if (photonView.IsMine)
+        {
+            suitCount[equipSuit]--;
+            if (suitCount[EquipSuit.Null] <= 0)
+                suitCount[EquipSuit.Null] = 0;
+            //Debug.LogError(equipSuit + " -");
+        }
+            
     }
 
     public void SuitUpdate()
     {
-        foreach (var item in suitCount)
+        if (photonView.IsMine)
         {
-            if (item.Value >= 3)
+            foreach (var item in suitCount)
             {
-                suitEffectList[item.Key](item.Key, true);
-            }
-            else
-            {
-                suitEffectList[item.Key](item.Key, false);
+                if (item.Value >= 3)
+                {
+                    if (suitState[item.Key] == false)
+                    {
+                        suitEffectList[item.Key](item.Key, true);
+                        suitState[item.Key] = true;
+                        //Debug.LogError(item.Key + " true");
+                    }
+                }
+                else
+                {
+                    if (suitState[item.Key] == true)
+                    {
+                        suitEffectList[item.Key](item.Key, false);
+                        suitState[item.Key] = false;
+                        //Debug.LogError(item.Key + " false");
+                    }
+                }
             }
         }
+    }
+
+    void NullSuitEffect(EquipSuit equipSuit, bool enable)
+    {
+        if (enable)
+        {
+
+        }
+        else
+        {
+
+        }
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -89,7 +153,9 @@ public class SuitController : MonoBehaviour
         {
             charBase.NormalAttackRatio -= 0.3f;
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -108,7 +174,8 @@ public class SuitController : MonoBehaviour
         {
             
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable?"生效":"失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -127,7 +194,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -146,7 +214,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -165,7 +234,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -184,7 +254,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -203,7 +274,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -222,7 +294,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -241,7 +314,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -260,7 +334,8 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 
     /// <summary>
@@ -279,6 +354,7 @@ public class SuitController : MonoBehaviour
         {
 
         }
-        Debug.LogWarning(equipSuit + " SuitEffect " + enable);
+        Instantiate(infoPrefab, GameObject.FindGameObjectWithTag("MiscInfoMenu").transform).GetComponent<MiscInfo>().InitMiscInfo(MiscLevel.Epic, equipSuit + " 套装效果 " + (enable ? "生效" : "失效"));
+        //Debug.LogError(equipSuit + " SuitEffect " + enable);
     }
 }

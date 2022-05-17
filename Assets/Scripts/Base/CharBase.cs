@@ -193,10 +193,11 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
     /// Ð¬×Ó
     /// </summary>
     private EquipBoots bootsSuit;
+    [SerializeField]
     /// <summary>
     /// ÆÕ¹¥±¶ÂÊ
     /// </summary>
-    private float normalAttackRatio;
+    private float normalAttackRatio = 1f;
 
     #endregion
 
@@ -737,15 +738,59 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
         get => headSuit; 
         set
         {
+            suitController.RemoveSuitCount((EquipSuit)headSuit);
             headSuit = value;
-            GetComponent<SuitController>().SuitUpdate();
+            suitController.AddSuitCount((EquipSuit)headSuit);
+            suitController.SuitUpdate();
         } 
     }
-    public EquipArmor ArmorSuit { get => armorSuit; set => armorSuit = value; }
-    public EquipHand HandSuit { get => handSuit; set => handSuit = value; }
-    public EquipKnee KneeSuit { get => kneeSuit; set => kneeSuit = value; }
-    public EquipTrousers TrousersSuit { get => trousersSuit; set => trousersSuit = value; }
-    public EquipBoots BootsSuit { get => bootsSuit; set => bootsSuit = value; }
+    public EquipArmor ArmorSuit { 
+        get => armorSuit;
+        set 
+        {
+            suitController.RemoveSuitCount((EquipSuit)armorSuit);
+            armorSuit = value;
+            suitController.AddSuitCount((EquipSuit)armorSuit);
+            suitController.SuitUpdate();
+        } 
+    }
+    public EquipHand HandSuit { 
+        get => handSuit;
+        set
+        {
+            suitController.RemoveSuitCount((EquipSuit)handSuit);
+            handSuit = value;
+            suitController.AddSuitCount((EquipSuit)handSuit);
+            suitController.SuitUpdate();
+        }
+     }
+    public EquipKnee KneeSuit { 
+        get => kneeSuit;
+        set {
+            suitController.RemoveSuitCount((EquipSuit)kneeSuit);
+            kneeSuit = value;
+            suitController.AddSuitCount((EquipSuit)kneeSuit);
+            suitController.SuitUpdate();
+        }
+    }
+    public EquipTrousers TrousersSuit { 
+        get => trousersSuit;
+        set {
+            suitController.RemoveSuitCount((EquipSuit)trousersSuit);
+            trousersSuit = value;
+            suitController.AddSuitCount((EquipSuit)trousersSuit);
+            suitController.SuitUpdate();
+        }
+    }
+    public EquipBoots BootsSuit { 
+        get => bootsSuit;
+        set {
+            suitController.RemoveSuitCount((EquipSuit)bootsSuit);
+            bootsSuit = value;
+            suitController.AddSuitCount((EquipSuit)bootsSuit);
+            suitController.SuitUpdate();
+        }
+    }
 
     public float MoveSpeed
     {
@@ -933,7 +978,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(AttackRange);
             stream.SendNext(RespawnTime);
             stream.SendNext(RespawnCountDown);
-
+            stream.SendNext(NormalAttackRatio);
         }
         else
         {
@@ -972,7 +1017,7 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
             AttackRange = (float)stream.ReceiveNext();
             RespawnTime = (float)stream.ReceiveNext();
             RespawnCountDown = (float)stream.ReceiveNext();
-
+            NormalAttackRatio = (float)stream.ReceiveNext();
         }
     }
 
@@ -1142,10 +1187,12 @@ public class CharBase : MonoBehaviourPunCallbacks, IPunObservable
 
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         charManager = GameObject.Find("CharManager").GetComponent<CharManager>();
+        suitController = GetComponent<SuitController>();
     }
 
     UIManager uiManager;
     CharManager charManager;
+    SuitController suitController;
 
     void UpdateFloatProps(string key, float value)
     {

@@ -86,7 +86,7 @@ public class BagManager : MonoBehaviour
         playerName.text = m_charBase.PlayerName;
         switch (m_charBase.Pro)
         {
-            case ProEnum.Soilder:
+            case ProEnum.Soldier:
                 pro.text = "½üÕ½";
                 break;
             case ProEnum.Archer:

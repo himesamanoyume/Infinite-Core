@@ -3949,7 +3949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 1133860635}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -5576,6 +5576,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Total
       objectReference: {fileID: 0}
+    - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
+      propertyPath: soldier
+      value: 
+      objectReference: {fileID: 8027300526949257307, guid: 41ccd04ff23bf6440a8b038869022525, type: 3}
     - target: {fileID: 1252089328102079822, guid: 5e1fc8ed84e18974484cd8040f45ae4f, type: 3}
       propertyPath: playerInfoCanvas
       value: 

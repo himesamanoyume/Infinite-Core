@@ -81,6 +81,7 @@ MonoBehaviour:
   kneeSuit: 0
   trousersSuit: 0
   bootsSuit: 0
+  normalAttackRatio: 1
 --- !u!114 &4600758666631930024
 MonoBehaviour:
   m_ObjectHideFlags: 0

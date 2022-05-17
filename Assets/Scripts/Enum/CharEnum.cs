@@ -6,7 +6,7 @@ using UnityEngine;
 public enum ProEnum
 {
     [Tooltip("½üÕ½")]
-    Soilder,
+    Soldier,
     [Tooltip("Ô¶³Ì")]
     Archer,
     [Tooltip("¸¨Öú")]

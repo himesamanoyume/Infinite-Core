@@ -73,8 +73,10 @@
     <Compile Include="Assets\Scripts\Manager\CharManager.cs" />
     <Compile Include="Assets\Scripts\Misc\MiscInfo.cs" />
     <Compile Include="Assets\Scripts\Misc\Launcher.cs" />
+    <Compile Include="Assets\Scripts\Controller\SuitController.cs" />
     <Compile Include="Assets\Scripts\Misc\GameTime.cs" />
     <Compile Include="Assets\Scripts\Manager\RuleManager.cs" />
+    <Compile Include="Assets\Scripts\Controller\BuffController.cs" />
     <Compile Include="Assets\Scripts\Base\SkillBase.cs" />
     <Compile Include="Assets\Scripts\Specific\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Manager\GameEventManager.cs" />
@@ -104,8 +106,6 @@
     <Compile Include="Assets\Scripts\Base\CharBase.cs" />
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\StateManager.cs" />
-    <Compile Include="Assets\Scripts\Controller\BuffController.cs" />
-    <Compile Include="Assets\Scripts\Controller\SuitController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\3rd\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
